@@ -1,22 +1,21 @@
 // @flow strict
-import React from 'react';
-import type { Entry, WidgetFor } from '../../types';
-import styles from "./preview-styles.css";
+import React from "react";
+import type { Entry, WidgetFor } from "../../types";
 
 type Props = {
   entry: Entry,
-  widgetFor: WidgetFor
+  widgetFor: WidgetFor,
 };
 
 const PostPreview = ({ entry, widgetFor }: Props) => {
-  const body = widgetFor('body');
-  const title = entry.getIn(['data', 'title']);
+  const body = widgetFor("body");
+  const title = entry.getIn(["data", "title"]);
 
   return (
-    <div className={styles["content"]}>
-      <h1 className={styles["content__title"]}>{title}</h1>
+    <div className="content">
+      <h1 className="content__title">{title}</h1>
       <div
-        className={styles["content__body"]}
+        className="content__body"
         dangerouslySetInnerHTML={{ __html: body }}
       />
     </div>
