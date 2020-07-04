@@ -1,8 +1,41 @@
+h1 {
+  display: block;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+@media screen and (min-width: 960px) {
+  .content {
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    color: #222;
+  }
+  .content__title {
+    font-size: 48px;
+    line-height: 58.5px;
+    margin-top: 58.5px;
+    margin-bottom: 39px;
+  }
+  .content__body {
+    font-size: 18px;
+    line-height: 29.25px;
+    margin-bottom: 29.25px;
+  }
+  .content__body p {
+    font-size: 18px;
+    line-height: 29.25px;
+    margin-bottom: 29.25px;
+  }
+}
+
 .content {
   max-width: 945px;
   padding: 0 15px;
   margin: 0 auto;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  color: #222;
 }
 .content__title {
   font-size: 32px;
@@ -41,27 +74,4 @@
 }
 .content__body img {
   max-width: 100%;
-}
-
-@media screen and (min-width: 960px) {
-  .content {
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  }
-  .content__title {
-    font-size: 48px;
-    line-height: 58.5px;
-    margin-top: 58.5px;
-    margin-bottom: 39px;
-  }
-  .content__body {
-    font-size: 18px;
-    line-height: 29.25px;
-    margin-bottom: 29.25px;
-  }
-  .content__body p {
-    font-size: 18px;
-    line-height: 29.25px;
-    margin-bottom: 29.25px;
-  }
 }

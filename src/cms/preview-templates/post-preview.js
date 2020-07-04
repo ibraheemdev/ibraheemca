@@ -1,7 +1,6 @@
 // @flow strict
 import React from "react";
 import type { Entry, WidgetFor } from "../../types";
-import Content from "../../components/Post/Content/Content"
 
 type Props = {
   entry: Entry,
@@ -13,7 +12,10 @@ const PostPreview = ({ entry, widgetFor }: Props) => {
   const title = entry.getIn(['data', 'title']);
 
   return (
-    <Content body={body} title={title}/>
+    <div className="content">
+      <h1 className="content__title">{title}</h1>
+      <div className="content__body">{body}</div>
+    </div>
   );
 };
 
