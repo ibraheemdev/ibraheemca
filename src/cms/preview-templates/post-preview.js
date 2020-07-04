@@ -8,13 +8,13 @@ type Props = {
 };
 
 const PostPreview = ({ entry, widgetFor }: Props) => {
-  const body = widgetFor("body");
-  const title = entry.getIn(["data", "title"]);
+  const body = widgetFor('body');
+  const title = entry.getIn(['data', 'title']);
 
   return (
     <div className="content">
       <h1 className="content__title">{title}</h1>
-      <div className="content__body">{body}</div>
+      <div className="content__body">{JSON.stringify(body)}</div>
     </div>
   );
 };
