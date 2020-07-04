@@ -1,6 +1,7 @@
 // @flow strict
 import React from "react";
 import type { Entry, WidgetFor } from "../../types";
+import "./preview-styles.css"
 
 type Props = {
   entry: Entry,
@@ -14,10 +15,7 @@ const PostPreview = ({ entry, widgetFor }: Props) => {
   return (
     <div className="content">
       <h1 className="content__title">{title}</h1>
-      <div
-        className="content__body"
-        dangerouslySetInnerHTML={{ __html: body }}
-      />
+      <div className="content__body">{body}</div>
     </div>
   );
 };

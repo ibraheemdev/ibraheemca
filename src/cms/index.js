@@ -5,4 +5,3 @@ import PostPreview from './preview-templates/post-preview';
 
 CMS.registerPreviewTemplate('pages', PagePreview);
 CMS.registerPreviewTemplate('posts', PostPreview);
-CMS.registerPreviewStyle("/preview-templates/preview-styles.css");
