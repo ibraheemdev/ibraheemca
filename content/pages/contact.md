@@ -1,13 +1,13 @@
 ---
-title: "Contact me"
-template: "page"
-socialImage: "/media/image-2.jpg"
+template: page
+title: Contact me
+socialImage: /media/image-2.jpg
+slug: contact
+draft: false
 ---
+Hey 👋 I'm Ibraheem Ahmed. I’m a software freelance developer from Toronto, Canada.
 
-Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.
+I love working with Ruby on Rails and React.js. I am currently working on agilely, an open source project management app.
 
-![Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.](/media/image-2.jpg)
 
-*Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi.*
-
-Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+Let's get in touch! If you want to talk to me about a project you're starting, have a question, or just want to talk, you can reach me at [ibrah1440@gmail.com](mailto:ibrah1440@gmail.com).
