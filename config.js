@@ -3,8 +3,8 @@
 module.exports = {
   url: 'https://ibraheem.ca',
   pathPrefix: '/',
-  title: 'Blog by Ibraheem Ahmed',
-  subtitle: 'My personal website and blog where I write about software development',
+  title: 'Ibraheem Ahmed | Freelance software developer',
+  subtitle: 'A blog by Ibraheem Ahmed | Freelance software developer',
   copyright: '© All rights reserved.',
   disqusShortname: 'ibraheem-3',
   postsPerPage: 6,
@@ -23,7 +23,7 @@ module.exports = {
   author: {
     name: 'Ibraheem Ahmed',
     photo: '/photo.png',
-    bio: 'Hey, I\'m Ibraheem Ahmed. I’m a freelance developer from Toronto, Canada. I love working with Ruby on Rails and React.js.',
+    bio: '<p>Hey, I\'m Ibraheem Ahmed. I’m a software freelance developer from Toronto, Canada. I love working with Ruby on Rails and React.js, and am currently working on <a href="https://github.com/redline-gh/agilely">agilely</a>, a open source project management app</p>',
     contacts: {
       email: 'ibrah1440@gmail.com',
       facebook: '',

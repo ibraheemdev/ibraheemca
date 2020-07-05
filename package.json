@@ -1,7 +1,7 @@
 {
   "version": "3.0.3",
   "name": "ibraheem.ca",
-  "description": "Blog by Ibraheem Ahmed",
+  "description": "A Blog by Ibraheem Ahmed",
   "main": "n/a",
   "scripts": {
     "develop": "yarn run clean && gatsby develop",
