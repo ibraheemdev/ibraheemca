@@ -37,8 +37,15 @@ h1 {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   color: #222;
 }
+
+.content__body {
+  font-size: 18px;
+  line-height: 29.25px;
+  margin-bottom: 29.25px;
+}
+
 .content__title {
-  font-size: 32px;
+  font-size: 48px;
   max-width: 640px;
   margin-left: auto;
   margin-right: auto;
