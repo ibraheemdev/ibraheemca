@@ -33,13 +33,13 @@ Now that you have MongoDB installed, you have to configure your rails applicatio
 The officially supported MongoDB ODM for rails is [Mongoid](https://github.com/mongodb/mongoid). Mongoid aims to achieve parity with ActiveRecord, and the Mongoid team has done an excellent job at making the switch as seamless and easy as possible. Mongoid accepts all the ActiveRecord associations, validations, and callbacks you are used to. Getting rails to switch to Mongoid can be tricky, but if you follow all the steps, you should be able to get it to work. 
 
 If you go to your `config/application.rb` file, you will most likely see the following:
-```
+```ruby
 ...
 require "rails/all"
 ...
 ```
 This line is telling rails to include all the default frameworks. If you want to use Mongoid however, you need to remove this line and instead explicitly choose all the frameworks you want for your app:
-```
+```ruby
 ...
 require "rails"
 # Pick the frameworks you want:
@@ -62,16 +62,16 @@ require "action_cable/engine"
 Note that active_record and active_storage are not being required. Mongoid will take the place of active_record, and because active_storage depends on active_record, it cannot be used with Mongoid.
 
 Now that we are not using active_record, any references to it in files in the config directory need to be removed. For example:
-```
+```ruby
 config.active_record.dump_schema_after_migration = false
 config.active_storage.service = :local
 ```
 We also need to remove the activestorage npm package. To remove this, run:
-```
+```bash
 $ yarn remove @rails/activestorage
 ```
 And remove this line from your application.js webpack entry point file:
-```
+```javascript
 require("@rails/activestorage").start();
 ```
 You can also delete the /storage directory and your config/storage.yml file
@@ -82,19 +82,19 @@ You might be wondering why we haven't deleted the `/db` directory and the config
 
 First, add the Mongoid gem to your application:
 
-```
+```ruby
 gem 'mongoid', '~> 7.0.6' (or the latest current version)
 ```
 And run:
-```
+```bash
 $ bundle:install
 ```
 Now, you have to stop spring:
-```
+```bash
 $ ./bin/spring stop
 ```
 We can now generate the default mongoid configuration file:
-```
+```bash
 $ rails g mongoid:config
 ```
 To view all the mongoid configuration options, you can view [the mongoid docs](https://docs.mongodb.com/mongoid/current/tutorials/mongoid-configuration/)
@@ -104,7 +104,7 @@ Now that mongoid is setup, you can delete the /db folder, the config/database.ym
 **Updating Rails Models**
 
 Now that you're on Mongoid, you have to update your rails models. A Mongoid User model could look something like this:
-```
+```ruby
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -122,17 +122,17 @@ Note that the User class is no longer inheriting from ApplicationRecord.
 **Testing MongoDB**
 
 That's it! Mongoid is all setup. To test your configuration, start the mongodb service:
-```
+```bash
 brew services start mongodb-community@4.2
 ```
 And test Mongoid in the rails console:
-```
+```ruby
 ~ rails console
 ~ u = User.create(email: "john@example.org", name: "john")
 ```
 
 To stop mongodb, you can run:
-```
+```bash
 brew services start mongodb-community@4.2
 ```
 
