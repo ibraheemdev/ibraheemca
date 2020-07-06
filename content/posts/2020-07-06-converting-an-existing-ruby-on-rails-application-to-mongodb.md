@@ -15,7 +15,7 @@ tags:
 Recently, while working on [agilely](https://github.com/redline-gh/agilely), I realized that MongoDB was a better fit for my database design. I am currently converting the entire application from PostgresQL to MongoDB, and thought I'd share what I learned along the way.
 
 
-*Note that this post does not cover migrating your data from a RDBMS. If you have a production app with data that needs to migrated, you might want to look at the [`pg2mongo`](https://github.com/datawrangl3r/pg2mongo) migration framework, or view the [official MongoDB migration guide](https://www.mongodb.com/collateral/rdbms-mongodb-migration-guide)*
+*Note that this post does not cover migrating your data from a RDBMS. If you have a production app with data that needs to migrated, you might want to look at the [pg2mongo](https://github.com/datawrangl3r/pg2mongo) migration framework, or view the [official MongoDB migration guide](https://www.mongodb.com/collateral/rdbms-mongodb-migration-guide)*
 
 **MongoDB Installation** 
 
@@ -26,7 +26,7 @@ $ brew install mongodb-community@4.2
 ```
 To view the installation process for all operating systems, refer to the [MongoDB docs](https://docs.mongodb.com/manual/installation/)
 
-** Rails Configuration **
+**Rails Configuration**
 
 Now that you have MongoDB installed, you have to configure your rails application to  use it as your default database. 
 
@@ -59,26 +59,26 @@ require "action_cable/engine"
 # require "rails/test_unit/railtie"
 ...
 ```
-Note that `active_record` and `active_storage` are not being required. Mongoid will take the place of `active_record`, and because `active_storage` depends on `active_record`, it cannot be used with Mongoid.
+Note that active_record and active_storage are not being required. Mongoid will take the place of active_record, and because active_storage depends on active_record, it cannot be used with Mongoid.
 
-Now that we are not using `active_record`, any references to `active_record` in files in the config directory need to be removed. For example:
+Now that we are not using active_record, any references to it in files in the config directory need to be removed. For example:
 ```
 config.active_record.dump_schema_after_migration = false
 config.active_storage.service = :local
 ```
-We also need to remove the `@rails/activestorage` npm package. To remove this, run:
+We also need to remove the activestorage npm package. To remove this, run:
 ```
 $ yarn remove @rails/activestorage
 ```
-And remove this line from your `application.js` webpack entry point file:
+And remove this line from your application.js webpack entry point file:
 ```
 require("@rails/activestorage").start();
 ```
-You can also delete the `/storage` directory and your `config/storage.yml` file
+You can also delete the /storage directory and your config/storage.yml file
 
-You might be wondering why we haven't deleted the `/db` directory and the `config/database.yml` file. Deleting these files now can cause errors because until we generate the `mongoid.yml`, rails will still be looking for a database configuration. Let's setup Mongoid now:
+You might be wondering why we haven't deleted the `/db` directory and the config/database.yml file. Deleting these files now can cause errors because until we generate the mongoid.yml, rails will still be looking for a database configuration. Let's setup Mongoid now:
 
-** Mongoid Setup **
+**Mongoid Setup**
 
 First, add the Mongoid gem to your application:
 
@@ -99,9 +99,9 @@ $ rails g mongoid:config
 ```
 To view all the mongoid configuration options, you can view [the mongoid docs](https://docs.mongodb.com/mongoid/current/tutorials/mongoid-configuration/)
 
-Now that mongoid is setup, you can delete the `/db` folder, the `config/database.yml` file, and remove the database gem from your Gemfile ( `sqlite3`, `pg`, etc. )
+Now that mongoid is setup, you can delete the /db folder, the config/database.yml file, and remove the database gem from your Gemfile ( sqlite3, pg, etc. )
 
-** Updating Rails Models **
+**Updating Rails Models**
 
 Now that you're on Mongoid, you have to update your rails models. A Mongoid User model could look something like this:
 ```
@@ -119,7 +119,7 @@ end
 ```
 Note that the User class is no longer inheriting from ApplicationRecord.
 
-** Testing MongoDB **
+**Testing MongoDB**
 
 That's it! Mongoid is all setup. To test your configuration, start the mongodb service:
 ```
