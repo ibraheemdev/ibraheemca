@@ -12,7 +12,7 @@ tags:
   - MongoDB
 ---
 
-Recently, while working on [agilely](https://github.com/redline-gh/agilely), I realized that MongoDB was a better fit for my database design. I am currently converting the entire application from PostgresQL to MongoDB, and thought I'd share what I learned along the way.
+Recently, while working on [agilely](https://github.com/ibraheemdev/agilely), I realized that MongoDB was a better fit for my database design. I am currently converting the entire application from PostgresQL to MongoDB, and thought I'd share what I learned along the way.
 
 
 *Note that this post does not cover migrating your data from a RDBMS. If you have a production app with data that needs to migrated, you might want to look at the [pg2mongo](https://github.com/datawrangl3r/pg2mongo) migration framework, or view the [official MongoDB migration guide](https://www.mongodb.com/collateral/rdbms-mongodb-migration-guide)*

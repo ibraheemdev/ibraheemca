@@ -9,7 +9,7 @@
     "deploy": "yarn run clean && gatsby build --prefix-paths && gh-pages -d public",
     "clean": "rimraf .cache public"
   },
-  "repository": "https://github.com/redline-gh/ibraheemca",
+  "repository": "https://github.com/ibraheemdev/ibraheemca",
   "author": "Ibraheem Ahmed <ibrah1440@gmail.com>",
   "license": "MIT",
   "keywords": [

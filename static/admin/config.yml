@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: redline-gh/ibraheemca
+  repo: ibraheemdev/ibraheemca
 
 media_folder: "static/media"
 public_folder: "/media"

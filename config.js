@@ -27,13 +27,13 @@ module.exports = {
   author: {
     name: 'Ibraheem Ahmed',
     photo: '/photo.png',
-    bio: '<p>Hey, I\'m Ibraheem Ahmed. I’m a software freelance developer from Toronto, Canada. I love working with Ruby on Rails and React.js, and am currently working on <a href="https://github.com/redline-gh/agilely">agilely</a>, a open source project management app</p>',
+    bio: '<p>Hey, I\'m Ibraheem Ahmed. I’m a software freelance developer from Toronto, Canada. I love working with Ruby on Rails and React.js, and am currently working on <a href="https://github.com/ibraheemdev/agilely">agilely</a>, a open source project management app</p>',
     contacts: {
       email: 'ibrah1440@gmail.com',
       facebook: '',
       telegram: '',
       twitter: '',
-      github: '/redline-gh',
+      github: 'ibraheemdev',
       rss: '',
       vkontakte: '',
       linkedin: '',
