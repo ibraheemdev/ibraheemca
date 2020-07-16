@@ -1,7 +1,6 @@
 ---
 template: post
-title: Easier asynchronous state modelling in React Redux with the Finite State
-  Machine Model
+title: Easier Async State in React + Redux with Finite State Machines
 slug: fsm-react-redux
 draft: true
 date: 2020-07-16T19:17:26.879Z
@@ -13,6 +12,8 @@ tags:
   - redux
   - state-management
 ---
+*Much of this post was based on [Infinitely Better UIs with Finite Automata](<https://www.youtube.com/watch?v=VU1NKX6Qkxc>), a talk by David Khourshid, the creator of [xstate](<https://github.com/davidkpiano/xstate>)*
+
 **The Problem**
 
 When developing a react + redux application, you often have to load data from a remote source, usually a REST API. Let's say you have a todo list application. When a user clicks 'add todo', you dispatch the corresponding 'ADD_TODO' action. If the response is OK, you dispatch the success action, and if the request fails, you dispatch the failure action:
