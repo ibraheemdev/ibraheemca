@@ -183,4 +183,89 @@ As you can see, the todo-list app is quite simple. It starts at the `IDLE` state
 
 **Implementing the Finite State Machine**
 
-*emojis courtesy of [Twemoji](https://twemoji.twitter.com/)*
+Now that our state machine is modelled, we can actually implement it into our application. The entire application state can be represented through one frozen javascript object:
+
+```javascript
+const stateMachine = Object.freeze({
+  idle: { 
+    ADD_TODO: 'loading' 
+  },
+  loading: { 
+    ADD_TODO_SUCCESS: 'succesful' 
+    ADD_TODO_FAILURE: 'failure' 
+  },
+  failure: {
+    ADD_TODO: 'loading' 
+  },
+  successful: {
+    ADD_TODO: 'loading' 
+  }
+})
+```
+
+As you can see, the `stateMachine` is just an object representation of our flow chart. Now, we can create a transition function. The transition function will implement the fourth constraint of deterministic FSM's: 
+
+> Transitions between states in response to an action (`loading` + `ADD_TODO_SUCCESS` = `successful`). Given the current state, and an action, a deterministic FSM will always return the same next state
+
+The function looks like this:
+
+```javascript
+const transition = (currentState, action) => {
+  return stateMachine[currentState][action]
+}
+
+// The curent state of the application is 'idle'
+// The user clicks 'Add Todo', dispatching the ADD_TODO action
+// If we look at the stateMachine object, we can see that the
+// corresponding state is 'loading'
+
+transition('idle', ADD_TODO)
+// => 'loading'
+
+// And sure enough, our function works!
+```
+
+We can now use the transition function in a reducer that handles application state. 
+
+*Ideally, this would be called `stateReducer`, but as that would conflict with redux's idea of state, we'll call it `statusReducer`*
+
+```
+const StatusReducer = (state = { status: 'idle' }, action) => {
+  return { status: transition(state.status, action.type) }
+}
+```
+
+That's it! in 6 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
+
+```
+const TodosReducer = (state = {}, action) => {
+  switch(action.type) {
+    case ADD_TODO_FAILURE:
+      return {
+        ...state,
+        errors: [ ...action.payload ]
+      }
+    case ADD_TODO_SUCCESS:
+      return {
+        ...state,
+        errors: [],
+        todos: [ ...state.todos, action.payload ]
+      }
+  }
+}
+```
+
+```
+return (
+  ...
+  {state.status === 'failure' && <ErrorWrapper errors={state.errors} />}
+  {state.status === 'loading' && <LoadingSpinner />}
+  {state.status === 'successful' && <TodosList todos={state.todos} />}
+)
+```
+
+**Takeaways:**
+
+The biggest gain from this pattern, is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers, reducers that handle one process and one process only. Those two combined give simplicity to the entire application, reducers, views, and actions.
+
+*shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)*
