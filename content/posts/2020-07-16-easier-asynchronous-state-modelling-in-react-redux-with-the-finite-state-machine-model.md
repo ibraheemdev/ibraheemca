@@ -163,11 +163,23 @@ For more on finite state machines, see [this article](https://brilliant.org/wiki
 
 **Modelling the Finite State Machine**
 
-The first step to modelling your FSM, is to determine all the possible states of your application. For this example, the todo-list application has 4 possible states:
+To model your applications FSM, you can simple fill out the 5 constraints of a deterministic state machines.
+
+Our application has 4 possible states:
 
 ![the 4 possible states of our application: (idle, loading, successful, failure)](/media/group-6.png)
 
+Our app also has 3 actions:
 
+* `ADD_TODO`
+* `ADD_TODO_SUCCESS`
+* `ADD_TODO_FAILURE`
+
+And the the initial state of our app is `IDLE`. Now we have to determine all the transitions that our app can go through. We can do this using a flow chart:
+
+![The application transitions](/media/group-10.png)
+
+As you can see, the todo-list app is quite simple. It starts at the `IDLE` state. When a user adds a todo, it transitions to `LOADING`. The request returns either as a `SUCCESS`, or a `FAILURE`. If the user adds another todo, the app goes back to the `LOADING` state, and so on.
 
 **Implementing the Finite State Machine**
 
