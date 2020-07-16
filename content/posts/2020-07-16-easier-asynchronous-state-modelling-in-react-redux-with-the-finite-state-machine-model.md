@@ -16,7 +16,7 @@ tags:
 
 **The Problem**
 
-When developing a react + redux application, you often have to load data from a remote source, usually a REST API. Let's say you have a todo list application. When a user clicks 'add todo', you dispatch the corresponding 'ADD_TODO' action. If the response is OK, you dispatch the success action, and if the request fails, you dispatch the failure action:
+When developing a react + redux application, you often have to load data from a remote source, usually a REST API. Let's say you have a todo list application. When a user clicks 'add todo', you dispatch the corresponding `ADD_TODO` action. If the response is OK, you dispatch the success action, and if the request fails, you dispatch the failure action:
 
 ```javascript
 const handleClick = () => {
@@ -61,7 +61,7 @@ const TodosReducer = (state = {}, action) => {
 }
 ```
 
- Simple, right? But wait, we want to display a spinner if while the request is taking place. We also need a way to tell the view that the request is successful or failed so that is can display the correct message. This seems like a good candidate for boolean flags, like `isLoading` and `isSuccessful`. 
+ Simple, right? But wait, we want to display a spinner if while the request is taking place. We also need a way to tell the view that the request was successful or failed, so that is can display the correct message to the user. This seems like a good candidate for boolean flags like `isLoading` and `isSuccessful`. 
 
 ```javascript
 const TodosReducer = (state = {}, action) => {
@@ -128,7 +128,7 @@ return {
 
 How can a request be loading, have errors, and be successful at the same time???
 
-Furthermore, most applications aren't that simple. What if we want to have other booleans, like `isAuthorized`, and `isPayingCustomer`?
+Furthermore, most applications aren't that simple. What if we want to have other booleans, like `isAuthorized`, or `isPayingCustomer`?
 
 ```ruby
 if isPayingCustomer
@@ -151,7 +151,7 @@ And all of this is assuming that you, the developer, doesn't make a mistake and 
 
 **What is a Finite State Machine?**
 
-In computer science, there is a computational model known as a "finite state machine". It is an abstract machine, whether a software system or computer hardware. There are two types of state machines, deterministic, and non-deterministic. The former, the one we will be working with, has the following constraints:
+In computer science, there is a computational model known as a "finite state machine". It is an abstract machine, whether a software system or computer hardware. There are two types of state machines, deterministic: and non-deterministic. The former, the one we will be working with, has the following constraints:
 
 1. Has a finite number of states (`idle`, `loading`, `successful`, `failure`, etc.)
 2. Has a finite number of actions (`ADD_TODO`, `DELETE_TODO`, etc.)
@@ -183,7 +183,7 @@ As you can see, the todo-list app is quite simple. It starts at the `IDLE` state
 
 **Implementing the Finite State Machine**
 
-Now that our state machine is modelled, we can actually implement it into our application. The entire application state can be represented through one frozen javascript object:
+Now that our state machine is modelled, we can actually implement it in our application. The entire application state can be represented through one frozen (non-editable) object:
 
 ```javascript
 const stateMachine = Object.freeze({
@@ -238,6 +238,7 @@ const StatusReducer = (state = { status: 'idle' }, action) => {
 That's it! in 6 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
 
 ```
+// reducer
 const TodosReducer = (state = {}, action) => {
   switch(action.type) {
     case ADD_TODO_FAILURE:
@@ -256,6 +257,7 @@ const TodosReducer = (state = {}, action) => {
 ```
 
 ```
+// view
 return (
   ...
   {state.status === 'failure' && <ErrorWrapper errors={state.errors} />}
@@ -266,6 +268,6 @@ return (
 
 **Takeaways:**
 
-The biggest gain from this pattern, is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers, reducers that handle one process and one process only. Those two combined give simplicity to the entire application, reducers, views, and actions.
+The biggest gain from this pattern, is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers, reducers that handle one process and one process only. Those two combined give simplicity to the entire application: reducers, views, and actions.
 
 *shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)*
