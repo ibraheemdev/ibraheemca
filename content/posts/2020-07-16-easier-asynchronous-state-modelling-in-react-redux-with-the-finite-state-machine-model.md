@@ -8,8 +8,8 @@ description: Implementing the Finite State Machine Model with Reactjs and Redux
   for easier asynchronous state modelling
 category: React.js
 tags:
-  - reactjs
-  - redux
+  - React.js
+  - Redux
   - state-management
 ---
 *Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017.*
@@ -156,7 +156,8 @@ In computer science, there is a computational model known as a "finite state mac
 1. Has a finite number of states (`idle`, `loading`, `successful`, `failure`, etc.)
 2. Has a finite number of actions (`ADD_TODO`, `DELETE_TODO`, etc.)
 3. Has an initial state (`idle`) and a final state (not applicable to our app)
-4. Transitions between states in response to an action (`loading` + `ADD_TODO_SUCCESS` = `successful`). Given the current state, and an action, a deterministic FSM will always return the same next state
+4. Transitions between states in response to an action:
+<br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
 5. Can and will only be in **one** of its finite number of states at any given time.
 
 For more on finite state machines, see [this article](https://brilliant.org/wiki/finite-state-machines/)
@@ -205,7 +206,8 @@ const stateMachine = Object.freeze({
 
 As you can see, the `stateMachine` is just an object representation of our flow chart. Now, we can create a transition function. The transition function will implement the fourth constraint of deterministic FSM's: 
 
-> Transitions between states in response to an action (`loading` + `ADD_TODO_SUCCESS` = `successful`). Given the current state, and an action, a deterministic FSM will always return the same next state
+> Transitions between states in response to an action:
+<br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
 
 The function looks like this:
 
