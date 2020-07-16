@@ -2,11 +2,11 @@
 template: post
 title: Easier Async State in React + Redux with Finite State Machines
 slug: fsm-react-redux
-draft: true
+draft: false
 date: 2020-07-16T19:17:26.879Z
 description: Implementing the Finite State Machine Model with Reactjs and Redux
   for easier asynchronous state modelling
-category: reactjs
+category: React.js
 tags:
   - reactjs
   - redux
@@ -128,20 +128,20 @@ return {
 
 How can a request be loading, have errors, and be successful at the same time???
 
-Furthermore, most applications aren't that simple. What if we want to have other booleans, like `isAuthorized`, or `isPayingCustomer`?
+Furthermore, most applications aren't that simple. What if we want to have other features, like disabling actions after a timeout?
 
 ```ruby
-if isPayingCustomer
+if isTimedOut
   if not isLoading
-    if isEditor or isAdmin and isLoggedIn
+    if isError
       ...
-    else if not isAuthorized
+    else if not isError and isSuccessful
       ...
     else
       ...
   else if isLoading
     ...
-else ifGuestAccount
+else ifTimeout < 3000
   ...
 ```
 
@@ -191,7 +191,7 @@ const stateMachine = Object.freeze({
     ADD_TODO: 'loading' 
   },
   loading: { 
-    ADD_TODO_SUCCESS: 'succesful' 
+    ADD_TODO_SUCCESS: 'successful' 
     ADD_TODO_FAILURE: 'failure' 
   },
   failure: {
@@ -214,7 +214,7 @@ const transition = (currentState, action) => {
   return stateMachine[currentState][action]
 }
 
-// The curent state of the application is 'idle'
+// The current state of the application is 'idle'
 // The user clicks 'Add Todo', dispatching the ADD_TODO action
 // If we look at the stateMachine object, we can see that the
 // corresponding state is 'loading'
@@ -229,7 +229,7 @@ We can now use the transition function in a reducer that handles application sta
 
 *Ideally, this would be called `stateReducer`, but as that would conflict with redux's idea of state, we'll call it `statusReducer`*
 
-```
+```javascript
 const StatusReducer = (state = { status: 'idle' }, action) => {
   return { status: transition(state.status, action.type) }
 }
@@ -237,7 +237,7 @@ const StatusReducer = (state = { status: 'idle' }, action) => {
 
 That's it! in 6 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
 
-```
+```javascript
 // reducer
 const TodosReducer = (state = {}, action) => {
   switch(action.type) {
@@ -256,7 +256,7 @@ const TodosReducer = (state = {}, action) => {
 }
 ```
 
-```
+```javascript
 // view
 return (
   ...
