@@ -165,7 +165,7 @@ For more on finite state machines, see [this article](https://brilliant.org/wiki
 
 To model your applications FSM, you can simple fill out the 5 constraints of a deterministic state machines.
 
-Our application has 4 possible states:
+Our application has 4 possible states, the initial one being `IDLE`.
 
 ![the 4 possible states of our application: (idle, loading, successful, failure)](/media/group-6.png)
 
@@ -175,7 +175,7 @@ Our app also has 3 actions:
 * `ADD_TODO_SUCCESS`
 * `ADD_TODO_FAILURE`
 
-And the the initial state of our app is `IDLE`. Now we have to determine all the transitions that our app can go through. We can do this using a flow chart:
+Now we have to determine all the transitions that our app can go through. We can do this using a flow chart:
 
 ![The application transitions](/media/group-10.png)
 
