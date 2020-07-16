@@ -149,14 +149,20 @@ And all of this is assuming that you, the developer, doesn't make a mistake and 
 
 ![Person Shrugging on Twitter Twemoji](https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/person-shrugging_1f937.png)
 
-**The solution**
+**What is a Finite State Machine?**
 
-In computer science, there is a computational model known as a "finite state machine". It is an abstract machine, whether a software system or computer hardware, that: 
+In computer science, there is a computational model known as a "finite state machine". It is an abstract machine, whether a software system or computer hardware. There are two types of state machines, deterministic, and non-deterministic. The former, the one we will be working with, has the following constraints:
 
-* will be in **one** of a **finite** number of states at any given time. 
-* has an initial state
-* can change between it's states '**transition**' in response to an **input**
+1. Has a finite number of states (`idle`, `loading`, `successful`, `failure`, etc.)
+2. Has a finite number of actions (`ADD_TODO`, `DELETE_TODO`, etc.)
+3. Has an initial state (`idle`) and a final state (not applicable to our app)
+4. Transitions between states in response to an action (`loading` + `ADD_TODO_SUCCESS` = `successful`). Given the current state, and an action, a deterministic FSM will always return the same next state
+5. Can and will only be in **one** of its finite number of states at any given time.
 
-Let's see how we can implement an FSM in our todo-list application.
+For more on finite state machines, see [this article](https://brilliant.org/wiki/finite-state-machines/)
+
+**Modelling the Finite State Machine**
+
+**Implementing the Finite State Machine**
 
 *emojis courtesy of [Twemoji](https://twemoji.twitter.com/)*
