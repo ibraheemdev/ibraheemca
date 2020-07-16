@@ -163,6 +163,12 @@ For more on finite state machines, see [this article](https://brilliant.org/wiki
 
 **Modelling the Finite State Machine**
 
+The first step to modelling your FSM, is to determine all the possible states of your application. For this example, the todo-list application has 4 possible states:
+
+![the 4 possible states of our application: (idle, loading, successful, failure)](/media/group-6.png)
+
+
+
 **Implementing the Finite State Machine**
 
 *emojis courtesy of [Twemoji](https://twemoji.twitter.com/)*
