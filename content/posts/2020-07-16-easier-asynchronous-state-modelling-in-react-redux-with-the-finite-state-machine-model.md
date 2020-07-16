@@ -12,7 +12,7 @@ tags:
   - redux
   - state-management
 ---
-*Much of this post was based on [Infinitely Better UIs with Finite Automata](<https://www.youtube.com/watch?v=VU1NKX6Qkxc>), a talk by David Khourshid, the creator of [xstate](<https://github.com/davidkpiano/xstate>)*
+*Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017.*
 
 **The Problem**
 
@@ -151,4 +151,12 @@ And all of this is assuming that you, the developer, doesn't make a mistake and 
 
 **The solution**
 
-sas
+In computer science, there is a computational model known as a "finite state machine". It is an abstract machine, whether a software system or computer hardware, that: 
+
+* will be in **one** of a **finite** number of states at any given time. 
+* has an initial state
+* can change between it's states '**transition**' in response to an **input**
+
+Let's see how we can implement an FSM in our todo-list application.
+
+*emojis courtesy of [Twemoji](https://twemoji.twitter.com/)*
