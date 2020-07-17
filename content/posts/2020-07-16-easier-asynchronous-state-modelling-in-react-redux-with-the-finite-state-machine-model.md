@@ -144,6 +144,7 @@ if isTimedOut
 else ifTimeout < 3000
   ...
 ```
+
 ![Person Shrugging on Twitter Twemoji](https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/person-shrugging_1f937.png)
 
 **What is a Finite State Machine?**
@@ -153,8 +154,7 @@ In computer science, there is a computational model known as a "finite state mac
 1. Has a finite number of states (`idle`, `loading`, `successful`, `failure`, etc.)
 2. Has a finite number of actions (`ADD_TODO`, `DELETE_TODO`, etc.)
 3. Has an initial state (`idle`) and a final state (not applicable to our app)
-4. Transitions between states in response to an action:
-<br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
+4. Transitions between states in response to an action: <br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
 5. Can and will only be in **one** of its finite number of states at any given time.
 
 For more on finite state machines, see [this article](https://brilliant.org/wiki/finite-state-machines/)
@@ -203,8 +203,7 @@ const stateMachine = Object.freeze({
 
 As you can see, the `stateMachine` is just an object representation of our flow chart. Now, we can create a transition function. The transition function will implement the fourth constraint of deterministic FSM's: 
 
-> Transitions between states in response to an action:
-<br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
+> Transitions between states in response to an action: <br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
 
 The function looks like this:
 
@@ -224,17 +223,19 @@ transition('idle', ADD_TODO)
 // And sure enough, our function works!
 ```
 
-We can now use the transition function in a reducer that handles application state. 
+Now for the coolest part. If you haven't already noticed, the transition function *is* a reducer! 
 
-*Ideally, this would be called `stateReducer`, but as that would conflict with redux's idea of state, we'll call it `statusReducer`*
+> The reducer is a pure function that takes the previous state and an action, and returns the next state. - [redux.js.org](https://redux.js.org/basics/reducers)
+
+And that is exactly what our function does. With a few modifications, we can convert it into a redux style reducer:
 
 ```javascript
-const StatusReducer = (state = { status: 'idle' }, action) => {
-  return { status: transition(state.status, action.type) }
+const TransitionReducer = (state = { status: 'idle' }, action) => {
+  return { status: stateMachine[state.status][action.type] }
 }
 ```
 
-That's it! in 6 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
+That's it! in 3 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
 
 ```javascript
 // reducer
