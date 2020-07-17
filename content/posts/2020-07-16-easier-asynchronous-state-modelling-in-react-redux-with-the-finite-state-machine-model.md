@@ -144,9 +144,6 @@ if isTimedOut
 else ifTimeout < 3000
   ...
 ```
-
-And all of this is assuming that you, the developer, doesn't make a mistake and write `isAuthorized` instead of `!isAuthorized`, and accidentally leave a gaping security hole in your app.
-
 ![Person Shrugging on Twitter Twemoji](https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/person-shrugging_1f937.png)
 
 **What is a Finite State Machine?**
