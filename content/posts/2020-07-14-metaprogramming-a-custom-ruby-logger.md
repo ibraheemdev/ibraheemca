@@ -1,16 +1,16 @@
 ---
 template: post
-title: Metaprogramming a Custom Ruby Logger
+title: Spicing up your Ruby Logger
 slug: custom-ruby-logger
-draft: true
-date: 2020-07-14T21:49:52.993Z
-description: Metaprogramming a Custom Ruby Logger
+draft: false
+date: 2020-07-23T23:45:54.829Z
+description: Spicing up your ruby logger by metaprogramming a custom ruby logger class
 category: Ruby
 tags:
   - ruby
   - metaprogramming
 ---
-I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify your MongoDB logs. Today, I am going to abstract the process I followed while creating the gem into an easy way to create any custom logger.
+*I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify your MongoDB logs. If you want to see a working custom logger, you can check out the source code.*
 
 **Understanding the Ruby Logger Class**
 
@@ -48,9 +48,9 @@ end
 
 The above code block defined a class called `CustomLogger` that takes an optional parameter, logger. The logger parameter defines the logger instance to be used. If no logger is given, it defaults to outputting to the console.
 
-**Defining the Logger Methods.**
+**Defining the Logger Methods**
 
-If we want our logger to do anything, we have to define the `debug, error, fatal, info, warn, and unknown`methods. To define those methods dynamically, we can use `Module#class_eval.` `Module#class_eval`is used to add methods to a class "on-the-fly".
+If we want our logger to do anything, we have to define the `debug, error, fatal, info, warn, and unknown`methods. To define those methods dynamically, we can use `Module#class_eval,`a method which allows us to add methods to a class "on-the-fly".
 
 ```ruby
 class CustomLogger
@@ -80,14 +80,14 @@ W, [2020-07-14T18:40:43.316695 #66813]  WARN -- : a warning message
 => true
 ```
 
-As you can see, our logger now responds to the `warn` method. This means that our implementation is working. There is a problem with our code, however. If we try to call other common logger methods on our custom logger, we get an error message:
+As you can see, our logger now responds to the `warn` method. This means that our implementation is working. However, there is a problem with our code that we haven't noticed yet. If we try to call other common logger methods, we get an error message:
 
 ```ruby
 $ logger.add(debug, "a debugging message")
 NameError (undefined local variable or method `debug' for main:Object)
 ```
 
-We can solve this issue using `method_missing:`
+We can solve this issue using `method_missing.` `method_missing` is run whenever we call a method that doesn't exist on our class. Here, we can use it to send any other missing methods back to the original logger instance, and let the Logger class handle it.
 
 ```ruby
 class CustomLogger
@@ -99,4 +99,74 @@ class CustomLogger
 end
 ```
 
-`method_missing` is called when we call a method that doesn't exist. Here, we can use it to send any other methods to the logger instance, and let the Logger class handle it.
+**Having some fun**
+
+Now that we have our custom logger class all set up, we can start doing some cool things with it. To start, you probably don't want the long default format clogging up your terminal. We can change that by using the formatter method:
+
+```ruby
+def initialize(logger = Logger.new(STDOUT))
+  @logger = format_logger(logger)
+end
+
+private
+
+def format_logger(logger)
+  logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}" }
+  logger
+end
+...
+```
+
+Our logger will now simply print the log message, without the severity, date, or progname. Our logs are looking a little boring, let's try adding some color to help us find exactly what we need quickly. Colors can be added in the terminal using predefined ANSI escape sequences. We can create a Colors module that includes all the necessary color sequences:
+
+```ruby
+module Colors
+  WHITE     = "\e[37m"
+  CYAN      = "\e[36m"
+  MAGENTA   = "\e[35m"
+  BLUE      = "\e[34m"
+  YELLOW    = "\e[33m"
+  GREEN     = "\e[32m"
+  RED       = "\e[31m"
+  BLACK     = "\e[30m"
+  BOLD      = "\e[1m"
+  CLEAR     = "\e[0m"
+end
+```
+
+Now we can create ruby hashes containing a 'match' and a 'color'. If a log message contains a match, we can append the defined color sequence. For example, a mongodb logger might contain matches for find, update, and insert actions:
+
+```ruby
+  FIND         = { match: "\"find\"=>",   color: BLUE }
+  UPDATE       = { match: "\"update\"=>", color: YELLOW }
+  INSERT       = { match: "\"insert\"=>", color: GREEN }
+  ACTIONS      = [ FIND, UPDATE, INSERT ]
+```
+
+We can define a color method, that accepts a string, a color, and an optional boolean for bold logs. *This method was copied from the [active record log subscriber](https://github.com/rails/rails/blob/master/activesupport/lib/active_support/log_subscriber.rb#L130):*
+
+```ruby
+def color(text, color, bold = false)
+  bold = bold ? BOLD : ""
+  "#{bold}#{color}#{text}#{CLEAR}"
+end
+```
+
+Now in our class_eval, we can simply loop through the ACTIONS array, check for a match, and color each log message accordingly:
+
+```ruby
+%w(debug info warn error fatal unknown).each do |level|
+  class_eval <<-RUBY
+    def #{level}(msg = nil, &block)
+    ACTIONS.each do |a| 
+      msg = color(msg, a[:color]) if msg.downcase.include?(a[:match]) }
+    end
+    @logger.#{level}(msg, &block)
+    end
+  RUBY
+end
+```
+
+All done! Let's try it out:
+
+![](/media/beautiful_logs.gif)
