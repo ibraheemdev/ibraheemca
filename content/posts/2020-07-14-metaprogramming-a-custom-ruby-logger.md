@@ -10,7 +10,7 @@ tags:
   - ruby
   - metaprogramming
 ---
-*I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify your MongoDB logs. If you want to see a working custom logger, you can check out the source code.*
+*I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify MongoDB logs. If you want to see a working custom logger, you can check out the source code.*
 
 **Understanding the Ruby Logger Class**
 
