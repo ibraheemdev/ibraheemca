@@ -10,7 +10,6 @@ category: React.js
 tags:
   - React.js
   - Redux
-  - state-management
 ---
 *Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017.*
 
