@@ -5,7 +5,8 @@ module.exports = {
   pathPrefix: "/",
   title: "Ibraheem Ahmed | Freelance software developer",
   subtitle: "A blog by Ibraheem Ahmed | Freelance software developer",
-  copyright: "© All rights reserved.",
+  copyright:
+    '<p>This blog is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemca">github!</a></p>',
   disqusShortname: "ibraheem-3",
   postsPerPage: 6,
   googleAnalyticsId: "UA-170786189-1",
