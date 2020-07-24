@@ -47,6 +47,7 @@ module.exports = {
       youtube: "",
       soundcloud: "",
       stackoverflow: "8858995",
+      dribbble: "ibraheema"
     },
   },
 };

@@ -28,6 +28,7 @@ const useSiteMetadata = () => {
                 youtube
                 soundcloud
                 stackoverflow
+                dribbble
               }
             }
             menu {
