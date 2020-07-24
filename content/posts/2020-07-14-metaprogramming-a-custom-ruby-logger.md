@@ -7,8 +7,8 @@ date: 2020-07-23T23:45:54.829Z
 description: Spicing up your ruby logger by metaprogramming a custom ruby logger class
 category: Ruby
 tags:
-  - ruby
-  - metaprogramming
+  - Ruby
+  - Metaprogramming
 ---
 *I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify MongoDB logs. If you want to see a working custom logger, you can check out the source code.*
 
