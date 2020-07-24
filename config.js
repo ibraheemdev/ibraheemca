@@ -3,7 +3,7 @@
 module.exports = {
   url: "https://ibraheem.ca",
   pathPrefix: "/",
-  title: "Ibraheem Ahmed | Freelance software developer",
+  title: "Ibraheem Ahmed's Blog",
   subtitle: "A blog by Ibraheem Ahmed | Freelance software developer",
   copyright:
     '<p>This blog is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemca">github!</a></p>',
