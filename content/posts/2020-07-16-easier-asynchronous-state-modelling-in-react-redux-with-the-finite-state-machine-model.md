@@ -6,7 +6,7 @@ draft: false
 date: 2020-07-16T19:17:26.879Z
 description: Implementing the Finite State Machine Model with Reactjs and Redux
   for easier asynchronous state modelling
-category: React.js
+mainTag: React.js
 tags:
   - React.js
   - Redux

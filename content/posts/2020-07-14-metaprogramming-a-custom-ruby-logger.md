@@ -5,7 +5,7 @@ slug: custom-ruby-logger
 draft: false
 date: 2020-07-23T23:45:54.829Z
 description: Spicing up your ruby logger by metaprogramming a custom ruby logger class
-category: Ruby
+mainTag: Ruby
 tags:
   - Ruby
   - Metaprogramming

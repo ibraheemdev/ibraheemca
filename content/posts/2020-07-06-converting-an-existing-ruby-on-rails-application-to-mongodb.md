@@ -6,7 +6,7 @@ draft: false
 date: 2020-07-06T17:18:23.372Z
 description: How to convert an existing Ruby on Rails application from a
   relational database and active record, to MongoDB and Mongoid.
-category: Ruby on Rails
+mainTag: Ruby on Rails
 tags:
   - Ruby on Rails
   - MongoDB

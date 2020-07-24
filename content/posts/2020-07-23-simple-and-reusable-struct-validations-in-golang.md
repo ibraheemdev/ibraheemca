@@ -5,7 +5,7 @@ slug: golang-struct-validations
 draft: false
 date: 2020-07-23T15:41:14.076Z
 description: Creating a Simple and Reusable Struct Validation Package for Golang
-category: Golang
+mainTag: Golang
 tags:
   - Golang
   - Validations

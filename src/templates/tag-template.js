@@ -72,12 +72,12 @@ export const query = graphql`
         node {
           fields {
             slug
-            categorySlug
+            mainTagSlug
           }
           frontmatter {
             title
             date
-            category
+            mainTag
             description
           }
         }
