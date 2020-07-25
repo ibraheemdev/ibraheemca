@@ -37,7 +37,7 @@ const Author = ({ author, isIndex }: Props) => (
         </Link>
       </h2>
     )}
-    <p
+    <div
       className={styles["author__subtitle"]}
       dangerouslySetInnerHTML={{ __html: author.bio }}
     />

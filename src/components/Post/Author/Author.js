@@ -10,7 +10,7 @@ const Author = () => {
   const bio = { __html: author.bio };
   return (
     <div className={styles["author"]}>
-      <p
+      <div
         className={styles["author__bio"]}
         dangerouslySetInnerHTML={{ __html: author.bio }}
       />
