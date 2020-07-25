@@ -126,7 +126,38 @@ module.exports = {
     },
     "gatsby-transformer-sharp",
     "gatsby-plugin-sharp",
-    "gatsby-plugin-netlify",
+    {
+      resolve: `gatsby-plugin-netlify`,
+      options: {
+        headers: {
+          "/public/**/*.html": [
+            "cache-control: public",
+            "cache-control: max-age=0",
+            "cache-control: must-revalidate",
+          ],
+          "/public/page-data/**/*.json": [
+            "cache-control: public",
+            "cache-control: max-age=0",
+            "cache-control: must-revalidate",
+          ],
+          "app-data.json": [
+            "cache-control: public",
+            "cache-control: max-age=0",
+            "cache-control: must-revalidate",
+          ],
+          "static/**": [
+            "cache-control: public",
+            "cache-control: max-age=31536000",
+            "cache-control: immutable",
+          ],
+          "public/**/.*{js,css}": [
+            "cache-control: public",
+            "cache-control: max-age=0",
+            "cache-control: must-revalidate",
+          ],
+        },
+      },
+    },
     {
       resolve: "gatsby-plugin-netlify-cms",
       options: {
