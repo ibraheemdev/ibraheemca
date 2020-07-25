@@ -67,4 +67,4 @@ const BuyMeACoffee = () => (
   </div>
 );
 
-export default BuyMeACoffee
+export default BuyMeACoffee;

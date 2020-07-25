@@ -12,11 +12,12 @@ tags:
   - MongoDB
   - Ruby
 ---
+
 Recently, while working on [agilely](https://github.com/ibraheemdev/agilely), I realized that MongoDB was a better fit for my database design. I am currently converting the entire application from PostgresQL to MongoDB, and thought I'd share what I learned along the way.
 
-*Note that this post does not cover migrating your data from a RDBMS. If you have a production app with data that needs to migrated, you might want to look at the [pg2mongo](https://github.com/datawrangl3r/pg2mongo) migration framework, or view the [official MongoDB migration guide](https://www.mongodb.com/collateral/rdbms-mongodb-migration-guide)*
+_Note that this post does not cover migrating your data from a RDBMS. If you have a production app with data that needs to migrated, you might want to look at the [pg2mongo](https://github.com/datawrangl3r/pg2mongo) migration framework, or view the [official MongoDB migration guide](https://www.mongodb.com/collateral/rdbms-mongodb-migration-guide)_
 
-**MongoDB Installation** 
+**MongoDB Installation**
 
 First, we have to install MongoDB. If you're on a mac, you can do this with Homebrew:
 
@@ -29,9 +30,9 @@ To view the installation process for all operating systems, refer to the [MongoD
 
 **Rails Configuration**
 
-Now that you have MongoDB installed, you have to configure your rails application to  use it as your default database. 
+Now that you have MongoDB installed, you have to configure your rails application to use it as your default database.
 
-The officially supported MongoDB ODM for rails is [Mongoid](https://github.com/mongodb/mongoid). Mongoid aims to achieve parity with ActiveRecord, and the Mongoid team has done an excellent job at making the switch as seamless and easy as possible. Mongoid accepts all the ActiveRecord associations, validations, and callbacks you are used to. Getting rails to switch to Mongoid can be tricky, but if you follow all the steps, you should be able to get it to work. 
+The officially supported MongoDB ODM for rails is [Mongoid](https://github.com/mongodb/mongoid). Mongoid aims to achieve parity with ActiveRecord, and the Mongoid team has done an excellent job at making the switch as seamless and easy as possible. Mongoid accepts all the ActiveRecord associations, validations, and callbacks you are used to. Getting rails to switch to Mongoid can be tricky, but if you follow all the steps, you should be able to get it to work.
 
 If you go to your `config/application.rb` file, you will most likely see the following:
 
@@ -163,16 +164,21 @@ brew services start mongodb-community@4.2
 **Debugging:**
 
 Sometimes Spring tries to load ActiveRecord even when the application has no references to it. If running `spring stop && spring start` doesn't work, try adding an ActiveRecord adapter such as sqlite3 to your Gemfile so that ActiveRecord can be loaded. You could also try to remove Spring from your application:
+
 ```ruby
 $ pkill -f spring
 $ spring stop
 ```
+
 Edit your Gemfile, removing all references to spring, and reinstall all your gems:
+
 ```ruby
 $ bundle install --redownload
 $ bin/spring binstub –remove –all
 ```
+
 Alternatively, you can disable spring locally by adding the following environment variable to your `bin/spring` file:
+
 ```ruby
 #!/usr/bin/env ruby
 

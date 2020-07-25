@@ -8,8 +8,8 @@ type Props = {
 };
 
 const PagePreview = ({ entry, widgetFor }: Props) => {
-  const body = widgetFor('body');
-  const title = entry.getIn(['data', 'title']);
+  const body = widgetFor("body");
+  const title = entry.getIn(["data", "title"]);
 
   return (
     <div className="content">

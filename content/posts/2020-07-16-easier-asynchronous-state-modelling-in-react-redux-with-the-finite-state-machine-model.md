@@ -11,7 +11,8 @@ tags:
   - React.js
   - Redux
 ---
-*Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017.*
+
+_Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017._
 
 **The Problem**
 
@@ -20,80 +21,81 @@ When developing a react + redux application, you often have to load data from a 
 ```javascript
 const handleClick = () => {
   // request started
-  dispatch({ type: ADD_TODO })
-  axios.post('api.myapp.com/todos', { title: state.newTodoTitle })
-  .then(res => {
-    // successful request
-    dispatch({ type: ADD_TODO_SUCCESS, payload: res.data.todo })
-  })
-  .catch(res => {
-    // request failed
-    dispatch({ type: ADD_TODO_FAILURE, payload: res.data.errors })
-  })
-}
+  dispatch({ type: ADD_TODO });
+  axios
+    .post("api.myapp.com/todos", { title: state.newTodoTitle })
+    .then((res) => {
+      // successful request
+      dispatch({ type: ADD_TODO_SUCCESS, payload: res.data.todo });
+    })
+    .catch((res) => {
+      // request failed
+      dispatch({ type: ADD_TODO_FAILURE, payload: res.data.errors });
+    });
+};
 ```
 
 Now, we have to implement the reducer that will handle the dispatched actions.
 
 ```javascript
 const TodosReducer = (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case ADD_TODO:
       return {
         ...state,
         errors: [],
-        todos: []
-      }
+        todos: [],
+      };
     case ADD_TODO_FAILURE:
       return {
         ...state,
-        errors: [ ...action.payload ],
-        todos: []
-      }
+        errors: [...action.payload],
+        todos: [],
+      };
     case ADD_TODO_SUCCESS:
       return {
         ...state,
         errors: [],
-        todos: [ ...state.todos, action.payload ]
-      }
+        todos: [...state.todos, action.payload],
+      };
   }
-}
+};
 ```
 
- Simple, right? But wait, we want to display a spinner if while the request is taking place. We also need a way to tell the view that the request was successful or failed, so that is can display the correct message to the user. This seems like a good candidate for boolean flags like `isLoading` and `isSuccessful`. 
+Simple, right? But wait, we want to display a spinner if while the request is taking place. We also need a way to tell the view that the request was successful or failed, so that is can display the correct message to the user. This seems like a good candidate for boolean flags like `isLoading` and `isSuccessful`.
 
 ```javascript
 const TodosReducer = (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case ADD_TODO:
       return {
-        ...state, 
+        ...state,
         isLoading: true,
         isError: false,
         isSuccessful: false,
         errors: [],
-        todos: []
-      }
+        todos: [],
+      };
     case ADD_TODO_FAILURE:
       return {
-        ...state, 
-        isLoading: false, 
+        ...state,
+        isLoading: false,
         isError: true,
         isSuccessful: false,
-        errors: [ ...action.payload ],
-        todos: []
-      }
+        errors: [...action.payload],
+        todos: [],
+      };
     case ADD_TODO_SUCCESS:
       return {
-        ...state, 
-        isLoading: false, 
+        ...state,
+        isLoading: false,
         isError: false,
         isSuccessful: true,
         errors: [],
-        todos: [ ...state.todos, action.payload ]
-      }
+        todos: [...state.todos, action.payload],
+      };
   }
-}
+};
 ```
 
 The above code makes sense. If the request was successful, then we should update `isSuccessful` to be true. If it is loading, then `isLoading` should be true, and so on. Now, let's try using the todo state in our view.
@@ -101,10 +103,10 @@ The above code makes sense. If the request was successful, then we should update
 ```javascript
 return (
   ...
-  {state.isError && !state.isLoading && 
+  {state.isError && !state.isLoading &&
     <ErrorWrapper errors={state.errors} />
   }
-  {state.isLoading && !state.isError && 
+  {state.isLoading && !state.isError &&
     <LoadingSpinner />
   }
   {state.isSuccessful && todos &&
@@ -117,12 +119,12 @@ Things just got a whole lot more complicated... The view code is messy and uncle
 
 ```javascript
 return {
-  isLoading: true, 
+  isLoading: true,
   isError: true,
   isSuccessful: true,
-  errors: [ {id: 1, title: "my first todo "} ],
-  todos: [ "An unexpected error occurred" ]
-}
+  errors: [{ id: 1, title: "my first todo " }],
+  todos: ["An unexpected error occurred"],
+};
 ```
 
 How can a request be loading, have errors, and be successful at the same time???
@@ -168,9 +170,9 @@ Our application has 4 possible states, the initial one being `IDLE`.
 
 Our app also has 3 actions:
 
-* `ADD_TODO`
-* `ADD_TODO_SUCCESS`
-* `ADD_TODO_FAILURE`
+- `ADD_TODO`
+- `ADD_TODO_SUCCESS`
+- `ADD_TODO_FAILURE`
 
 Now we have to determine all the transitions that our app can go through. We can do this using a flow chart:
 
@@ -184,23 +186,23 @@ Now that our state machine is modelled, we can actually implement it in our appl
 
 ```javascript
 const stateMachine = Object.freeze({
-  idle: { 
-    ADD_TODO: 'loading' 
+  idle: {
+    ADD_TODO: 'loading'
   },
-  loading: { 
-    ADD_TODO_SUCCESS: 'successful' 
-    ADD_TODO_FAILURE: 'failure' 
+  loading: {
+    ADD_TODO_SUCCESS: 'successful'
+    ADD_TODO_FAILURE: 'failure'
   },
   failure: {
-    ADD_TODO: 'loading' 
+    ADD_TODO: 'loading'
   },
   successful: {
-    ADD_TODO: 'loading' 
+    ADD_TODO: 'loading'
   }
 })
 ```
 
-As you can see, the `stateMachine` is just an object representation of our flow chart. Now, we can create a transition function. The transition function will implement the fourth constraint of deterministic FSM's: 
+As you can see, the `stateMachine` is just an object representation of our flow chart. Now, we can create a transition function. The transition function will implement the fourth constraint of deterministic FSM's:
 
 > Transitions between states in response to an action: <br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
 
@@ -208,30 +210,30 @@ The function looks like this:
 
 ```javascript
 const transition = (currentState, action) => {
-  return stateMachine[currentState][action]
-}
+  return stateMachine[currentState][action];
+};
 
 // The current state of the application is 'idle'
 // The user clicks 'Add Todo', dispatching the ADD_TODO action
 // If we look at the stateMachine object, we can see that the
 // corresponding state is 'loading'
 
-transition('idle', ADD_TODO)
+transition("idle", ADD_TODO);
 // => 'loading'
 
 // And sure enough, our function works!
 ```
 
-Now for the coolest part. If you haven't already noticed, the transition function *is* a reducer! 
+Now for the coolest part. If you haven't already noticed, the transition function _is_ a reducer!
 
 > The reducer is a pure function that takes the previous state and an action, and returns the next state. - [redux.js.org](https://redux.js.org/basics/reducers)
 
 And that is exactly what our function does. With a few modifications, we can convert it into a redux style reducer:
 
 ```javascript
-const TransitionReducer = (state = { status: 'idle' }, action) => {
-  return { status: stateMachine[state.status][action.type] }
-}
+const TransitionReducer = (state = { status: "idle" }, action) => {
+  return { status: stateMachine[state.status][action.type] };
+};
 ```
 
 That's it! in 3 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
@@ -239,20 +241,20 @@ That's it! in 3 lines of code, we can intercept all actions, and calculate the a
 ```javascript
 // reducer
 const TodosReducer = (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case ADD_TODO_FAILURE:
       return {
         ...state,
-        errors: [ ...action.payload ]
-      }
+        errors: [...action.payload],
+      };
     case ADD_TODO_SUCCESS:
       return {
         ...state,
         errors: [],
-        todos: [ ...state.todos, action.payload ]
-      }
+        todos: [...state.todos, action.payload],
+      };
   }
-}
+};
 ```
 
 ```javascript
@@ -269,4 +271,4 @@ return (
 
 The biggest gain from this pattern, is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers, reducers that handle one process and one process only. Those two combined give simplicity to the entire application: reducers, views, and actions.
 
-*shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)*
+_shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)_

@@ -10,7 +10,8 @@ tags:
   - Ruby
   - Metaprogramming
 ---
-*I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify MongoDB logs. If you want to see a working custom logger, you can check out the source code.*
+
+_I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify MongoDB logs. If you want to see a working custom logger, you can check out the source code._
 
 **Understanding the Ruby Logger Class**
 
@@ -66,7 +67,7 @@ class CustomLogger
 end
 ```
 
-*The `<<-` syntax is telling ruby to define a heredoc. A heredoc is a way to define a multiline string while maintaining whitespace (ie: indentation). It is commonly used to embed snippets of code such as SQL or HTML. Heredoc accepts string interpolation, which is why I chose to use it above.*
+_The `<<-` syntax is telling ruby to define a heredoc. A heredoc is a way to define a multiline string while maintaining whitespace (ie: indentation). It is commonly used to embed snippets of code such as SQL or HTML. Heredoc accepts string interpolation, which is why I chose to use it above._
 
 In the above code block, we are looping through an array of the logger levels, and defining a class method for each one. Inside each method, we are simple calling the same method on the logger instance. Let's test out our code now:
 
@@ -143,7 +144,7 @@ Now we can create ruby hashes containing a 'match' and a 'color'. If a log messa
   ACTIONS      = [ FIND, UPDATE, INSERT ]
 ```
 
-We can define a color method, that accepts a string, a color, and an optional boolean for bold logs. *This method was copied from the [active record log subscriber](https://github.com/rails/rails/blob/master/activesupport/lib/active_support/log_subscriber.rb#L130):*
+We can define a color method, that accepts a string, a color, and an optional boolean for bold logs. _This method was copied from the [active record log subscriber](https://github.com/rails/rails/blob/master/activesupport/lib/active_support/log_subscriber.rb#L130):_
 
 ```ruby
 def color(text, color, bold = false)
@@ -158,7 +159,7 @@ Now in our class_eval, we can simply loop through the ACTIONS array, check for a
 %w(debug info warn error fatal unknown).each do |level|
   class_eval <<-RUBY
     def #{level}(msg = nil, &block)
-    ACTIONS.each do |a| 
+    ACTIONS.each do |a|
       msg = color(msg, a[:color]) if msg.downcase.include?(a[:match]) }
     end
     @logger.#{level}(msg, &block)

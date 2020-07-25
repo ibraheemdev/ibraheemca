@@ -5,6 +5,7 @@ socialImage: /media/image-2.jpg
 slug: contact
 draft: false
 ---
+
 Hey 👋 I'm Ibraheem Ahmed. I’m a software freelance developer from Toronto, Canada.
 
 I love working with Ruby on Rails and React.js. I am currently working on agilely, an open source project management app.

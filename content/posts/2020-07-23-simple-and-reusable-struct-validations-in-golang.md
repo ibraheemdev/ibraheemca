@@ -10,6 +10,7 @@ tags:
   - Golang
   - Validations
 ---
+
 **Introduction**
 
 Validations are needed to ensure that the structure of, well, a struct, is in the proper format your application requires. They can be used to check that a user's email is actually an email, or that a writer does not create a blog post without a title. There are many methods of implementing validations in golang. The most common method is to use simple if statements:
