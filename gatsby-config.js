@@ -130,12 +130,12 @@ module.exports = {
       resolve: `gatsby-plugin-netlify`,
       options: {
         headers: {
-          "/public/**/*.html": [
+          "**/*.html": [
             "cache-control: public",
             "cache-control: max-age=0",
             "cache-control: must-revalidate",
           ],
-          "/public/page-data/**/*.json": [
+          "public/page-data/**/*.json": [
             "cache-control: public",
             "cache-control: max-age=0",
             "cache-control: must-revalidate",
@@ -145,19 +145,19 @@ module.exports = {
             "cache-control: max-age=0",
             "cache-control: must-revalidate",
           ],
-          "static/**": [
+          "static/**/*": [
             "cache-control: public",
             "cache-control: max-age=31536000",
             "cache-control: immutable",
           ],
-          "sw.js": [
+          "/sw.js": [
             "cache-control: public",
             "cache-control: max-age=0",
             "cache-control: must-revalidate",
           ],
-          "public/**/.*{js,css}": [
+          "public/**/*.*{js,css}": [
             "cache-control: public",
-            "cache-control: max-age=0",
+            "cache-control: max-age=31536000",
             "cache-control: immutable",
           ],
         },
