@@ -6,7 +6,7 @@ module.exports = {
   title: "Ibraheem Ahmed's Blog",
   subtitle: "A blog by Ibraheem Ahmed | Freelance software developer",
   copyright:
-    '<p>This blog is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemca">github!</a></p>',
+    '<p>This blog is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemca">github!</a><br/>All content published on this blog is licensed under a <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></p>',
   disqusShortname: "ibraheem-3",
   postsPerPage: 6,
   googleAnalyticsId: "UA-170786189-1",
