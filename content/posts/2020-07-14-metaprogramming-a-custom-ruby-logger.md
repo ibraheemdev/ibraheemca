@@ -144,7 +144,7 @@ Now we can create ruby hashes containing a 'match' and a 'color'. If a log messa
   ACTIONS      = [ FIND, UPDATE, INSERT ]
 ```
 
-We can define a color method, that accepts a string, a color, and an optional boolean for bold logs. _This method was copied from the [active record log subscriber](https://github.com/rails/rails/blob/master/activesupport/lib/active_support/log_subscriber.rb#L130):_
+We can define a color method, that accepts a string, a color, and an optional boolean for bold logs. This method was copied from the [active record log subscriber](https://github.com/rails/rails/blob/master/activesupport/lib/active_support/log_subscriber.rb#L130):
 
 ```ruby
 def color(text, color, bold = false)
