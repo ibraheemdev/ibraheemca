@@ -108,9 +108,9 @@ def find_policy(record)
 end
 ```
 
-The find_policy method finds the class based on a string containing the record's model name and the keyword "Policy". For example, if you pass in a post instance, the policy string will be `PostPolicy`. It then calls safe_constantize, which will return the policy class with the same name as the policy string. Finally, it returns a new instance of the policy class, passing in the current user and record.
+The find\_policy method finds the class based on a string containing the record's model name and the keyword "Policy". For example, if you pass in a post instance, the policy string will be `PostPolicy`. It then calls safe\_constantize, which will return the policy class with the same name as the policy string. Finally, it returns a new instance of the policy class, passing in the current user and record.
 
-Now we have to find the corresponding policy action method. We could pass in the action with each call to authorize, but Rails provides us with an easier way. We can use the action_name method, which returns the name of the controller action and append a question mark. We can then use the policy class we found, and send the method name using public_send:
+Now we have to find the corresponding policy action method. We could pass in the action with each call to authorize, but Rails provides us with an easier way. We can use the action\_name method, which returns the name of the controller action and append a question mark. We can then use the policy class we found, and send the method name using public\_send:
 
 ```ruby
 def authorize(record)
