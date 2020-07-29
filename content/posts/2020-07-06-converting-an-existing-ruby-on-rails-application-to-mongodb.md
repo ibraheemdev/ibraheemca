@@ -65,16 +65,16 @@ require "action_cable/engine"
 ...
 ```
 
-Note that active_record and active_storage are not being required. Mongoid will take the place of active_record, and because active_storage depends on active_record, it cannot be used with Mongoid.
+Note that active\_record and active\_storage are not being required. Mongoid will take the place of active\_record, and because active_storage depends on active\_record, it cannot be used with Mongoid.
 
-Now that we are not using active_record, any references to it in files in the config directory need to be removed. For example:
+Now that we are not using active\_record, any references to it in files in the config directory need to be removed. For example:
 
 ```ruby
 config.active_record.dump_schema_after_migration = false
 config.active_storage.service = :local
 ```
 
-We also need to remove the activestorage npm package. To remove this, run:
+We also need to remove the active\_storage npm package. To remove this, run:
 
 ```bash
 $ yarn remove @rails/activestorage
