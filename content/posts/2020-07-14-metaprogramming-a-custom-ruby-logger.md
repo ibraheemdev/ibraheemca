@@ -31,9 +31,9 @@ logger.info("Information about system operation.")
 logger.warn("A warning.")
 ```
 
-As you can see, any instance of the logger class can log messages to the console or a log file at different levels. These are: `debug, error, fatal, info, warn, and unknown.`
+As you can see, any instance of the logger class can log messages to the console or a log file at different levels. These are: debug, error, fatal, info, warn, and unknown.
 
-**Creating our Custom Logger**
+**Creating our Custom Logger**, 
 
 Now that we understand the Logger class, we can start writing our custom implementation:
 
@@ -51,7 +51,7 @@ The above code block defined a class called `CustomLogger` that takes an optiona
 
 **Defining the Logger Methods**
 
-If we want our logger to do anything, we have to define the `debug, error, fatal, info, warn, and unknown`methods. To define those methods dynamically, we can use `Module#class_eval,`a method which allows us to add methods to a class "on-the-fly".
+If we want our logger to do anything, we have to define the debug, error, fatal, info, warn, and unknown methods. To define those methods dynamically, we can use `Module#class_eval,`a method which allows us to add methods to a class "on-the-fly".
 
 ```ruby
 class CustomLogger
