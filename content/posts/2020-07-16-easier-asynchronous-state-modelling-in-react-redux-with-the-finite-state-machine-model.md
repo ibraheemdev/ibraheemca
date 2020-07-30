@@ -11,8 +11,7 @@ tags:
   - React.js
   - Redux
 ---
-
-_Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017._
+*Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017.*
 
 **The Problem**
 
@@ -170,9 +169,9 @@ Our application has 4 possible states, the initial one being `IDLE`.
 
 Our app also has 3 actions:
 
-- `ADD_TODO`
-- `ADD_TODO_SUCCESS`
-- `ADD_TODO_FAILURE`
+* `ADD_TODO`
+* `ADD_TODO_SUCCESS`
+* `ADD_TODO_FAILURE`
 
 Now we have to determine all the transitions that our app can go through. We can do this using a flow chart:
 
@@ -224,7 +223,7 @@ transition("idle", ADD_TODO);
 // And sure enough, our function works!
 ```
 
-Now for the coolest part. If you haven't already noticed, the transition function _is_ a reducer!
+Now for the coolest part. If you haven't already noticed, the transition function *is* a reducer!
 
 > The reducer is a pure function that takes the previous state and an action, and returns the next state. - [redux.js.org](https://redux.js.org/basics/reducers)
 
@@ -232,16 +231,13 @@ And that is exactly what our function does. With a few modifications, we can con
 
 ```javascript
 const TransitionReducer = (state = { status: "idle" }, action) => {
-  switch (action.type) {
-    case stateMachine[action.type] != undefined:
+    if (stateMachine[action.type] != undefined) {
       return { status: stateMachine[state.status][action.type] }
-    default:
-      return state;
-  }
+    } else { return state }
 };
 ```
 
-That's it! in 8 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
+That's it! in 5 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
 
 ```javascript
 // reducer
@@ -276,4 +272,4 @@ return (
 
 The biggest gain from this pattern, is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers, reducers that handle one process and one process only. Those two combined give simplicity to the entire application: reducers, views, and actions.
 
-_shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)_
+*shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)*
