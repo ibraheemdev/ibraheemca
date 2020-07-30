@@ -228,15 +228,20 @@ Now for the coolest part. If you haven't already noticed, the transition functio
 
 > The reducer is a pure function that takes the previous state and an action, and returns the next state. - [redux.js.org](https://redux.js.org/basics/reducers)
 
-And that is exactly what our function does. With a few modifications, we can convert it into a redux style reducer:
+And that is exactly what our function does. With a few modifications, we can convert it into a redux style reducer that ignores actions that we can't handle, such as the redux init:
 
 ```javascript
 const TransitionReducer = (state = { status: "idle" }, action) => {
-  return { status: stateMachine[state.status][action.type] };
+  switch (action.type) {
+    case stateMachine[action.type] != undefined:
+      return { status: stateMachine[state.status][action.type] }
+    default:
+      return state;
+  }
 };
 ```
 
-That's it! in 3 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
+That's it! in 8 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
 
 ```javascript
 // reducer
