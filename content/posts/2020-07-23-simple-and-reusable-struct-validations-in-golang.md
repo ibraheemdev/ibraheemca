@@ -154,12 +154,14 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     json.NewDecoder(r.Body).Decode(&user)
     errs := validate(user)
     if errs != nil {
+      w.WriteHeader(http.StatusUnprocessableEntity)
       json.NewEncoder(w).Encode(Stringify(errs))
+      return
     }
 }
 ```
 
-If the slice of errors returned by the call to validate is not nil, meaning that the user provided invalid input, we can convert the errors to an array of strings by calling the Stringify method, which we can define in our validator module:
+If the slice of errors returned by the call to validate is not nil, meaning that the user provided invalid input, we can return an array of error messages along with a 422 status code. We can define the Stringify method in our validator module:
 
 ```ruby
 package validator
@@ -174,3 +176,5 @@ func Stringify(errs []error) []string {
   return strErrors
 }
 ```
+
+That's all for the Golang struct validations! The final code is available [on github](https://gist.github.com/ibraheemdev/0f583cebf34f06c882085282d3aabf6b)
