@@ -10,7 +10,6 @@ tags:
   - Golang
   - Validations
 ---
-
 **Introduction**
 
 Validations are needed to ensure that the structure of, well, a struct, is in the proper format your application requires. They can be used to check that a user's email is actually an email, or that a writer does not create a blog post without a title. There are many methods of implementing validations in golang. The most common method is to use simple if statements:
@@ -146,7 +145,7 @@ func validate(u *User) []error {
 }
 ```
 
-Now, in our handler, we simply have to call the validate method whenever we decode user input. If the slice of errors returned by the call to validate is not nil, we can convert the errors to an array of strings, and encode them to the http response writer, sending them back to the client as json.
+Now, in our handler, we simply have to call the validate method whenever we decode user input:
 
 ```go
 // POST "/users"
@@ -155,11 +154,23 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     json.NewDecoder(r.Body).Decode(&user)
     errs := validate(user)
     if errs != nil {
-      	strErrors := make([]string, len(errs))
-		for i, err := range errs {
-			strErrors[i] = err.Error()
-		}
-        json.NewEncoder(w).Encode(strErrors)
+      json.NewEncoder(w).Encode(Stringify(errs))
     }
+}
+```
+
+If the slice of errors returned by the call to validate is not nil, meaning that the user provided invalid input, we can convert the errors to an array of strings by calling the Stringify method, which we can define in our validator module:
+
+```ruby
+package validator
+
+...
+  
+func Stringify(errs []error) []string {
+  strErrors := make([]string, len(errs))
+  for i, err := range errs {
+    strErrors[i] = err.Error()
+  }
+  return strErrors
 }
 ```
