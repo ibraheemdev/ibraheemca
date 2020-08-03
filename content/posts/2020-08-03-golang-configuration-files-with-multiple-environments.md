@@ -2,7 +2,7 @@
 template: post
 title: Golang Global Configuration Files with Multiple Environments
 slug: go-global-config-files
-draft: true
+draft: false
 date: 2020-08-03T16:57:44.304Z
 description: A simple way to decode configuration files based on the current
   application environment into globally accessible variables
@@ -60,6 +60,7 @@ type ServerConfig struct {
     BuildPath string `yaml:"buildpath"`
   } `yaml:"static"`
 }
+
 ```
 
 We need a way to get the current environment (production, development, testing) of our application. We can store this as an environment variable in our .env file:
@@ -88,6 +89,7 @@ func getEnv() string {
   }
   return os.Getenv("APP_ENV")
 }
+
 ```
 
 The config.go file will contain the package's init function. The init function is called when the package is initialized, or when the package is first imported. It will call the readConfig function and assign the returned pointer to the global Config variable:
@@ -99,6 +101,7 @@ package config
 func init() {
   Config = readConfig()
 }
+
 ```
 
 The readConfig function returns a pointer to an EnvironmentConfig struct:
@@ -121,9 +124,10 @@ func readConfig() *EnvironmentConfig {
   }
   defer f.Close()
 }
+
 ```
 
-It uses the os package to open the config file corresponding to the current environment. Now we can use the yaml.v3 package to decode the file into an EnvironmentConfig struct and return a pointer:
+It uses the os package to open the config file corresponding to the current environment. Now we can use the [yaml.v3](https://github.com/go-yaml/yaml) package to decode the file into an EnvironmentConfig struct and return a pointer:
 
 ```go
 func readConfig() *EnvironmentConfig {
@@ -137,6 +141,7 @@ func readConfig() *EnvironmentConfig {
   }
   return &cfg
 }
+
 ```
 
 The config package is done! Now in your application's main.go, you can import the config package with a blank identifier:
@@ -149,6 +154,7 @@ import (
 )
 
 ...
+
 ```
 
 The blank identified is used to import a package solely for its side-effects (initialization), meaning that we are only using the config package for its init function. If you remember, the init function assigns the Config global variable to a pointer of an EnvironmentConfig struct. 
@@ -158,8 +164,11 @@ This means that the Config struct is now accessible to your entire application. 
 ```go
 import (
   "fmt"
+  "log"
+  "net/http"
   "github.com/yourapp/config"
 )
+
 var routerConfig config.ServerConfig = config.Config.Server
 
 // ListenAndServe :
@@ -169,5 +178,6 @@ func ListenAndServe() {
       fmt.Sprintf("%s:%s", routerConfig.Host, routerConfig.Port),
       initRoutes()))
 }
+
 ```
 Hopefully this post gave you a better idea of how you can use configuration files and environment variables to streamline your application development and deployment. You can view the entire source code on [github]()
