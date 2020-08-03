@@ -28,7 +28,7 @@ module.exports = {
     name: "Ibraheem Ahmed",
     photo: "/photo.png",
     bio:
-      '<div>Hey, I\'m Ibraheem Ahmed. I’m a freelance software developer from Toronto, Canada. I love working with Ruby on Rails and React.js, and am currently working on <a href="https://github.com/ibraheemdev/agilely">agilely</a>, a open source project management app</div>',
+      '<div>Hey, I\'m Ibraheem Ahmed. I’m a freelance software developer from Toronto, Canada. I love working with Ruby on Rails, React.js, and Golang, I am currently working on <a href="https://github.com/ibraheemdev/agilely">agilely</a>, a open source project management app</div>',
     contacts: {
       email: "ibrah1440@gmail.com",
       facebook: "",
