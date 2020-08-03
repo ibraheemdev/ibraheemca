@@ -6,11 +6,11 @@ draft: false
 date: 2020-08-03T16:57:44.304Z
 description: A simple way to decode configuration files based on the current
   application environment into globally accessible variables
-mainTag: golang
+mainTag: Golang
 tags:
-  - golang
-  - configuration
-  - yaml
+  - Golang
+  - Configuration
+  - YAML
 ---
 When developing an application, it is common to have configuration data that is used throughout the app. This data can include an http host and port or a database connection url. These configuration variables can change between environments. For example, you might be using a PostgresQL database in production and development, and SQlite in testing. It is considered best practice to put these config variables in a single source of truth, often in environment variables or config files. Doing this makes your app easier to manage and update than hardcoding strings. 
 
