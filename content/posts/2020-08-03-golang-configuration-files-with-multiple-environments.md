@@ -1,13 +1,14 @@
 ---
 template: post
 title: Golang Configuration Files with Multiple Environments
-slug: go-env
+slug: go-env-config-files
 draft: true
 date: 2020-08-03T16:57:44.304Z
 description: blabla
 mainTag: golang
 tags:
   - golang
+  - configuration
 ---
 When developing an application, it is common to have configuration data that is used throughout the app. This data can include an http host and port or a database connection url. These configuration variables can change between environments. For example, you might be using a PostgresQL database in production and development, and SQlite in testing. It is considered best practice to put these config variables in a single source of truth, often in environment variables or config files. Doing this makes your app easier to manage and update than hardcoding strings. 
 
@@ -20,7 +21,6 @@ In this post, we will be going over configuration in golang applications through
         |-- production.yml
         |-- testing.yml
     |-- .env
-
 ```
 
 We can fill the environment yaml files with configuration variables. In this example, the config files will simply contain the server host, port, and the buildpath of the static files to be served by a golang router.
@@ -28,10 +28,9 @@ We can fill the environment yaml files with configuration variables. In this exa
 ```yaml
 server:
   host: "localhost"
-  port: "5000"
+  port: 5000
   static:
     buildpath: "client/build"
-
 ```
 
 The config.go file will contain the logic for decoding and storing the configuration struct. It stores the application's configuration as a global variable. That way, any package that needs access can import the config package, and access the Config variable.
@@ -57,7 +56,33 @@ type ServerConfig struct {
     BuildPath string `yaml:"buildpath"`
   } `yaml:"static"`
 }
+```
 
+We need a way to get the current environment (production, development, testing) of our application. We can store this as an environment variable in our .env file:
+
+```env
+APP_ENV=development
+```
+
+To read this .env file, we can use the godotenv package:
+
+```go
+package config
+
+import (
+  "fmt"
+  "os"
+  "github.com/joho/godotenv"
+)
+...
+
+func getEnv() string {
+  err := godotenv.Load()
+  if err != nil {
+    log.Fatal("Error loading .env file")
+  }
+  return os.Getenv("APP_ENV")
+}
 ```
 
 The config.go file will contain the packages init function. The init function is called when the package is initialized, or when the package is first imported. It will call the readConfig function, and the returned pointer to the global Config variable:
@@ -69,7 +94,6 @@ package config
 func init() {
   Config = readConfig()
 }
-
 ```
 
 The readConfig function returns a pointer to an EnvironmentConfig struct:
@@ -86,13 +110,56 @@ import (
 func readConfig() *EnvironmentConfig {
   file := fmt.Sprintf("config/environments/%s.yml", getEnv())
   f, err := os.Open(file)
+  if err != nil {
+    log.Fatal(err)
+    os.Exit(2)
+  }
+  defer f.Close()
 }
-
 ```
 
-It uses the os package to open the config file corresponding to the current environment by calling the getEnv function, which we have not defined yet. We need a way to get the current environment (production, development, testing) of our application. We can store this as an environment variable in our .env file:
+It uses the os package to open the config file corresponding to the current environment by calling the getEnv function. Now we can use the yaml.v3 package to decode the file into an EnvironmentConfig struct and return a pointer:
 
-```env
-APP_ENV=development
+```go
+func readConfig() *EnvironmentConfig {
+  ...
+  var cfg EnvironmentConfig
+  decoder := yaml.NewDecoder(f)
+  err = decoder.Decode(&cfg)
+  if err != nil {
+    log.Fatal(err)
+    os.Exit(2)
+  }
+  return &cfg
+}
+```
 
+The config package is done! Now in your application's main.go, you can import the config package with a blank identifier:
+
+```go
+package main
+
+import (
+  _ "github.com/yourapp/config"
+)
+
+...
+```
+
+The blank identified is used to import a package solely for its side-effects (initialization), meaning that we are only using the config package for its init function. If you remember, the init function assigns the Config global variable to a pointer of an EnvironmentConfig struct. This means that the Config struct is now accessible to your entire application. For example, you can the host and port variables in your router's ListenAndServer function:
+
+```go
+import (
+  "fmt"
+  "github.com/yourapp/config"
+)
+var routerConfig config.ServerConfig = config.Config.Server
+
+// ListenAndServe :
+func ListenAndServe() {
+  log.Fatal(
+    http.ListenAndServe(
+      fmt.Sprintf("%s:%s", routerConfig.Host, routerConfig.Port),
+      initRoutes()))
+}
 ```
