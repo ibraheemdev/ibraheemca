@@ -180,4 +180,4 @@ func ListenAndServe() {
 }
 
 ```
-Hopefully this post gave you a better idea of how you can use configuration files and environment variables to streamline your application development and deployment. You can view the entire source code on [github]()
+Hopefully this post gave you a better idea of how you can use configuration files and environment variables to streamline your application development and deployment. You can view the entire source code on [github](https://gist.github.com/ibraheemdev/dfb0801bd5190fdef46e7fe89bc8b4cd)
