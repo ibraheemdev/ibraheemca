@@ -54,8 +54,6 @@
     "gatsby-remark-images": "^3.2.2",
     "gatsby-remark-prismjs": "^3.4.1",
     "gatsby-remark-relative-images": "^0.3.0",
-    "gatsby-remark-responsive-iframe": "^2.3.1",
-    "gatsby-remark-smartypants": "^2.2.1",
     "gatsby-source-filesystem": "^2.2.2",
     "gatsby-transformer-remark": "^2.7.1",
     "gatsby-transformer-sharp": "^2.4.4",
@@ -70,9 +68,6 @@
     "react-helmet": "^6.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.10.5",
-    "@babel/preset-env": "7.10.4",
-    "@babel/preset-react": "7.10.4",
     "@types/classnames": "^2.2.10",
     "@types/lodash.kebabcase": "^4.1.6",
     "@types/node": "^14.0.27",
@@ -80,8 +75,6 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^6.1.0",
     "autoprefixer": "9.8.5",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-preset-gatsby": "0.5.3",
     "lost": "8.3.1",
     "postcss-pxtorem": "5.1.1",
     "rimraf": "3.0.2",
