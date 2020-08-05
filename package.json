@@ -7,7 +7,7 @@
     "develop": "yarn run clean && yarn run typecheck && gatsby develop",
     "build": "yarn run clean && yarn run typecheck && gatsby build",
     "clean": "rimraf .cache public",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc -p ./tsconfig-gatsby.json"
   },
   "typings": "./index.d.ts",
   "repository": "https://github.com/ibraheemdev/ibraheemca",

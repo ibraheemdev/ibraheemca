@@ -1,18 +1,25 @@
 {
-  "include": ["./src/**/*"],
   "compilerOptions": {
     "module": "commonjs",
     "target": "esnext",
     "jsx": "react",
     "lib": ["dom", "es2017"],
     "strict": true,
-    "noEmit": true,
+    "noEmit": false,
     "isolatedModules": true,
     "esModuleInterop": true,
     "noUnusedLocals": false,
     "allowJs": true,
     "skipLibCheck": true,
-    "noImplicitAny": true,
+    "noImplicitAny": true
   },
-  "exclude": ["node_modules", "public", ".cache", "./src/cms/**/*"]
+  "include": [
+    "./config.ts",
+    "./postcss-config.ts",
+    "./gatsby-config.ts",
+    "./gatsby-node.ts",
+    "./gatsby-browser.ts",
+    "./gatsby/**/*",
+    "./src/cms/**/*",
+  ]
 }

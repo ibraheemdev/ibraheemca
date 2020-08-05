@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Actions } from "gatsby";
 
 export type RenderCallback = {
   render: (data: any) => ReactNode;
@@ -14,6 +15,12 @@ export type Tag = {
   fieldValue: string;
   totalCount: number;
 };
+
+export type IndexPageQuery = {
+  fieldValue: string;
+  totalCount: number;
+};
+
 
 export type Feed = {
   query: {
@@ -40,11 +47,11 @@ export type Site = {
 };
 
 export type SiteMap = {
-  site: Site,
+  site: Site;
   allSitePage: {
-    edges: Edge[]
-  }
-}
+    edges: Edge[];
+  };
+};
 export type Author = {
   name: string;
   photo: string;
@@ -92,10 +99,22 @@ export type Node = {
     tags?: string[];
     title: string;
     socialImage?: string;
+    template: string;
+    slug: string;
   };
+  internal: {
+    type: string;
+    mediaType?: string | undefined;
+    content?: string | undefined;
+    contentDigest: string;
+    description?: string | undefined;
+  } & { owner: string };
+  children: string[];
+  parent: string;
   html: string;
   id: string;
-  path: string
+  path: string;
+  relativeDirectory: string;
 };
 
 export type Edge = {
@@ -107,11 +126,24 @@ export type Edges = Array<Edge>;
 export type AllMarkdownRemark = {
   allMarkdownRemark: {
     edges: Edges;
-  };
-  group: {
-    fieldValue: string;
     totalCount: number;
-  }[];
+    group: {
+      fieldValue: string;
+      totalCount: number;
+    }[];
+  };
 };
 
+export type OnCreateNodeArgs = {
+  node: Node;
+  actions: Actions;
+  getNode(id: string): Node;
+};
+
+export type PreviewArgs = {
+  entry: {
+    getIn(collection: any, keyPath?: Iterable<any>, notSetValue?: any): any
+  }
+  widgetFor(field: string): any
+}
 export type MarkdownRemark = Node;
