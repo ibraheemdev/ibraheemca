@@ -3,15 +3,9 @@ import Helmet from "react-helmet";
 import { withPrefix } from "gatsby";
 import { useSiteMetadata } from "../../hooks";
 import styles from "./Layout.module.scss";
+import { LayoutProps } from "../..";
 
-type Props = {
-  children: React.ReactNode,
-  title: string,
-  description?: string,
-  socialImage?: string,
-};
-
-const Layout = ({ children, title, description, socialImage }: Props) => {
+const Layout = ({ children, title, description, socialImage }: LayoutProps) => {
   const { author, url } = useSiteMetadata();
   const metaImage = socialImage != null ? socialImage : author.photo;
   const metaImageUrl = url + withPrefix(metaImage);

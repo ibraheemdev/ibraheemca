@@ -16,12 +16,6 @@ export type Tag = {
   totalCount: number;
 };
 
-export type IndexPageQuery = {
-  fieldValue: string;
-  totalCount: number;
-};
-
-
 export type Feed = {
   query: {
     site: Site;
@@ -86,6 +80,12 @@ export type PageContext = {
   hasNextPage: boolean;
 };
 
+export type OnCreateNodeArgs = {
+  node: Node;
+  actions: Actions;
+  getNode(id: string): Node;
+};
+
 export type Node = {
   fields: {
     slug: string;
@@ -134,16 +134,119 @@ export type AllMarkdownRemark = {
   };
 };
 
-export type OnCreateNodeArgs = {
-  node: Node;
-  actions: Actions;
-  getNode(id: string): Node;
+export type MarkdownRemark = Node;
+
+type FeedProps = {
+  edges: Edges;
+};
+
+type IconProps = {
+  name: string;
+  icon: {
+    viewBox?: string;
+    path?: string;
+  };
+};
+
+type LayoutProps = {
+  children: React.ReactNode;
+  title: string;
+  description?: string;
+  socialImage?: string;
+};
+
+type PageProps = {
+  title?: string;
+  children: React.ReactNode;
+};
+
+type PaginationProps = {
+  prevPagePath: string;
+  nextPagePath: string;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+};
+
+type PostProps = {
+  post: Node;
+};
+
+type CommentProps = {
+  postTitle: string;
+  postSlug: string;
+};
+
+type ContentProps = {
+  body: string;
+  title: string;
+};
+
+type MetaProps = {
+  date: string;
+};
+
+type TagsProps = {
+  tags: string[];
+  tagSlugs: string[];
+};
+
+type SidebarProps = {
+  isIndex?: boolean;
+};
+
+type AuthorProps = {
+  author: Author;
+  isIndex?: boolean;
+};
+
+type ContactsProps = {
+  contacts: {
+    [name: string]: string;
+  };
+};
+
+type CopyrightProps = {
+  copyright: string;
+};
+
+type MenuProps = {
+  menu: {
+    label: string;
+    path: string;
+  }[];
+};
+
+type IndexTemplateProps = {
+  data: AllMarkdownRemark;
+  pageContext: PageContext;
+};
+
+type PageTemplateProps = {
+  data: {
+    markdownRemark: MarkdownRemark;
+  };
+};
+
+type PostTemplateProps = {
+  data: {
+    markdownRemark: MarkdownRemark;
+  };
+};
+
+type TagListTemplateProps = {
+  data: AllMarkdownRemark;
+  pageContext: PageContext;
+};
+
+
+type TagTemplateProps = {
+  data: AllMarkdownRemark;
+  pageContext: PageContext;
 };
 
 export type PreviewArgs = {
   entry: {
-    getIn(collection: any, keyPath?: Iterable<any>, notSetValue?: any): any
-  }
-  widgetFor(field: string): any
-}
-export type MarkdownRemark = Node;
+    getIn(collection: any, keyPath?: Iterable<any>, notSetValue?: any): any;
+  };
+  widgetFor(field: string): any;
+};

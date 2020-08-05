@@ -4,15 +4,9 @@ import Layout from "../components/Layout";
 import Sidebar from "../components/Sidebar";
 import Page from "../components/Page";
 import { useSiteMetadata } from "../hooks";
-import type { MarkdownRemark } from "../index";
+import type { PageTemplateProps } from "../index";
 
-type Props = {
-  data: {
-    markdownRemark: MarkdownRemark,
-  },
-};
-
-const PageTemplate = ({ data }: Props) => {
+const PageTemplate = ({ data }: PageTemplateProps) => {
   const { title: siteTitle, subtitle: siteSubtitle } = useSiteMetadata();
   const { html: pageBody } = data.markdownRemark;
   const { frontmatter } = data.markdownRemark;

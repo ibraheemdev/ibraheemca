@@ -5,18 +5,18 @@ import Layout from "../components/Layout";
 import Sidebar from "../components/Sidebar";
 import Page from "../components/Page";
 import { useSiteMetadata } from "../hooks";
-import { Tag } from "../index"
+import { TagListTemplateProps } from "../index"
 
-const TagsListTemplate = ({ data }: any) => {
+const TagsListTemplate = ({ data }: TagListTemplateProps) => {
   const { title, subtitle } = useSiteMetadata();
-  const tags: Tag[] = data.allMarkdownRemark.group
+  const tags = data.allMarkdownRemark.group
 
   return (
     <Layout title={`Tags - ${title}`} description={subtitle}>
       <Sidebar />
       <Page title="Tags">
         <ul>
-          {tags.map((tag: Tag) => (
+          {tags.map((tag) => (
             <li key={tag.fieldValue}>
               <Link to={`/tag/${kebabCase(tag.fieldValue)}/`}>
                 {tag.fieldValue} ({tag.totalCount})

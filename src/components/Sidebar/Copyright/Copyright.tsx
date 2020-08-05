@@ -1,11 +1,8 @@
 import React from "react";
 import styles from "./Copyright.module.scss";
+import { CopyrightProps } from "../../..";
 
-type Props = {
-  copyright: string,
-};
-
-const Copyright = ({ copyright }: Props) => (
+const Copyright = ({ copyright }: CopyrightProps) => (
   <div
     className={styles["copyright"]}
     dangerouslySetInnerHTML={{ __html: copyright }}

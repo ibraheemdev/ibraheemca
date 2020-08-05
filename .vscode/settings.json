@@ -1,5 +1,8 @@
 {
   "files.exclude": {
+    ".cache/": true,
+    "public/": true,
+    "node_modules/": true,
     "**/*.js": true
   }
 }

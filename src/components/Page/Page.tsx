@@ -1,12 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./Page.module.scss";
+import { PageProps } from "../../index";
 
-type Props = {
-  title?: string,
-  children: React.ReactNode,
-};
-
-const Page = ({ title, children }: Props) => {
+const Page = ({ title, children }: PageProps) => {
   const pageRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   useEffect(() => {

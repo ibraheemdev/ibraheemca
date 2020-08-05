@@ -1,13 +1,9 @@
 import React from 'react';
 import { DiscussionEmbed } from 'disqus-react' 
 import { useSiteMetadata } from '../../../hooks';
+import { CommentProps } from '../../../index';
 
-type Props = {
-  postTitle: string,
-  postSlug: string
-};
-
-const Comments = ({ postTitle, postSlug }: Props) => {
+const Comments = ({ postTitle, postSlug }: CommentProps) => {
   const { url, disqusShortname } = useSiteMetadata();
 
   if (!disqusShortname) return null;

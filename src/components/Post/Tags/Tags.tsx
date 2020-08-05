@@ -1,13 +1,9 @@
 import React from "react";
 import { Link } from "gatsby";
 import styles from "./Tags.module.scss";
+import { TagsProps } from "../../..";
 
-type Props = {
-  tags: string[],
-  tagSlugs: string[],
-};
-
-const Tags = ({ tags, tagSlugs }: Props) => (
+const Tags = ({ tags, tagSlugs }: TagsProps) => (
   <div className={styles["tags"]}>
     <ul className={styles["tags__list"]}>
       {tagSlugs &&

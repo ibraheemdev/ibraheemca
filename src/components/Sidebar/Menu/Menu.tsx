@@ -1,15 +1,9 @@
 import React from "react";
 import { Link } from "gatsby";
 import styles from "./Menu.module.scss";
+import { MenuProps } from "../../../index";
 
-type Props = {
-  menu: {
-    label: string,
-    path: string,
-  }[],
-};
-
-const Menu = ({ menu }: Props) => (
+const Menu = ({ menu }: MenuProps) => (
   <nav className={styles["menu"]}>
     <ul className={styles["menu__list"]}>
       {menu.map((item) => (

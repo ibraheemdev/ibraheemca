@@ -2,14 +2,9 @@ import React from "react";
 import { getContactHref, getIcon } from "../../../utils";
 import Icon from "../../Icon";
 import styles from "./Contacts.module.scss";
+import { ContactsProps } from "../../..";
 
-type Props = {
-  contacts: {
-    [name: string]: string,
-  },
-};
-
-const Contacts = ({ contacts }: Props) => (
+const Contacts = ({ contacts }: ContactsProps) => (
   <div className={styles["contacts"]}>
     <ul className={styles["contacts__list"]}>
       {Object.keys(contacts).map((name) =>

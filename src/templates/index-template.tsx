@@ -6,14 +6,9 @@ import Feed from "../components/Feed";
 import Page from "../components/Page";
 import Pagination from "../components/Pagination";
 import { useSiteMetadata } from "../hooks";
-import type { PageContext, AllMarkdownRemark } from "../index";
+import type { IndexTemplateProps } from "../index";
 
-type Props = {
-  data: AllMarkdownRemark,
-  pageContext: PageContext,
-};
-
-const IndexTemplate = ({ data, pageContext }: Props) => {
+const IndexTemplate = ({ data, pageContext }: IndexTemplateProps) => {
   const { title: siteTitle, subtitle: siteSubtitle } = useSiteMetadata();
 
   const {
