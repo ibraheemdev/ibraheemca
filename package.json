@@ -80,7 +80,6 @@
     "babel-preset-gatsby": "0.5.3",
     "flow-bin": "^0.129.0",
     "flow-typed": "^3.1.0",
-    "identity-obj-proxy": "3.0.0",
     "lost": "8.3.1",
     "postcss-pxtorem": "5.1.1",
     "rimraf": "3.0.2"
