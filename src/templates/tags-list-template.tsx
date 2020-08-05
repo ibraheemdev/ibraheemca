@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
-import kebabCase from "lodash.kebabCase";
+import kebabCase from "lodash.kebabcase";
 import Layout from "../components/Layout";
 import Sidebar from "../components/Sidebar";
 import Page from "../components/Page";
