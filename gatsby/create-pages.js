@@ -1,7 +1,6 @@
 "use strict";
 
 const path = require("path");
-const _ = require("lodash");
 const createTagsPages = require("./pagination/create-tags-pages.js");
 const createPostsPages = require("./pagination/create-posts-pages.js");
 
@@ -40,14 +39,14 @@ const createPages = async ({ graphql, actions }) => {
 
   const { edges } = result.data.allMarkdownRemark;
 
-  _.each(edges, (edge) => {
-    if (_.get(edge, "node.frontmatter.template") === "page") {
+  Object.entries(edges).forEach(([key, edge]) => {
+    if (edge.node.frontmatter.template === "page") {
       createPage({
         path: edge.node.fields.slug,
         component: path.resolve("./src/templates/page-template.js"),
         context: { slug: edge.node.fields.slug },
       });
-    } else if (_.get(edge, "node.frontmatter.template") === "post") {
+    } else if (edge.node.frontmatter.template === "post") {
       createPage({
         path: edge.node.fields.slug,
         component: path.resolve("./src/templates/post-template.js"),
