@@ -8,4 +8,4 @@ This site was built with [gatsby.js](https://www.gatsbyjs.org/), [netlifycms](ht
 
 ## Licensing
 
-See the [LICENSE.md](https://github.com/ibraheemdev/ibraheemca/blob/master/LICENSE.md) file for licensing information as it pertains to files in this repository.
+See the [LICENSE](https://github.com/ibraheemdev/ibraheemca/blob/master/LICENSE) file for licensing information as it pertains to files in this repository.
