@@ -4,10 +4,12 @@
   "description": "A Blog by Ibraheem Ahmed",
   "main": "n/a",
   "scripts": {
-    "develop": "yarn run clean && gatsby develop",
-    "build": "yarn run clean && gatsby build",
-    "clean": "rimraf .cache public"
+    "develop": "yarn run clean && yarn run typecheck && gatsby develop",
+    "build": "yarn run clean && yarn run typecheck && gatsby build",
+    "clean": "rimraf .cache public",
+    "typecheck": "tsc --noEmit"
   },
+  "typings": "./index.d.ts",
   "repository": "https://github.com/ibraheemdev/ibraheemca",
   "author": "Ibraheem Ahmed <ibrah1440@gmail.com>",
   "license": "MIT",
@@ -38,7 +40,6 @@
     "gatsby": "^2.20.12",
     "gatsby-plugin-catch-links": "^2.2.1",
     "gatsby-plugin-feed": "^2.4.1",
-    "gatsby-plugin-flow": "^1.2.1",
     "gatsby-plugin-google-gtag": "^2.0.0",
     "gatsby-plugin-manifest": "^2.3.3",
     "gatsby-plugin-netlify": "^2.2.1",
@@ -48,6 +49,7 @@
     "gatsby-plugin-sass": "^2.2.1",
     "gatsby-plugin-sharp": "^2.5.4",
     "gatsby-plugin-sitemap": "^2.3.1",
+    "gatsby-plugin-typescript": "^2.4.16",
     "gatsby-remark-autolink-headers": "^2.2.1",
     "gatsby-remark-copy-linked-files": "^2.2.1",
     "gatsby-remark-images": "^3.2.2",
@@ -72,13 +74,18 @@
     "@babel/core": "7.10.5",
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.4",
+    "@types/classnames": "^2.2.10",
+    "@types/lodash.kebabcase": "^4.1.6",
+    "@types/node": "^14.0.27",
+    "@types/react": "^16.9.44",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-helmet": "^6.1.0",
     "autoprefixer": "9.8.5",
     "babel-core": "7.0.0-bridge.0",
     "babel-preset-gatsby": "0.5.3",
-    "flow-bin": "^0.129.0",
-    "flow-typed": "^3.1.0",
     "lost": "8.3.1",
     "postcss-pxtorem": "5.1.1",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "typescript": "^3.9.7"
   }
 }

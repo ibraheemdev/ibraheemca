@@ -1,5 +1,3 @@
-"use strict";
-
 const kebabCase = require("lodash.kebabcase");
 const { createFilePath } = require("gatsby-source-filesystem");
 
@@ -29,7 +27,7 @@ const onCreateNode = ({ node, actions, getNode }) => {
       );
       createNodeField({ node, name: "tagSlugs", value: tagSlugs });
     }
-    
+
     if (node.frontmatter.mainTag) {
       const mainTagSlug = `/tag/${kebabCase(node.frontmatter.mainTag)}/`;
       createNodeField({ node, name: "mainTagSlug", value: mainTagSlug });

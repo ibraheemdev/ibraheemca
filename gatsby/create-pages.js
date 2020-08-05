@@ -1,5 +1,3 @@
-"use strict";
-
 const path = require("path");
 const createTagsPages = require("./pagination/create-tags-pages.js");
 const createPostsPages = require("./pagination/create-posts-pages.js");
@@ -10,13 +8,13 @@ const createPages = async ({ graphql, actions }) => {
   // 404
   createPage({
     path: "/404",
-    component: path.resolve("./src/templates/not-found-template.js"),
+    component: path.resolve("./src/templates/not-found-template.tsx"),
   });
 
   // Tags list
   createPage({
     path: "/tags",
-    component: path.resolve("./src/templates/tags-list-template.js"),
+    component: path.resolve("./src/templates/tags-list-template.tsx"),
   });
 
   // Posts and pages from markdown
@@ -37,19 +35,17 @@ const createPages = async ({ graphql, actions }) => {
     }
   `);
 
-  const { edges } = result.data.allMarkdownRemark;
-
-  Object.entries(edges).forEach(([key, edge]) => {
+  Object.values(result.data.allMarkdownRemark.edges).forEach((edge) => {
     if (edge.node.frontmatter.template === "page") {
       createPage({
         path: edge.node.fields.slug,
-        component: path.resolve("./src/templates/page-template.js"),
+        component: path.resolve("./src/templates/page-template.tsx"),
         context: { slug: edge.node.fields.slug },
       });
     } else if (edge.node.frontmatter.template === "post") {
       createPage({
         path: edge.node.fields.slug,
-        component: path.resolve("./src/templates/post-template.js"),
+        component: path.resolve("./src/templates/post-template.tsx"),
         context: { slug: edge.node.fields.slug },
       });
     }

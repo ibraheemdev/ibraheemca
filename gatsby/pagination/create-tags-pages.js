@@ -1,5 +1,3 @@
-"use strict";
-
 const kebabCase = require("lodash.kebabcase");
 const path = require("path");
 const siteConfig = require("../../config.js");
@@ -23,14 +21,16 @@ module.exports = async (graphql, actions) => {
     }
   `);
 
-  Object.entries(result.data.allMarkdownRemark.group).forEach(([key,tag]) => {
+  const tags = result.data.allMarkdownRemark.group;
+
+  Object.values(tags).forEach((tag) => {
     const numPages = Math.ceil(tag.totalCount / postsPerPage);
     const tagSlug = `/tag/${kebabCase(tag.fieldValue)}`;
 
     for (let i = 0; i < numPages; i += 1) {
       createPage({
         path: i === 0 ? tagSlug : `${tagSlug}/page/${i}`,
-        component: path.resolve("./src/templates/tag-template.js"),
+        component: path.resolve("./src/templates/tag-template.tsx"),
         context: {
           tag: tag.fieldValue,
           currentPage: i,
@@ -43,5 +43,5 @@ module.exports = async (graphql, actions) => {
         },
       });
     }
-  })
+  });
 };
