@@ -1,8 +1,7 @@
 Portions of this repository are licensed as follows:
 
 * All files residing under the "content" directory of this repository are licensed 
-under a [Creative Commons Attribution-NonCommercial 4.0 International License.]
-(https://creativecommons.org/licenses/by-nc/4.0/) unless stated otherwise in a 
+under a [Creative Commons Attribution-NonCommercial 4.0 International License.](https://creativecommons.org/licenses/by-nc/4.0/) unless stated otherwise in a 
 particular file.
 * Files outside of the above mentioned directories or restrictions were scaffolded 
 from 'alxshelepenok/gatsby-starter-lumen' and therefore the original license from 
