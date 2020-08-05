@@ -1,15 +1,7 @@
 Portions of this repository are licensed as follows:
 
-* All files residing under the "content" directory of this repository are licensed 
-under a [Creative Commons Attribution-NonCommercial 4.0 International License.](https://creativecommons.org/licenses/by-nc/4.0/) unless stated otherwise in a 
-particular file.
-* Files outside of the above mentioned directories or restrictions were scaffolded 
-from 'alxshelepenok/gatsby-starter-lumen' and therefore the original license from 
-the 'alxshelepenok/gatsby-starter-lumen' repository is included below:
-
-The MIT License (MIT)
-
-Copyright (c) 2016-2020 Alexander Shelepenok
+* Code snippets included in posts on the site are licensed under the MIT License 
+as defined below unless otherwise stated in a particular code snippet:
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +21,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-* The project as a whole excluding files in the above mentioned directories or 
-under the above restrictions is available under the MIT license as defined below:
+* General post content on this site excluding code snippets is licensed under
+a Creative Commons Attribution-NonCommercial 4.0 International License 
+
+* The site as a whole, excluding files which fall into the above mentiones categories
+and/or restrictions, is available under the license defined below:
 
 The MIT License (MIT)
+
+Copyright (c) 2016-2020 Alexander Shelepenok
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
