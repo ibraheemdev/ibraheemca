@@ -2,7 +2,7 @@
 template: page
 title: Hi 👋, I'm Ibraheem
 socialImage: /media/image-2.jpg
-slug: contact
+slug: about
 draft: false
 ---
 ### I'm a freelance software developer from Toronto, Canada
