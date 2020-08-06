@@ -5,7 +5,7 @@ socialImage: /media/image-2.jpg
 slug: contact
 draft: false
 ---
-<h3 align="center">I'm a freelance software developer from Toronto, Canada</h3>
+### I'm a freelance software developer from Toronto, Canada
 
 * 👯 I’m looking to collaborate on **Open Source Software**
 * 🔭 All of my projects are available on github. [Check them out!](https://github.com/ibraheemdev?tab=repositories)
