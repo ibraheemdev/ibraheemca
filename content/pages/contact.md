@@ -7,7 +7,7 @@ draft: false
 ---
 ### I'm a freelance software developer from Toronto, Canada
 
-* 👯 I’m looking to collaborate on **Open Source Software**
+* 🙌 I’m looking to collaborate on **Open Source Software**
 * 🔭 All of my projects are available on github. [Check them out!](https://github.com/ibraheemdev?tab=repositories)
 * 📝 I regulary write articles on [ibraheem.ca](https://ibraheem.ca), my open source blog!
 * 🌱 I recently started learning **Typescript**
