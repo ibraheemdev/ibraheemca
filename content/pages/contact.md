@@ -1,13 +1,10 @@
 ---
 template: page
-title: Contact me
+title: Hi 👋, I'm Ibraheem
 socialImage: /media/image-2.jpg
 slug: contact
 draft: false
 ---
-
-
-<h1 align="center">Hi 👋, I'm Ibraheem</h1>
 <h3 align="center">I'm a freelance software developer from Toronto, Canada</h3>
 
 * 👯 I’m looking to collaborate on **Open Source Software**
