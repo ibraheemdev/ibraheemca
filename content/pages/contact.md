@@ -1,15 +1,19 @@
 ---
 template: page
-title: Contact me
+title: Hi 👋, I'm Ibraheem
 socialImage: /media/image-2.jpg
-slug: contact
+slug: about
 draft: false
 ---
+### I'm a freelance software developer from Toronto, Canada
 
-Hey 👋 I'm Ibraheem Ahmed. I’m a freelance software developer from Toronto, Canada.
+* 👯 I’m looking to collaborate on **Open Source Software**
+* 🔭 All of my projects are available on github. [Check them out!](https://github.com/ibraheemdev?tab=repositories)
+* 📝 I regulary write articles on [ibraheem.ca](https://ibraheem.ca), my open source blog!
+* 🌱 I recently started learning **Typescript**
+* 📫 I’m currently available for hire. Let's get in touch! **[ibrah1440@gmail.com](mailto:ibrah1440@gmail.com)**
 
-I love working with Ruby on Rails, React.js, and Golang. I am currently working on agilely, an open source project management app.
+### I Love Working With These Technologies 🚀
 
-Let's get in touch! If you want to talk to me about a project you're starting, have a question, or just want to talk, you can reach me at [ibrah1440@gmail.com](mailto:ibrah1440@gmail.com).
-
-<a href="https://www.buymeacoffee.com/ibraheem" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174" style="border-radius: 5px"></a>
+| <img src="https://cdn.jsdelivr.net/npm/programming-languages-logos/src/go/go.png" width=60> | <img src="https://avatars.githubusercontent.com/u/4223" width=60> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width=60> | <img src="https://infinapps.com/wp-content/uploads/2018/10/mongodb-logo.png" width=60> | <img src="https://cdn.auth0.com/blog/react-js/react.png" width=60> | <img src="https://seeklogo.com/images/R/redux-logo-9CA6836C12-seeklogo.com.png" width=60> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png" width=60> |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
