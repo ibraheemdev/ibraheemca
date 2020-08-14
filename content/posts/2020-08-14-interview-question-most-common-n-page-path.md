@@ -4,11 +4,9 @@ title: "Interview Question: Most Common N Page Path"
 slug: most-common-n-page-path
 draft: false
 date: 2020-08-14T20:57:17.926Z
-description: >-
-  You are given a file named 'paths.txt'. Each line in the file represents a
-  user's browsing history in a web session.
-
-  The task is to find the most common 4-page path in 'paths.txt'.
+description: You are given a file named 'paths.txt'. Each line in the file
+  represents a user's browsing history in a web session. The task is to find the
+  most common N page path in 'paths.txt'.
 mainTag: Ruby
 tags:
   - Ruby
