@@ -34,13 +34,14 @@ p4,p8
 
 The most common 4-page path is `p2,p3,p2,p3` with 4 occurrences:
 
-<pre>
-p1,<b>p2,p3,p2,p3</b>,p2
-<b>p2,p3,p2,p3</b>
-p7,p4,<b>p2,p3,p2,p3</b>
-<b>p2,p3,p2,p3</b>
+```
+p1, > p2,p3,p2,p3 < ,p2
+> p2,p3,p2,p3 <
+p7,p4, > p2,p3,p2,p3 <
+> p2,p3,p2,p3 <
 p4,p8
-</pre>
+```
+
 
 As you can see, partial paths are allowed.
 
