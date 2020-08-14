@@ -16,9 +16,11 @@ tags:
 ---
 I recently came across the following interview question:
 
-> You are given a file named 'paths.txt'. Each line in the file represents a user's browsing history in a web session. For example:
-> `p1,p2,p1,p4 => A user visits page 1, then page 2, then back to page 1, and then page 4`
-> The task is to find the most common 4-page path in 'paths.txt'. A 'path' is defined as a sequence of sequentially visited pages.
+You are given a file named 'paths.txt'. Each line in the file represents a user's browsing history in a web session. 
+
+For example: `p1,p2,p1,p4 => A user visits page 1, then page 2, then back to page 1, and then page 4`
+
+The task is to find the most common 4-page path in 'paths.txt'. A 'path' is defined as a sequence of sequentially visited pages.
 
 Here is an example. Given a file with the following contents:
 
