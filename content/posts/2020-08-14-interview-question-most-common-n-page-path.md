@@ -69,7 +69,7 @@ end
 
 For each line, we can chomp any trailing whitespace, and create an array of each page. We can also skip to the next iteration of the loop in the length of the array is less than 4:
 
-```
+```ruby
 ...
 IO.foreach("paths.txt") do |line|
   pages = line.chomp.split(",")
@@ -88,7 +88,7 @@ $ array.each_cons(2).to_a
 
 If you don't want to use a helper method, then implementing it yourself is really simple:
 
-```
+```ruby
 def each_cons(cons, arr)
   temp = []
   0.upto(arr.size - cons) {|i| temp.push(arr[i, cons]) }
