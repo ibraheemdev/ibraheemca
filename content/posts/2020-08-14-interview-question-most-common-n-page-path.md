@@ -2,8 +2,8 @@
 template: post
 title: "Interview Question: Most Common N Page Path"
 slug: most-common-n-page-path
-draft: true
-date: 2020-08-14T20:51:20.108Z
+draft: false
+date: 2020-08-14T20:57:17.926Z
 description: >-
   You are given a file named 'paths.txt'. Each line in the file represents a
   user's browsing history in a web session.
