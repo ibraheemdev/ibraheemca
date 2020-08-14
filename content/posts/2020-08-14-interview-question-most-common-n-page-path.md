@@ -115,7 +115,7 @@ IO.foreach("paths2.txt") do |line|
 end
 ```
 
-Here is the final code that prints the most common path at the end:
+We can print the most common path using `Hash.values.max()`. Since we are looping through every key in the counter, ties (multiple most visited paths with the same value in the counter) are accommodated. Here is the final code:
 
 ```ruby
 puts "Finding the most common 4-page path..."
@@ -139,3 +139,9 @@ end
 ```
 
 All code and files are available on [github](https://gist.github.com/ibraheemdev/60e8b7b00f0cfaab5b9efb0246736f7c)
+
+**Bonus Questions**
+
+What is the most common N page path? (ex: what is the most common 5 page path? The most common 2 page path?)
+
+What are the Y most common N page paths? (ex: what are the top 4 most common 7-page paths)
