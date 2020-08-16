@@ -22,7 +22,6 @@ In this post, we will be going over configuration in golang applications through
         |-- development.yml
         |-- production.yml
         |-- testing.yml
-    |-- .env
 
 ```
 
@@ -63,34 +62,33 @@ type ServerConfig struct {
 
 ```
 
-We need a way to get the current environment (production, development, testing) of our application. We can store this as an environment variable in our .env file:
+We need a way to get the current environment (production, development, testing) of our application. We can store this as an environment variable.
 
 ```env
 APP_ENV=development
 
 ```
 
-To read the .env file, we can use the [godotenv](https://github.com/joho/godotenv) package:
+To get the environment variable, we can use the os package:
 
 ```go
 package config
 
 import (
-  "fmt"
   "os"
-  "github.com/joho/godotenv"
 )
 ...
 
 func getEnv() string {
-  err := godotenv.Load()
-  if err != nil {
-    log.Fatal("Error loading .env file")
-  }
   return os.Getenv("APP_ENV")
 }
 
 ```
+
+To start your application in a specific environment, you can set the environment variable at runtime:
+```bash
+$ APP_ENV=development go run main.go
+``` 
 
 The config.go file will contain the package's init function. The init function is called when the package is initialized, or when the package is first imported. It will call the readConfig function and assign the returned pointer to the global Config variable:
 
@@ -157,7 +155,7 @@ import (
 
 ```
 
-The blank identified is used to import a package solely for its side-effects (initialization), meaning that we are only using the config package for its init function. If you remember, the init function assigns the Config global variable to a pointer of an EnvironmentConfig struct. 
+The blank identifier is used to import a package solely for its side-effects (initialization), meaning that we are only using the config package for its init function. If you remember, the init function assigns the Config global variable to a pointer of an EnvironmentConfig struct. 
 
 This means that the Config struct is now accessible to your entire application. For example, you can use the http host and port variables in your router's ListenAndServer function:
 
@@ -169,13 +167,12 @@ import (
   "github.com/yourapp/config"
 )
 
-var routerConfig config.ServerConfig = config.Config.Server
 
 // ListenAndServe :
 func ListenAndServe() {
   log.Fatal(
     http.ListenAndServe(
-      fmt.Sprintf("%s:%s", routerConfig.Host, routerConfig.Port),
+      fmt.Sprintf("%s:%s", config.Config.Server.Host, config.Config.Server.Port),
       initRoutes()))
 }
 
