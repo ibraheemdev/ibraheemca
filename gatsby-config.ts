@@ -65,6 +65,7 @@ module.exports = {
                 date: edge.node.frontmatter.date,
                 url: site.siteMetadata.site_url + edge.node.fields.slug,
                 guid: site.siteMetadata.site_url + edge.node.fields.slug,
+                category: edge.node.fields.tagSlugs,
                 custom_elements: [{ "content:encoded": edge.node.html }],
               })),
             query: `
@@ -120,42 +121,10 @@ module.exports = {
     "gatsby-transformer-sharp",
     "gatsby-plugin-sharp",
     {
-      resolve: `gatsby-plugin-netlify`,
-      options: {
-        headers: {
-          "/public/**/*.json": [
-            "cache-control: public",
-            "cache-control: no-cache",
-          ],
-          "/public/**/*.html": [
-            "cache-control: public",
-            "cache-control: no-cache",
-          ],
-          "/public/**/*.{js,css}": [
-            "cache-control: public",
-            "cache-control: max-age=31536000",
-            "cache-control: immutable",
-          ],
-          "/static/**/*": [
-            "cache-control: public",
-            "cache-control: max-age=31536000",
-            "cache-control: immutable",
-          ],
-          "/sw.js": [
-            "cache-control: public",
-            "cache-control: no-cache",
-          ],
-          "/**/*": [
-            "cache-control: public",
-            "cache-control: no-cache",
-          ]
-        },
-      },
-    },
-    {
       resolve: "gatsby-plugin-netlify-cms",
       options: {
         modulePath: `${__dirname}/src/cms/index.js`,
+        enableIdentityWidget: true
       },
     },
     {
@@ -223,6 +192,39 @@ module.exports = {
       },
     },
     "gatsby-plugin-optimize-svgs",
+    {
+      resolve: `gatsby-plugin-netlify`,
+      options: {
+        headers: {
+          "/public/**/*.json": [
+            "cache-control: public",
+            "cache-control: no-cache",
+          ],
+          "/public/**/*.html": [
+            "cache-control: public",
+            "cache-control: no-cache",
+          ],
+          "/public/**/*.{js,css}": [
+            "cache-control: public",
+            "cache-control: max-age=31536000",
+            "cache-control: immutable",
+          ],
+          "/static/**/*": [
+            "cache-control: public",
+            "cache-control: max-age=31536000",
+            "cache-control: immutable",
+          ],
+          "/sw.js": [
+            "cache-control: public",
+            "cache-control: no-cache",
+          ],
+          "/**/*": [
+            "cache-control: public",
+            "cache-control: no-cache",
+          ]
+        },
+      },
+    },
   ],
 };
 
