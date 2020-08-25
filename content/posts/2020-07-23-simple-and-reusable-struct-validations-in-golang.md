@@ -76,32 +76,35 @@ import "fmt"
 
 // Validate :
 func (v *Validator) Validate(cond bool, msg string, args ...interface{}) {
-	if cond {
+	if !cond {
 		v.Errors = append(v.Errors, fmt.Errorf(msg, args...))
 	}
 }
 ```
 
-The Validate method takes a condition, an error message, and an arbitrary number of arguments. The optional args are of type `interface{}`, an empty interface, so that it can accept generic types. If the condition evaluates to true, Validate will return a formatted error message by expanding the args and passing them to `fmt.Errorf.`
+The Validate method takes a condition, an error message, and an arbitrary number of arguments. The optional args are of type `interface{}`, an empty interface, so that it can accept generic types. If the condition is not true (ie: the resource is not valid), ]a formatted error message will be appended to the Validator struct.
 
-We can use the Validate method to pre-build commonly used validations. These methods will take the name of the field (for error messages), it's value, as well as other parameters required for each validation:
+We can use the Validate method to build commonly used validations. These methods will take the name of the field (for error messages), it's value, as well as other parameters required for each validation:
 
 ```go
 // ValidatePresenceOf : validates presence of struct string field
 func (v *Validator) ValidatePresenceOf(fieldName string, fieldValue string) {
-	cond := len(strings.TrimSpace(fieldValue)) == 0
+    // fieldValue must be greater than 0
+	cond := len(strings.TrimSpace(fieldValue)) > 0
 	v.Validate(cond, "%s cannot be blank", fieldName)
 }
 
 // ValidateMaxLengthOf : validates maximum character length of struct string field
 func (v *Validator) ValidateMaxLengthOf(fieldName string, fieldValue string, max int) {
-	cond := len(fieldValue) > max
+	// fieldValue must be less than maximum
+    cond := len(fieldValue) < max
 	v.Validate(cond, "%s cannot be greater than %d characters", fieldName, max)
 }
 
 // ValidateMinLengthOf : validates minimum character length of struct string field
 func (v *Validator) ValidateMinLengthOf(fieldName string, fieldValue string, min int) {
-	cond := len(fieldValue) < min
+	// fieldValue must be greater than minimum
+    cond := len(fieldValue) > min
 	v.Validate(cond, "%s must be at least %d characters", fieldName, min)
 }
 ```
@@ -140,6 +143,7 @@ func validate(u *User) []error {
   ...
   emailRegex := "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
   match, _ := regexp.MatchString(emailRegex, u.Email)
+  // email must match regex
   v.Validate(match, "Email is not in valid format")
   ...
 }
