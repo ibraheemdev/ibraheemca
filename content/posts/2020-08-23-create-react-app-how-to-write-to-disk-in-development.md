@@ -2,7 +2,7 @@
 template: post
 title: "Create React App: How to Write to Disk in Development"
 slug: cra-write-to-disk-in-dev
-draft: true
+draft: false
 date: 2020-08-28T15:58:13.616Z
 description: How to add a development build mode in create-react-app which
   watches for file changes, rebuilds a development bundle, and writes it onto
