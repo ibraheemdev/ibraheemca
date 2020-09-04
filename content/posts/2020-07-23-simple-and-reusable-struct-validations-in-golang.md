@@ -1,10 +1,11 @@
 ---
 template: post
-title: Simple and Reusable Struct Validations in Golang
+title: Simple yet Powerful Struct Validations In Go Without Reflection!
 slug: golang-struct-validations
 draft: false
 date: 2020-07-23T15:41:14.076Z
-description: Creating a Simple and Reusable Struct Validation Package for Golang
+description: Creating a Simple yet Powerful Struct Validation Package for Golang
+  Without any Reflection.
 mainTag: Golang
 tags:
   - Golang
