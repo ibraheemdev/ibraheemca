@@ -62,8 +62,10 @@ error[E0004]: non-exhaustive patterns: `None` not covered
 6   |     match vector {
     |           ^^^^^^ pattern `None` not covered
     |
-    = help: ensure that all possible cases are being handled, possibly by adding wildcards or more match arms
-    = note: the matched value is of type `std::option::Option<std::vec::Vec<std::string::String>>`
+    = help: ensure that all possible cases are being handled, 
+      possibly by adding wildcards or more match arms
+    = note: the matched value is of type
+      `std::option::Option<std::vec::Vec<std::string::String>>`
 
 For more information about this error, try `rustc --explain E0004`.
 error: could not compile `playground`.
@@ -81,17 +83,19 @@ Rust does its best to get out of the developer's way when it comes to static typ
 
 ```rust
 fn main() {
-  // Because of the annotation, the compiler knows that `elem` has type u8.
+  // Because of the annotation, the compiler knows that 
+  // `elem` has type u8.
   let elem = 5u8;
 
   // Create an empty vector (a growable array).
   let mut vec = Vec::new();
-  // At this point the compiler doesn't know the exact type of `vec`, it
-  // just knows that it's a vector of something (`Vec<_>`).
+  // At this point the compiler doesn't know the exact type of 
+  // `vec`, it just knows that it's a vector of something (`Vec<_>`).
 
   // Insert `elem` in the vector.
   vec.push(elem);
-  // Aha! Now the compiler knows that `vec` is a vector of `u8`s (`Vec<u8>`)
+  // Aha! Now the compiler knows that `vec` is 
+  // a vector of `u8`s (`Vec<u8>`)
 
   println!("{:?}", vec);
 }
@@ -105,6 +109,22 @@ Garbage collection is an automatic memory management system that looks for unuse
 
 For example, discord used golang, a garbage collected language, for keeping track of which channels and messages a user read, which they call "Read States". They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache in order to determine which memory needed to be handled by GC.
 
+Here is a before and after of them switching from Go, to Rust. Go is purple, Rust is blue.
 
+![](/media/rustvsgo-discord.png)
 
-![]()
+[image ref](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
+
+Why is Rust so much better? Rust is blazingly fast and memory-efficient without needing a garbage collector, due to it's ownership model.
+```rust
+// s is not valid here, it’s not yet declared
+{
+  let s = "hello"; // s is valid from this point forward
+  // do stuff with s
+}
+// this scope is now over, s is no longer valid 
+// and will be freed from memory
+```
+Thus, thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one (or several) function variables, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and can be cleaned up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
+
+[Skylight](https://www.skylight.io/), an early adopter of Rust was able to [reduce their memory usage](https://www.rust-lang.org/static/pdfs/Rust-Tilde-Whitepaper.pdf) from 5GB to 50MB by rewriting certain endpoints from Java to Rust.
