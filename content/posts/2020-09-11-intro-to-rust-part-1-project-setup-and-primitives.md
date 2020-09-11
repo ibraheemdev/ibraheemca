@@ -42,9 +42,9 @@ $ print_size(user.first.name)
 => NoMethodError (undefined method `size' for nil:NilClass)
 ```
 
-Dynamic languages provide easy ways to mitigate this issue such as `try`, ruby's safe navigation operator. However, a simple mistake like this can cause runtime errors that can be hard to debug without comprehensive test coverage. This problem even occurs in many statically typed languages in which any value can potentially be `Null`.
+Dynamic languages provide easy ways to mitigate this issue such as the `try` method, or ruby's safe navigation operator. However, a simple mistake like the one above can cause runtime errors that can be hard to debug without comprehensive test coverage. This problem even occurs in many statically typed languages in which any value can potentially be `Null`.
 
-Rust solves this issue with optional types, and the compiler will require you to handle the `None` case:
+Rust solves this issue with optional types, and it's compiler will require you to handle the `None` case:
 
 ```rust
 fn print_size(vector: Option<Vec<string>>) {
@@ -73,13 +73,13 @@ For more information about this error, try `rustc --explain E0004`.
 To learn more, run the command again with --verbose.
 ```
 
-In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, issue, and potential solution for the error.
+In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, issue, and potential solution to the error.
 
-Static typing also results in compiled code that executes faster because the compiler knows the exact data types that are in use, and therefore can produce optimized machine code. Static types also serve as documentation.
+Static typing also results in compiled code that executes faster as the compiler knows the exact data types that are in use, and therefore can produce optimized machine code. Static types also serve as documentation.
 
 **Rust vs. Statically Typed Languages**
 
-Rust does its best to get out of the developer's way when it comes to static typing. Rust has a smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Here's an advanced example of type inference, straight from the [docs](https://doc.rust-lang.org/stable/rust-by-example/types/inference.html).
+Rust does its best to get out of the developer's way when it comes to static typing. Rust has a very smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Here's an advanced example of type inference, straight from the [docs](https://doc.rust-lang.org/stable/rust-by-example/types/inference.html).
 
 ```rust
 fn main() {
@@ -107,7 +107,7 @@ No type annotation of variables was needed, the compiler is happy and so is the 
 
 Garbage collection is an automatic memory management system that looks for unused variables and frees their memory. This can introduce performance issues at scale. 
 
-For example, discord used golang, a garbage collected language, for keeping track of which channels and messages a user read, which they call "Read States". They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache to determine which memory needed to be handled by GC.
+For example, [Discord](https://discord.com/) used Golang, a garbage collected language, for keeping track of which channels and messages a user read, which they call "Read States". They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache to determine which memory needed to be handled by GC.
 
 Here is a before and after of them switching from Go, to Rust. Go is purple, Rust is blue.
 
@@ -127,7 +127,7 @@ Why is Rust so much better? Rust is blazingly fast and memory-efficient without 
 // and will be freed from memory
 ```
 
-Thus, thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one (or several) function variables, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and can be cleaned up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
+Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one (or several) function variables, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and can be cleaned up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
 
 [Skylight](https://www.skylight.io/), an early adopter of Rust was able to [reduce their memory usage](https://www.rust-lang.org/static/pdfs/Rust-Tilde-Whitepaper.pdf) from 5GB to 50MB by rewriting certain endpoints from Java to Rust.
 
@@ -135,7 +135,7 @@ Thus, thanks to Rust's ownership tracking, the lifetime of ALL memory allocated 
 
 Rust was build by Mozilla to be a the next step in the evolution of C or C++, two other systems programming languages. Rust gives you the low level control, while still providing features and conveniences that make it feel like a high-level languages. It gives you the technical power without allowing it to degrade from the developer experience.
 
-Unlike something like Ruby, which gives up performance  fro developer experience, Rust provides as many *zero-cost abstractions* as possible; abstractions that are as performant as the equivalent hand-written code. Let's look at iterators for example:
+Unlike something like Ruby, which disregards performance for developer experience, Rust provides as many *zero-cost abstractions* as possible; abstractions that are as performant as the equivalent hand-written code. Let's look at iterators for example:
 
 ```rust
 let squares: Vec<_> = (0..10).map(|i| i * i).collect();
