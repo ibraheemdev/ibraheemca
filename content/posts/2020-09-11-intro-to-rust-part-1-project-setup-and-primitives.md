@@ -14,9 +14,9 @@ tags:
 ---
 **Why should you learn Rust?**
 
-Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running and is used at many large companies such as Mozilla, Apple, Amazon, Facebook, Google, Twitter, and Microsoft. Why do so many people love Rust?
+Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running, and it [grew in use on Github](https://octoverse.github.com/#fastest-growing-languages) by **235%** from 2018 to 2019. Large companies such as Mozilla, Apple, Amazon, Facebook, Google, Twitter, and Microsoft have began adopting it in their codebases. So, why do so many people love Rust?
 
-Well, Rust solves many of the hassles associated with other popular languages. Let's look at a couple of examples:
+Rust was built to solve many of the hassles associated with other popular languages. Let's look at a couple of examples:
 
 **Rust vs. Dynamic Languages**
 
@@ -58,18 +58,17 @@ Compiling this code results in an error:
 
 ```rust
 error[E0004]: non-exhaustive patterns: `None` not covered
-   --> src/main.rs:6:11
-    |
-6   |     match vector {
-    |           ^^^^^^ pattern `None` not covered
-    |
-    = help: ensure that all possible cases are being handled, 
-      possibly by adding wildcards or more match arms
-    = note: the matched value is of type
-      `std::option::Option<std::vec::Vec<std::string::String>>`
+--> src/main.rs:6:11
+  |
+6 |  match vector {
+  |  ^^^^^^ pattern `None` not covered
+  |
+  = help: ensure that all possible cases are being handled, 
+    possibly by adding wildcards or more match arms
+  = note: the matched value is of type
+    `std::option::Option<std::vec::Vec<std::string::String>>`
 
 For more information about this error, try `rustc --explain E0004`.
-error: could not compile `playground`.
 
 To learn more, run the command again with --verbose.
 ```
