@@ -1,11 +1,11 @@
 ---
 template: post
-title: "Intro to Rust: Part 1: Why Rust?"
+title: "Intro to Rust - Part 1: Why Rust?"
 slug: rust-tutorial-part-1
 draft: true
 date: 2020-09-11T16:53:35.714Z
-description: Part one of my Rust tutorial. Today, we look at why you should
-  consider rust, and the benefits it provides over other language styles.
+description: Part 1 of my Rust introduction. Today, we look at why you should
+  consider Rust, and the benefits it provides over other languages.
 mainTag: Intro To Rust
 tags:
   - Rust
