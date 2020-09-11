@@ -1,11 +1,11 @@
 ---
 template: post
-title: "Intro to Rust Part 1: Setting up a Development Environment"
+title: "Intro to Rust: Part 1: Why Rust?"
 slug: rust-tutorial-part-1
 draft: true
 date: 2020-09-11T16:53:35.714Z
-description: "Part one of my Rust tutorial. Today, we look at how to setup a
-  project environment and the primitive data types available in the language. "
+description: Part one of my Rust tutorial. Today, we look at why you should
+  consider rust, and the benefits it provides over other language styles.
 mainTag: Intro To Rust
 tags:
   - Rust
@@ -15,4 +15,96 @@ tags:
 
 Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running, and is used at many large companies such as Mozilla, Apple, and Microsoft. Why do so many people love Rust?
 
-The short answer is that Rust solves many of the hassles associated with other popular languages. Developers coming from dynamically typed languages will find it hard to argue the benefits of static typing. Static type definitions are even being added to many popular dynamic languages, such as typescript, python type hints, and ruby.
+Well, Rust solves many of the hassles associated with other popular languages. Let's look at a couple of examples:
+
+**Rust vs. Dynamic Languages**
+
+Developers coming from dynamically typed languages will find it hard to argue the benefits of static typing. Static type definitions are even being added to many popular dynamic languages, such as javascript's [typescript](https://www.typescriptlang.org/), python's [type hints](https://github.com/python/mypy), and ruby's [rbs](https://github.com/ruby/rbs). Static languages are generally considered more "scalable" and better for larger codebases as the compiler does much of the work for you. Let's look at an example:
+
+```ruby
+def print_size(array)
+  puts array.size
+end
+```
+
+The code above takes an array and prints its size to the console. Simple, right? Let's test it out:
+
+```ruby
+$ print_size(user.first.name)
+=> 6
+```
+
+But, what happens when the user did not provide a name?
+
+```ruby
+$ print_size(user.first.name)
+=> NoMethodError (undefined method `size' for nil:NilClass)
+```
+
+Dynamic languages provide easy ways to mitigate this issue such as `try`, ruby's safe navigation operator. However, a simple mistake like this can cause runtime errors that can be hard to debug without comprehensive test coverage. This problem even occurs in many statically typed languages in which any value can potentially be `Null`.
+
+Rust solves this issue with optional types, and the compiler will require you to handle the `None` case:
+
+```rust
+fn print_size(vector: Option<Vec<string>>) {
+  match vector {
+    Some(vector) => println!("{}", vector.len())
+  }
+}
+```
+
+Compiling this code results in an error:
+
+```rust
+error[E0004]: non-exhaustive patterns: `None` not covered
+   --> src/main.rs:6:11
+    |
+6   |     match vector {
+    |           ^^^^^^ pattern `None` not covered
+    |
+    = help: ensure that all possible cases are being handled, possibly by adding wildcards or more match arms
+    = note: the matched value is of type `std::option::Option<std::vec::Vec<std::string::String>>`
+
+For more information about this error, try `rustc --explain E0004`.
+error: could not compile `playground`.
+
+To learn more, run the command again with --verbose.
+```
+
+In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, issue, and potential solution for the error.
+
+Static typing also results in compiled code that executes faster because the compiler knows the exact data types that are in use, and therefore can produce optimized machine code. Static types also serve as documentation.
+
+**Rust vs. Statically Typed Languages**
+
+Rust does its best to get out of the developer's way when it comes to static typing. Rust has a smart type inference engine. It looks not only at the type of the value expression during an initialization, but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Here's an advanced example of type inference, straight from the [docs](https://doc.rust-lang.org/stable/rust-by-example/types/inference.html).
+
+```rust
+fn main() {
+  // Because of the annotation, the compiler knows that `elem` has type u8.
+  let elem = 5u8;
+
+  // Create an empty vector (a growable array).
+  let mut vec = Vec::new();
+  // At this point the compiler doesn't know the exact type of `vec`, it
+  // just knows that it's a vector of something (`Vec<_>`).
+
+  // Insert `elem` in the vector.
+  vec.push(elem);
+  // Aha! Now the compiler knows that `vec` is a vector of `u8`s (`Vec<u8>`)
+
+  println!("{:?}", vec);
+}
+```
+
+No type annotation of variables was needed, the compiler is happy and so is the programmer!
+
+**Rust vs. Garbage Collected Languages**
+
+Garbage collection is an automatic memory management system that looks for unused variables and frees their memory. This can introduce performance issues at scale. 
+
+For example, discord used golang, a garbage collected language, for keeping track of which channels and messages a user read, which they call "Read States". They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache in order to determine which memory needed to be handled by GC.
+
+
+
+![]()
