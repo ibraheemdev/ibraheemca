@@ -13,7 +13,7 @@ tags:
 ---
 **Why should you learn Rust?**
 
-Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running, and is used at many large companies such as Mozilla, Apple, and Microsoft. Why do so many people love Rust?
+Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running and is used at many large companies such as Mozilla, Apple, and Microsoft. Why do so many people love Rust?
 
 Well, Rust solves many of the hassles associated with other popular languages. Let's look at a couple of examples:
 
@@ -79,7 +79,7 @@ Static typing also results in compiled code that executes faster because the com
 
 **Rust vs. Statically Typed Languages**
 
-Rust does its best to get out of the developer's way when it comes to static typing. Rust has a smart type inference engine. It looks not only at the type of the value expression during an initialization, but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Here's an advanced example of type inference, straight from the [docs](https://doc.rust-lang.org/stable/rust-by-example/types/inference.html).
+Rust does its best to get out of the developer's way when it comes to static typing. Rust has a smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Here's an advanced example of type inference, straight from the [docs](https://doc.rust-lang.org/stable/rust-by-example/types/inference.html).
 
 ```rust
 fn main() {
@@ -107,7 +107,7 @@ No type annotation of variables was needed, the compiler is happy and so is the 
 
 Garbage collection is an automatic memory management system that looks for unused variables and frees their memory. This can introduce performance issues at scale. 
 
-For example, discord used golang, a garbage collected language, for keeping track of which channels and messages a user read, which they call "Read States". They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache in order to determine which memory needed to be handled by GC.
+For example, discord used golang, a garbage collected language, for keeping track of which channels and messages a user read, which they call "Read States". They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache to determine which memory needed to be handled by GC.
 
 Here is a before and after of them switching from Go, to Rust. Go is purple, Rust is blue.
 
@@ -115,7 +115,7 @@ Here is a before and after of them switching from Go, to Rust. Go is purple, Rus
 
 [image ref](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
 
-Why is Rust so much better? Rust is blazingly fast and memory-efficient without needing a garbage collector, due to it's ownership model.
+Why is Rust so much better? Rust is blazingly fast and memory-efficient without needing a garbage collector, due to its ownership model.
 ```rust
 // s is not valid here, it’s not yet declared
 {
