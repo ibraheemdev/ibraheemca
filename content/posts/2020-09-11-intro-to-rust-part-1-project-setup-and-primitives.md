@@ -4,12 +4,13 @@ title: "Intro to Rust - Part 1: Why Rust?"
 slug: intro-to-rust-part-1
 draft: false
 date: 2020-09-11T16:53:35.714Z
-mainTag: Intro To Rust
+mainTag: Intro To Rust Series
 socialImage: /media/rust-logo.png
-description: Part 1 of my Rust introduction. Today, we look at why you should
-  consider Rust and some of the benefits it provides over other languages.
+description: Part 1 of the Intro To Rust Series. Today, we look at why you
+  should consider Rust and some of the benefits it provides over other
+  languages.
 tags:
-  - Intro To Rust
+  - Intro To Rust Series
   - Rust
 ---
 **Why should you learn Rust?**
@@ -170,6 +171,19 @@ Rust has a very welcoming community. You can reach out through the [discord chat
 There are a ton of opensource projects created by the community. From web frameworks such as [actix web](https://github.com/actix/actix-web), [yew](https://github.com/yewstack/yew), and [rocket](https://github.com/SergioBenitez/Rocket), to Rust based text editors like [remacs](https://github.com/remacs/remacs) and [xi editor](https://github.com/xi-editor/xi-editor). Even [the language itself](https://github.com/rust-lang/rust) is opensource, and has 50,000 stars and over 3,000 contributors.
 
 For a full list of resources, see [Awesome Rust](https://github.com/rust-unofficial/awesome-rust), a curated list of Rust code and resources.
+
+**Rust and WebAssembly**
+
+Another reason that people get so excited about Rust is how well it plays with webAssembly. [Webassembly](https://webassembly.org/) is a binary instruction format that can run in most major browsers. It aims to execute at native speed by taking advantage of common hardware capabilities available on a wide range of platforms. Wasm can be run in the place of, or alongside traditional Javascript, allowing developers to offload performance critical tasks from javascript, improving their application's performance without having to completely rewrite their existing codebase.
+
+Rust can be compiled directly into WebAssembly and run in the browser with Cargo:
+```rust
+$ cargo build --target=wasm32-unknown-emscripten
+```
+
+This allows you to take advantage of all Rust's compile safety in the web. Since Rust lacks a runtime, generated `.wasm` files are very small because there is no extra bloat included like a garbage collector. Rust and WebAssembly integrates with existing JavaScript tooling. It supports ECMAScript modules and other tools such as npm, or Webpack.
+
+For more information regarding Rust and WebAssembly, see the [rustwasm book](https://rustwasm.github.io/docs/book/introduction.html)
 
 **Getting Started**
 
