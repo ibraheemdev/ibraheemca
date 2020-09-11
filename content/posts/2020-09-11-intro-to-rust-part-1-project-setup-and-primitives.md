@@ -1,13 +1,13 @@
 ---
 template: post
 title: "Intro to Rust - Part 1: Why Rust?"
-slug: rust-tutorial-part-1
+slug: intro-to-rust-part-1
 draft: true
 date: 2020-09-11T16:53:35.714Z
 mainTag: Intro To Rust
 socialImage: /media/rust-logo.png
 description: Part 1 of my Rust introduction. Today, we look at why you should
-  consider Rust, and the benefits it provides over other languages.
+  consider Rust and some of the benefits it provides over other languages.
 tags:
   - Intro To Rust
   - Rust
@@ -113,7 +113,7 @@ Here is a before and after of them switching from Go, to Rust. Go is purple, Rus
 
 ![](/media/rustvsgo-discord.png)
 
-[Image ref](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
+Read the full post here: [Why Discord is Switching from Go to Rust](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
 
 Why is Rust so much better? Rust is blazingly fast and memory-efficient without needing a garbage collector, due to its ownership model.
 
@@ -158,3 +158,19 @@ Rust also has a second language hidden inside it that doesn’t enforce memory s
 **The Rust Ecosystem**
 
 Rust has become larger than just a language, it has a large ecosystem supporting it.
+
+You can manage multiple installations and easily switch between stable, beta, and nightly compilers with [rustup](https://rustup.rs/). It also makes cross compiling between multiple platforms simpler.
+
+Rust also provides [cargo](https://doc.rust-lang.org/cargo/), a tool for managing a Rust packages dependencies, running tests, generating documentation, compiling your package. Rust packages or "crates" created with cargo can be published to [crates.io](https://crates.io/) and made available for use by anyone. There are currently almost 50,000 available crates, and over 3.5 Billion downloads! Any library published to crates.io will have its documentation automatically built and published to [docs.rs](https://github.com/rust-lang/rustup).
+
+Unlike many languages, there is an official tool for formatting Rust code in [rustfmt](https://github.com/rust-lang/rustfmt), as well as [clippy](https://github.com/rust-lang/rust-clippy), the linter that helps catch common mistakes and improve your code.
+
+Rust has a very welcoming community. You can reach out through the [discord chat](https://discord.com/invite/rust-lang), [forum](https://users.rust-lang.org/), [subreddit](https://www.reddit.com/r/rust/), [stackoverflow tag](https://stackoverflow.com/questions/tagged/rust), [slack channel](https://rust-slack.herokuapp.com/), or [gitter](https://gitter.im/rust-lang/rust).
+
+There are a ton of opensource projects created by the community. From web frameworks such as [actix web](https://github.com/actix/actix-web), [yew](https://github.com/yewstack/yew), and [rocket](https://github.com/SergioBenitez/Rocket), to Rust based text editors like [remacs](https://github.com/remacs/remacs) and [xi editor](https://github.com/xi-editor/xi-editor). Even [the language itself](https://github.com/rust-lang/rust) is opensource, and has 50,000 stars and over 3,000 contributors.
+
+For a full list of resources, see [Awesome Rust](https://github.com/rust-unofficial/awesome-rust), a curated list of Rust code and resources.
+
+**Getting Started**
+
+In the part 2 of this series, we will look at setting up a Rust development environment and created our first Rust package with cargo.
