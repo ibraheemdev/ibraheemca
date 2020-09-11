@@ -1,20 +1,20 @@
 ---
 template: post
 title: "Intro to Rust - Part 1: Why Rust?"
-socialImage: /media/rust-logo.png
 slug: rust-tutorial-part-1
 draft: true
 date: 2020-09-11T16:53:35.714Z
+mainTag: Intro To Rust
+socialImage: /media/rust-logo.png
 description: Part 1 of my Rust introduction. Today, we look at why you should
   consider Rust, and the benefits it provides over other languages.
-mainTag: Intro To Rust
 tags:
-  - Rust
   - Intro To Rust
+  - Rust
 ---
 **Why should you learn Rust?**
 
-Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running and is used at many large companies such as Mozilla, Apple, and Microsoft. Why do so many people love Rust?
+Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running and is used at many large companies such as Mozilla, Apple, Amazon, Facebook, Google, Twitter, and Microsoft. Why do so many people love Rust?
 
 Well, Rust solves many of the hassles associated with other popular languages. Let's look at a couple of examples:
 
@@ -114,9 +114,10 @@ Here is a before and after of them switching from Go, to Rust. Go is purple, Rus
 
 ![](/media/rustvsgo-discord.png)
 
-[image ref](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
+[Image ref](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
 
 Why is Rust so much better? Rust is blazingly fast and memory-efficient without needing a garbage collector, due to its ownership model.
+
 ```rust
 // s is not valid here, it’s not yet declared
 {
@@ -126,6 +127,35 @@ Why is Rust so much better? Rust is blazingly fast and memory-efficient without 
 // this scope is now over, s is no longer valid 
 // and will be freed from memory
 ```
+
 Thus, thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one (or several) function variables, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and can be cleaned up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
 
 [Skylight](https://www.skylight.io/), an early adopter of Rust was able to [reduce their memory usage](https://www.rust-lang.org/static/pdfs/Rust-Tilde-Whitepaper.pdf) from 5GB to 50MB by rewriting certain endpoints from Java to Rust.
+
+**Rust vs. Other Systems Programming Languages**
+
+Rust was build by Mozilla to be a the next step in the evolution of C or C++, two other systems programming languages. Rust gives you the low level control, while still providing features and conveniences that make it feel like a high-level languages. It gives you the technical power without allowing it to degrade from the developer experience.
+
+Unlike something like Ruby, which gives up performance  fro developer experience, Rust provides as many *zero-cost abstractions* as possible; abstractions that are as performant as the equivalent hand-written code. Let's look at iterators for example:
+
+```rust
+let squares: Vec<_> = (0..10).map(|i| i * i).collect();
+```
+
+And the equivalent code in C:
+
+```c
+int squares[10];
+for (int i = 0; i < 10; ++i)
+{
+  squares[i] = i * i;
+}
+```
+
+As you can see, Rust can be used create a vector containing the first ten square numbers much more concisely than C, but still highly performant.
+
+Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust* and works just like regular Rust, but gives you extra capabilities. If you can't do something in safe Rust, you can implement it yourself, or, chances are, someone else has already done it, which brings me to my next point.
+
+**The Rust Ecosystem**
+
+Rust has become larger than just a language, it has a large ecosystem supporting it.
