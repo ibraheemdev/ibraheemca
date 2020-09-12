@@ -1,16 +1,14 @@
 ---
 template: post
-title: "Intro to Rust - Part 1: Why Rust?"
-slug: intro-to-rust-part-1
+title: Why should you learn Rust?
+slug: why-learn-rust
+socialImage: /media/rust-logo.png
 draft: false
 date: 2020-09-11T16:53:35.714Z
-mainTag: Intro To Rust Series
-socialImage: /media/rust-logo.png
-description: Part one of the Intro To Rust Series. Today, we look at why you
-  should consider Rust and some of the benefits it provides over other
-  languages.
+description: Why you should consider learning Rust and some of the benefits it
+  provides over other languages.
+mainTag: Rust
 tags:
-  - Intro To Rust Series
   - Rust
 ---
 **Why should you learn Rust?**
@@ -187,4 +185,4 @@ For more information regarding Rust and WebAssembly, see the [rustwasm book](htt
 
 **Getting Started**
 
-Hopefully you understand why Rust is such a beloved language by developers. In part two of this series, we will look at setting up a Rust development environment and created our first Rust package with cargo.
+Hopefully you understand why Rust is such a beloved language by developers. To get started with learning Rust, you should check out [the Rust book](https://doc.rust-lang.org/book/). For other learning options and hands-on project, [click here](https://www.rust-lang.org/learn)
