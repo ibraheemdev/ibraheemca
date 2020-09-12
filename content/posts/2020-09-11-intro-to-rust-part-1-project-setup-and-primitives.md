@@ -6,7 +6,7 @@ draft: false
 date: 2020-09-11T16:53:35.714Z
 mainTag: Intro To Rust Series
 socialImage: /media/rust-logo.png
-description: Part 1 of the Intro To Rust Series. Today, we look at why you
+description: Part one of the Intro To Rust Series. Today, we look at why you
   should consider Rust and some of the benefits it provides over other
   languages.
 tags:
@@ -134,7 +134,7 @@ Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a p
 
 **Rust vs. Other Systems Programming Languages**
 
-Rust was build by Mozilla to be a the next step in the evolution of C or C++, two other systems programming languages. Rust gives you the low level control, while still providing features and conveniences that make it feel like a high-level languages. It gives you the technical power without allowing it to degrade from the developer experience.
+Rust was built by Mozilla to be a the next step in the evolution of C or C++, two other systems programming languages. Rust gives you the low level control, while still providing features and conveniences that make it feel like a high-level languages. It gives you the technical power without allowing it to degrade from the developer experience.
 
 Unlike something like Ruby, which disregards performance for developer experience, Rust provides as many *zero-cost abstractions* as possible; abstractions that are as performant as the equivalent hand-written code. Let's look at iterators for example:
 
@@ -174,17 +174,17 @@ For a full list of resources, see [Awesome Rust](https://github.com/rust-unoffic
 
 **Rust and WebAssembly**
 
-Another reason that people get so excited about Rust is how well it plays with webAssembly. [Webassembly](https://webassembly.org/) is a binary instruction format that can run in most major browsers. It aims to execute at native speed by taking advantage of common hardware capabilities available on a wide range of platforms. Wasm can be run in the place of, or alongside traditional Javascript, allowing developers to offload performance critical tasks from javascript, improving their application's performance without having to completely rewrite their existing codebase.
+Another reason that people get so excited about Rust is how well it plays with WebAssembly. [Webassembly](https://webassembly.org/) is a binary instruction format that can run in most major browsers. It aims to execute at native speed by taking advantage of common hardware capabilities available on a wide range of platforms. Wasm can be run in the place of, or alongside traditional javascript, allowing developers to offload performance critical tasks from javascript, improving their application's performance without having to completely rewrite their existing codebase.
 
 Rust can be compiled directly into WebAssembly and run in the browser with Cargo:
 ```rust
 $ cargo build --target=wasm32-unknown-emscripten
 ```
 
-This allows you to take advantage of all Rust's compile safety in the web. Since Rust lacks a runtime, generated `.wasm` files are very small because there is no extra bloat included like a garbage collector. Rust and WebAssembly integrates with existing JavaScript tooling. It supports ECMAScript modules and other tools such as npm, or Webpack.
+This allows you to take advantage of all Rust's compile safety in the web. Since Rust lacks a runtime, generated `.wasm` files are very small because there is no extra bloat included like a garbage collector. Rust and WebAssembly integrates with existing javascript tooling. It supports ECMAScript modules and other tools such as npm packages and webpack.
 
 For more information regarding Rust and WebAssembly, see the [rustwasm book](https://rustwasm.github.io/docs/book/introduction.html)
 
 **Getting Started**
 
-In the part 2 of this series, we will look at setting up a Rust development environment and created our first Rust package with cargo.
+Hopefully you understand why Rust is such a beloved language by developers. In part two of this series, we will look at setting up a Rust development environment and created our first Rust package with cargo.
