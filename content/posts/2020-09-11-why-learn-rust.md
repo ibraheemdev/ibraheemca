@@ -22,28 +22,40 @@ Rust was built to solve many of the hassles associated with other popular langua
 Developers coming from dynamically typed languages will find it hard to argue the benefits of static typing. Static type definitions are even being added to many popular dynamic languages, such as javascript's [typescript](https://www.typescriptlang.org/), python's [type hints](https://github.com/python/mypy), and ruby's [rbs](https://github.com/ruby/rbs). Static languages are generally considered more "scalable" and better for larger codebases as the compiler does much of the work for you. Let's look at an example:
 
 ```ruby
-def print_size(array)
-  puts array.size
+def silly(a)
+  if a > 0
+    puts 'hello'
+  else
+    print a + '3'
+  end
 end
 ```
 
-The code above takes an array and prints its size to the console. Simple, right? Let's test it out:
+The code above prints 'hello', right? Let's test it out:
 
 ```ruby
-$ print_size(user.first.name)
-=> 6
+$ silly(2)
+=> "hello"
 ```
 
-But, what happens when the user did not provide a name?
+But, when you pass a negative number:
 
 ```ruby
-$ print_size(user.first.name)
-=> NoMethodError (undefined method `size' for nil:NilClass)
+$ silly(-1)
+=> TypeError (String can't be coerced into Integer)
 ```
 
-Dynamic languages provide easy ways to mitigate this issue such as the `try` method, or ruby's safe navigation operator. However, a simple mistake like the one above can cause runtime errors that can be hard to debug without comprehensive test coverage. This problem even occurs in many statically typed languages in which any value can potentially be `Null`.
+You get a `TypeError` at runtime. A simple mistake like this can cause runtime errors that can sometimes be hard to debug without comprehensive test coverage. Since Rust is statically typed, all type errors will be caught at compile time, and this problem never occurs.
 
-Rust solves this issue with optional types, and it's compiler will require you to handle the `None` case:
+Static typing also results in compiled code that executes faster as the compiler knows the exact data types that are in use, and therefore can produce optimized machine code. Static types also serve as documentation.
+
+The points in this section apply to pretty much all strongly typed languages. Let's look at some of the things Rust does differently than other statically typed languages.
+
+**No Nulls**
+
+Most languages have a concept of `Null`. Any value can either be what you expect, or nothing. If you accidentally miss a null check, you code can blow up. In Rust, `Null` is not even a concept, it does not exist! If `x = "x"`, then x IS a string, and will always be a string.
+
+If you really want nulls, you can use the `Option` enum. You can pattern match on that enum, and because Rust has exhaustive pattern matching, this code:
 
 ```rust
 fn print_size(vector: Option<Vec<string>>) {
@@ -53,7 +65,7 @@ fn print_size(vector: Option<Vec<string>>) {
 }
 ```
 
-Compiling this code results in an error:
+Results in an error:
 
 ```rust
 error[E0004]: non-exhaustive patterns: `None` not covered
@@ -73,8 +85,6 @@ To learn more, run the command again with --verbose.
 ```
 
 In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, issue, and potential solution to the error.
-
-Static typing also results in compiled code that executes faster as the compiler knows the exact data types that are in use, and therefore can produce optimized machine code. Static types also serve as documentation.
 
 **Rust vs. Statically Typed Languages**
 
@@ -180,6 +190,8 @@ $ cargo build --target=wasm32-unknown-emscripten
 ```
 
 This allows you to take advantage of all Rust's compile safety in the web. Since Rust lacks a runtime, generated `.wasm` files are very small because there is no extra bloat included like a garbage collector. Rust and WebAssembly integrates with existing javascript tooling. It supports ECMAScript modules and other tools such as npm packages and webpack.
+
+There are some really cool Rust + Wasm projects out there. For example, [Yew](https://github.com/yewstack/yew) lets you create multi-threaded front-end web apps with Rust, in a way that feels almost like React.js.
 
 For more information regarding Rust and WebAssembly, see the [rustwasm book](https://rustwasm.github.io/docs/book/introduction.html)
 
