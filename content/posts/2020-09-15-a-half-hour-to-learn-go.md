@@ -27,13 +27,10 @@ You can use external packages by importing them:
 ```go
 package main
 
-import (
-  "fmt"
-  "math/rand"
-)
+import "fmt"
 ```
 
-You can use exported names in an imported package by using the package name as an identifier:
+You can use exported names in an imported package by using the package name as a qualifier:
 
 ```go
 import (
@@ -44,11 +41,60 @@ import (
 fmt.Println("My favorite number is", rand.Intn(10))
 ```
 
+You can create a local alias for any import:
+```go
+import (
+  formatter "fmt"
+)
+
+formatter.Println("") // instead of fmt.Intn(10)
+```
+
+Or use a dot to access it without any qualifier:
+```go
+import (
+  . "math/rand"
+)
+
+Intn(10) // instead of rand.Intn(10)
+```
+
 A name is exported if it begins with a capital letter. This is similar to `public` and `private` in other languages:
 
 ```go
 x := "hello" // x is unexported, or private
 A := "hello" // A will be exported, or public
+```
+
+Packages can have an `init` function. This will be executed as soon as the package is imported:
+```
+func init() {
+  performSideEffects()
+}
+```
+
+#### **Scope**
+
+A pair of brackets declares a block, which has its own scope:
+
+```go
+// This prints "in", then "out"
+func main() {
+  x := "out"
+  {
+    // this is a different `x`
+    x := "in"
+    println(x)
+  }
+  println(x)
+}
+```
+
+A variable defined outside of any function is considered "global". If capitalized, it can be accessed by other packages:
+```go
+package mypackage
+
+var Global string = "I am a global variable!"
 ```
 
 #### **Variables**
@@ -108,12 +154,22 @@ var f float64 = 1 // +1.000000
 i := int(f)       // 1
 ```
 
+Note that this must be done explicitly. Unlike other languages, you cannot pass an `int` as a `float` argument and depend on an implicit conversion by the compiler.
+
 #### **Constants**
 
 Unchanging values can be declared with the `const` keyword. Constants can be character, string, boolean, or numeric values:
 
 ```go
 const Pi = 3.14
+```
+
+You can group the declaration of multiple constants or variables:
+```go
+const (
+  x = 2
+  y = 4
+)
 ```
 
 #### **The Blank Identifier**
@@ -128,7 +184,7 @@ _ := 42
 _, _ := getThing();
 ```
 
-You can use it to import a package solely for its side effects:
+You can use it to import a package solely for its `init` function:
 
 ```go
 import _ "log"
@@ -151,7 +207,7 @@ a[1] = "World"
 println(a) // => ["Hello", "World"]
 ```
 
-You can fill an array with values with an *array literal*:
+You create arrays using *array literals*:
 
 ```go
 helloWorld := [2]string{"Hello", "World"}
@@ -169,7 +225,7 @@ fmt.Println(s)
 // => [2 3 4]
 ```
 
-These expressions are equivalent:
+You can omit the start or end index when slicing an array, so these expressions are equivalent:
 
 ```go
 var a [10]int
@@ -178,12 +234,6 @@ a[0:10]
 a[:10]
 a[0:]
 a[:]
-```
-
-If you don't know the length of your array, you can use a slice literal. It will create the array, and then build the slice that references it:
-
-```go
-nums := []int{1, 2, 3, 4, 5}
 ```
 
 Modifying a slice will modify its underlying array:
@@ -196,6 +246,12 @@ s[0] = 999
 
 fmt.Println(nums)
 // => [999 2 3 4 5 6]
+```
+
+If you don't know the length of your array, you can use a slice literal. It will create the array, and then build the slice that references it:
+
+```go
+nums := []int{1, 2, 3, 4, 5}
 ```
 
 To add something to a slice, you can use the append function. It will handle creating a new underlying array if the original array is too small:
@@ -221,7 +277,7 @@ for index, name := range names {
 // 2 jessica
 ```
 
-We can use the blank identifier from before to omit the index, or the value:
+We can use the blank identifier to omit the index or the value from `range`:
 
 ```go
 for _, name := range names
@@ -231,7 +287,7 @@ for index, _ := range names
 for index := range names
 ```
 
-To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
+Slices are more complicated than they seem. To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
 
 #### **Maps**
 
@@ -244,7 +300,7 @@ m["key"] = "value"
 x = m["key"] // => "value"
 ```
 
-You can also create them with a map literal:
+You can also create them with a *map literal*:
 
 ```go
 var m = map[int]string{1: "one", 2: "two"}
@@ -322,13 +378,11 @@ func variadic(nums ...int) {
 }
 ```
 
-The `defer` statement defers the execution of a function until the surrounding function returns:
-
+If a function takes two or more arguments of the same type, you can group them together:
 ```go
-defer fmt.Print("world")
-fmt.Print("hello ")
-
-// => "hello world"
+func multiply(x, y int) int {
+  return x * y
+}
 ```
 
 These are called *Variadic Functions*.
@@ -346,19 +400,13 @@ nums := []int{1, 2, 3}
 variadic(nums) // => [1, 2, 3]
 ```
 
-A pair of brackets declares a block, which has its own scope:
+The `defer` statement defers the execution of a function until the surrounding function returns:
 
 ```go
-// This prints "in", then "out"
-func main() {
-  x := "out"
-  {
-    // this is a different `x`
-    x := "in"
-    println(x)
-  }
-  println(x)
-}
+defer fmt.Print("world")
+fmt.Print("hello ")
+
+// => "hello world"
 ```
 
 #### **Looping**
@@ -431,13 +479,13 @@ if something {
 }
 ```
 
-If your `if - else` statements is getting long, switch to a `switch` statement!
+If your `if - else` statements is getting long, switch to a `switch` statement :)
 
 ```go
 switch {
 case something:
   doSomething()
-case somethingElse:
+case somethingElse > 10:
   doSomethingElse()
 default:
   return
@@ -448,11 +496,13 @@ You can also switch on a condition expression:
 
 ```go
 switch x := 2; x {
+// if x equals 1
 case 1:
   doSomething()
+// if x equals 2
 case 2:
-  // this will be executed
   doSomethingElse()
+// otherwise
 default:
   return
 }
@@ -481,9 +531,13 @@ The `*` operator denotes the pointer's underlying value:
 ```go
 i := 42
 p := &i     // point to i
-println(*p) // read i through the pointer
-// "i" is 42 
+println(*p) // read i through the pointer => 42
+```
 
+You can use `*` to modify the original value:
+```go
+i := 42
+p := &i
 *p = 21  // set i through the pointer
 // "i" is now 21 
 ```
@@ -507,21 +561,30 @@ s.x = 1
 println(s.x)
 ```
 
-Struct fields can also be accessed through a struct pointer:
+Struct fields can also be accessed and modified through a struct pointer:
 
 ```go
 s := MyStruct{}
 p := &s
-// this is a shortcut for (*p).X
+
+(*p).x = 19 // modify s
+// "s.x" is now 19
+```
+
+Because this is so common, Go allows you to modify the underlying struct of a pointer without explicitly dereferencing:
+```go
+p := &s
+
+// these are the same
+(*p).x = 19
 p.x = 19
-println(s.x) // => 19
 ```
 
 You can create new structs using *struct literals*:
 
 ```go
 s1 := MyStruct{ x: 1, y: 2 }
-s2 := &MyStruct{ x: 1, y: 2 } // here, s2 is a pointer to MyStruct
+s2 := &MyStruct{ x: 1, y: 2 } // s2 is a pointer to MyStruct
 
 // the order does not matter, only the names do
 ```
@@ -529,8 +592,8 @@ s2 := &MyStruct{ x: 1, y: 2 } // here, s2 is a pointer to MyStruct
 For smaller structs, you can omit the names of the fields
 
 ```go
-s1 := MyStruct{ 1, 2 }
 // here, the order **does** matter
+s1 := MyStruct{ 1, 2 }
 ```
 
 You can declare methods on your own types:
@@ -549,16 +612,20 @@ func (n Number) isStrictlyPositive() bool {
 And use them like usual:
 
 ```go
-minusTwo := Number{ odd: false, value: -2 }
-printf("positive? %t", minusTwo.isStrictlyPositive())
-// this prints "positive? false"
+minusTwo := Number{ 
+  odd: false, 
+  value: -2,
+}
+
+minusTwo.isStrictlyPositive()
+// => false
 ```
 
 Struct methods receivers are copied by default, meaning their field's will not be mutated:
 
 ```go
 func (n Number) makeOdd() {
-  // n is a copy of the original number struct
+  // n is a copy of the original Number struct
   // this modifies the copy
   n.odd = true
 }
@@ -574,7 +641,7 @@ To mutate the original struct, use a pointer receiver:
 
 ```go
 func (n *Number) makeOdd() {
-  // n is a pointer to the original number struct
+  // here, n is a pointer to the original number struct
   n.odd = true
 }
 
@@ -589,7 +656,7 @@ Pointer receivers are used when you want to modify the value the receiver points
 
 #### **Interfaces**
 
-Interfaces are something multiple types have in common:
+Interfaces are something multiple types have in common. They can contain any number of methods in their method set:
 
 ```go
 type Signed interface {
@@ -600,7 +667,7 @@ type Signed interface {
 Functions can take interface arguments, and can call any method in it's method set:
 
 ```go
-func IsActuallyNegative(n Negativable) bool {
+func SignedIsNegative(s Signed) bool {
   return n.isStrictlyNegative()
 }
 ```
@@ -608,34 +675,37 @@ func IsActuallyNegative(n Negativable) bool {
 A struct *implements* an interface if it implements all of its methods:
 
 ```go
-func (n *Number) IsActuallyNegative() bool {
+func (n *Number) isStrictlyNegative() bool {
   n.value < 0
 }
 ```
 
-Now `*Number` implements the Signed interface.
+Now `*Number` implements the `Signed` interface.
 
 So this works:
 
 ```go
 // *Number has the isStrictlyNegative method
 // therefore, Number implements the Signed interface
-IsActuallyNegative(&Number{})
+// and can be passed as type `Signed`
+
+SignedIsNegative(&Number{})
 ```
 
 But `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`, so this doesn't work:
 
 ```go
-// Number doesn't implement Signed
-// because isStrictlyNegative is defined only on *Number
-IsActuallyNegative(Number{})
+// `Number` doesn't implement Signed
+// because isStrictlyNegative is defined only on `*Number`
+
+SignedIsNegative(Number{})
 ```
 
 And neither does this:
 
 ```go
 // here, 7 does not implement the Signed interface
-IsActuallyNegative(7)
+SignedIsNegative(7)
 ```
 
 #### **Type Assertions**
@@ -646,7 +716,7 @@ The interface type that specifies zero methods is known as the empty interface:
 interface{}
 ```
 
-An empty interface may hold values of any type. (Every type implements at least zero methods.):
+An empty interface may hold values of any type. (Every type implements at least zero methods):
 
 ```go
 var x interface{} = Number{} // literally anything
@@ -655,9 +725,10 @@ var x interface{} = Number{} // literally anything
 But since the empty interface does not have any methods, we cannot call the Number methods on Number.
 
 ```go
-var x interface{} = Number{} // literally anything
+var x interface{} = Number{}
 
 // this fails as the compiler does not know the underlying type of x
+// so it does not know whether it has the isStrictlyNegative method
 x.isStrictlyNegative()
 ```
 
@@ -677,7 +748,6 @@ If a type assertion fails (x wasn't really a Number), then it will trigger a pan
 
 ```go
 var x interface{} = "not a number"
-
 n = x.(Number)
 
 // panic: interface conversion: interface {} is string, not Number
@@ -698,17 +768,15 @@ if !ok { ... }
 To perform multiple type assertions, we can use a *type switch*:
 
 ```go
-func do(i interface{}) {
-  switch v := i.(type) {
-  case int:
-    fmt.Println("i is an int")
-  case string:
-    fmt.Println("i is an string")
-  default:
-    // %T is a special formatting verb
-    // It prints the underlying type of a value
-    fmt.Printf("I don't know about this type %T!", v)
-  }
+switch v := i.(type) {
+case int:
+  fmt.Println("i is an int")
+case string:
+  fmt.Println("i is an string")
+default:
+  // %T is a special formatting verb
+  // It prints the underlying type of a value
+  fmt.Printf("I don't know about this type %T!", v)
 }
 ```
 
@@ -720,16 +788,14 @@ Functions that can fail typically return an `error`, along with their regular re
 file, err := os.Open("foo.txt")
 ```
 
-In Go, errors are values, so this is a very common practice:
+In Go, errors are values, so you can perform `nil` checks on them. You are going to be seeing **a lot** of this:
 
 ```go
-func DoStuff() err {
-  file, err := os.Open("foo.txt")
-  if err != nil { 
-    return err
-  }
-  DoMoreStuff(file)
+file, err := os.Open("foo.txt")
+if err != nil { 
+  return err
 }
+DoMoreStuff(file)
 ```
 
 You can create errors using the `errors` package:
@@ -741,7 +807,7 @@ var err error = errors.New("I am an error")
 println(err.Error()) // => "I am an error"
 ```
 
-If code cannot continue because of a certain error, you can violently stop execution with `panic`:
+If code cannot continue because of a certain error, you can stop execution with `panic`:
 
 ```go
 if err != nil { 
@@ -763,13 +829,17 @@ go DoSomething()
 Goroutines are executed `concurrently`. For example, this code will execute in take two seconds to complete:
 ```go
 time.Sleep(time.Second * 1)
-time.Sleep(time.Second * 1)	
+time.Sleep(time.Second * 1)
+
+// exec time: 2 seconds
 ```
 
 But this code only takes one second, because both sleep calls are taking place at the same time!
 ```go
 go time.Sleep(time.Second * 1)
-time.Sleep(time.Second * 1)	
+time.Sleep(time.Second * 1)
+
+// exec time: 1 second
 ```
 
 #### **Channels**
@@ -783,6 +853,8 @@ And receive values from a channel:
 ```go
 x := <-channel
 ```
+
+Note that data flows in the direction of the arrow.
 
 Here is an example of a simple multiplication function that communicates through channels:
 ```go
@@ -885,6 +957,6 @@ Here is the output:
 quit
 ```
 
-And with that, we hit 15 minutes estimated reading time. I know the title said 30 minutes, but that's pretty much it! Go is a simple yet powerful language. If there's anything I missed, let me know in the comments. After reading this, you should be able to read most of the Go code you find online.
+And with that, we hit 15 minutes estimated reading time. I know the title said 30 minutes, but that's pretty much it! Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
 
 Thanks for reading!
