@@ -228,13 +228,24 @@ You can delete map keys:
 delete(m, key)
 ```
 
-And check whether a key is present:
+Check whether a key is present:
 ```go
 var m map[string]string
 m["key"] = "value"
 
 x, ok = m["key"] // => "value", true
 x, ok = m["doesnt-exist"] // => nil, false
+```
+
+And range over their keys and values:
+```go
+var m = map[int]string{1: "one", 2: "two"}
+for key, value := range names {
+  println(key, value)
+}
+
+// 1 "one"
+// 2 "two"
 ```
 
 `func` declares a function.
