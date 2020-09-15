@@ -429,29 +429,43 @@ Pointer receivers are used when you want to modify the value the receiver points
 
 Interfaces are something multiple types have in common:
 ```go
-type Oddable interface {
-  makeOdd()
+type Signed interface {
+  isStrictlyNegative() bool
 }
 ```
 
-A struct *implements* an interface if it implements all of its methods.
+Functions can take interface arguments, and can call any method in it's method set:
+```go
+func IsStrictlyNegative(n Negativable) bool {
+  return n.isStrictlyNegative()
+}
+```
 
-For example, this works:
+A struct *implements* an interface if it implements all of its methods:
+```go
+func (n *Number) IsStrictlyNegative() bool {
+  n.value < 0
+}
+```
+
+Now *Number implements the Signed interface.
+
+So this works:
 ```go
 // *Number has the isStrictlyNegative method
 // therefore, Number implements the Signed interface
-var s Signed = &Number{}
+IsStrictlyNegative(&Number{})
 ```
 
 But `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`, so this doesn't work:
 ```go
 // Number doesn't implement Signed
 // because isStrictlyNegative is defined only on *Number
-var s Signed = Number{}
+isStrictlyNegative(Number{})
 ```
 
-And same with this:
+And neither does this:
 ```go
 // here, 7 does not implement the Signed interface
-var s Signed = 7
+isStrictlyNegative(7)
 ```
