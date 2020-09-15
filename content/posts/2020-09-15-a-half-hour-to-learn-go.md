@@ -364,7 +364,7 @@ printf("positive? %t", minusTwo.isStrictlyPositive())
 // this prints "positive? false"
 ```
 
-Struct methods by default will be copied, meaning their field's will not be mutated:
+Struct methods receivers are copied by default, meaning their field's will not be mutated:
 ```go
 func (n Number) makeOdd() {
   // n is a copy of the original number struct
@@ -377,4 +377,18 @@ n.makeOdd()
 
 println(n.odd)
 // => false
+```
+
+To mutate the original struct, use a pointer receiver:
+```go
+func (n *Number) makeOdd() {
+  // n is a pointer to the original number struct
+  n.odd = true
+}
+
+n := Number{}
+n.makeOdd()
+
+println(n.odd)
+// => true
 ```
