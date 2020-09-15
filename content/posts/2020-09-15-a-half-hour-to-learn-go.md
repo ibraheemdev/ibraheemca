@@ -446,6 +446,28 @@ for {
 }
 ```
 
+You can use break to `break` out of a loop:
+```go
+for {
+  if shouldBreak() {
+    break
+  }
+}
+```
+
+And `continue` to skip to the next iteration
+```go
+for i := 0; i < 5; i++ {
+  // skip number 2
+  if i == 2 {
+    continue
+  }
+  print(i)
+}
+
+// => 0 1 3 4
+```
+
 #### **Control Flow**
 
 Go's `if` statements have a similar syntax to it's loops:
@@ -506,6 +528,19 @@ case 2:
 default:
   return
 }
+```
+
+You can use `fallthrough` to fallthrough to the case below the current case:
+```go
+switch 1 {
+case 1:
+    print("1 ")
+    fallthrough
+case 2:
+    print("2 ")
+}
+
+// => 1 2
 ```
 
 In a switch statement, only the first matched case is executed.
