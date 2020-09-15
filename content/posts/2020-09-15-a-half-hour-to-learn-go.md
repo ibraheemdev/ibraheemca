@@ -18,6 +18,35 @@ Instead of focusing on one or two concepts, I'll try to go through as many Go sn
 
 Ready? Go!
 
+Every go program is made up of packages,
+
+Programs start by running in package `main`.
+
+You can use external packages by importing them:
+```go
+package main
+
+import (
+  "fmt"
+  "math/rand"
+)
+```
+You can use exported names in an imported package by using the package name as an identifier:
+```
+import (
+  "fmt"
+  "math/rand"
+)
+
+fmt.Println("My favorite number is", rand.Intn(10))
+```
+
+A name is exported if it begins with a capital letter. This is similar to `public` and `private` in other languages:
+```go
+x := "hello" // x is unexported, or private
+A := "hello" // A will be exported, or public
+```
+
 `var` declares a variable of a given type:
 
 ```go
@@ -46,17 +75,18 @@ x := 42
 You can declare many variables at the same time:
 
 ```go
-var a, b, c int
-a, b, c = 1, 2, 3
-x, y := 10, 20
+var x, y int
+x, y = 10, 20
 ```
 
 If you declare a variable without initializing it, it will implicitly be assigned to the zero value of it's type:
 
 ```go
+var b bool
 var x int
 var y string
 
+println(b) // => false
 println(x) // => 0
 println(y) // => ""
 ```
