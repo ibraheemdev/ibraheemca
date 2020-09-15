@@ -188,7 +188,7 @@ If you don't know the length of your array, you can use a slice literal. It will
 nums := []int{1, 2, 3, 4, 5}
 ```
 
-Modifying the slice will modify the underlying array:
+Modifying a slice will modify its underlying array:
 
 ```go
 nums := [6]int{1, 2, 3, 4, 5, 6}
@@ -232,6 +232,8 @@ for _, name := range names
 for index, _ := range names
 for index := range names
 ```
+
+To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
 
 #### **Maps**
 
