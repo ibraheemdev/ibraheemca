@@ -1,23 +1,24 @@
 ---
 template: post
-title: Why should you learn Rust?
-slug: why-learn-rust
+title: Why Developers Love Rust
+slug: why-devs-love-rust
 socialImage: /media/rust-logo.png
 draft: false
 date: 2020-09-11T16:53:35.714Z
-description: Why you should consider learning Rust and some of the benefits it
-  provides over other languages.
+description: Rust has been getting a lot of media attention recently. It has
+  been voted the most loved language for five years running, and it grew in use
+  on Github by 235% from 2018 to 2019. Large companies such as Mozilla, Apple,
+  Amazon, Facebook, Google, Twitter, and Microsoft have began adopting it in
+  their codebases. So, why do so many people love Rust?
 mainTag: Rust
 tags:
   - Rust
 ---
-**Why should you learn Rust?**
-
 Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running, and it [grew in use on Github](https://octoverse.github.com/#fastest-growing-languages) by **235%** from 2018 to 2019. Large companies such as Mozilla, Apple, Amazon, Facebook, Google, Twitter, and Microsoft have began adopting it in their codebases. So, why do so many people love Rust?
 
 Rust was built to solve many of the hassles associated with other popular languages. Let's look at a couple of examples:
 
-**Rust vs. Dynamic Languages**
+#### **Rust vs. Dynamic Languages**
 
 Developers coming from dynamically typed languages will find it hard to argue the benefits of static typing. Static type definitions are even being added to many popular dynamic languages, such as javascript's [typescript](https://www.typescriptlang.org/), python's [type hints](https://github.com/python/mypy), and ruby's [rbs](https://github.com/ruby/rbs). Static languages are generally considered more "scalable" and better for larger codebases as the compiler does much of the work for you. Let's look at an example:
 
@@ -51,7 +52,7 @@ Static typing also results in compiled code that executes faster as the compiler
 
 The points in this section apply to pretty much all strongly typed languages. Let's look at some of the things Rust does differently than other statically typed languages.
 
-**No Nulls**
+#### **No Nulls**
 
 Most languages have a concept of `Null`. Any value can either be what you expect, or nothing. If you accidentally miss a null check, you code can blow up. In Rust, `Null` is not even a concept, it does not exist! If `x = "x"`, then x IS a string, and will always be a string.
 
@@ -65,7 +66,7 @@ fn print_size(vector: Option<Vec<string>>) {
 }
 ```
 
-Results in an error:
+Will not compile:
 
 ```rust
 error[E0004]: non-exhaustive patterns: `None` not covered
@@ -86,7 +87,7 @@ To learn more, run the command again with --verbose.
 
 In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, issue, and potential solution to the error.
 
-**Rust vs. Statically Typed Languages**
+#### **Rust vs. Statically Typed Languages**
 
 Rust does its best to get out of the developer's way when it comes to static typing. Rust has a very smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Here's an advanced example of type inference, straight from the [docs](https://doc.rust-lang.org/stable/rust-by-example/types/inference.html).
 
@@ -112,7 +113,7 @@ fn main() {
 
 No type annotation of variables was needed, the compiler is happy and so is the programmer!
 
-**Rust vs. Garbage Collected Languages**
+#### **Rust vs. Garbage Collected Languages**
 
 Garbage collection is an automatic memory management system that looks for unused variables and frees their memory. This can introduce performance issues at scale. 
 
@@ -140,7 +141,7 @@ Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a p
 
 [Skylight](https://www.skylight.io/), an early adopter of Rust was able to [reduce their memory usage](https://www.rust-lang.org/static/pdfs/Rust-Tilde-Whitepaper.pdf) from 5GB to 50MB by rewriting certain endpoints from Java to Rust.
 
-**Rust vs. Other Systems Programming Languages**
+#### **Rust vs. Other Systems Programming Languages**
 
 Rust was built by Mozilla to be a the next step in the evolution of C or C++, two other systems programming languages. Rust gives you the low level control, while still providing features and conveniences that make it feel like a high-level languages. It gives you the technical power without allowing it to degrade from the developer experience.
 
@@ -164,7 +165,7 @@ As you can see, Rust can be used create a vector containing the first ten square
 
 Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust* and works just like regular Rust, but gives you extra capabilities. If you can't do something in safe Rust, you can implement it yourself, or, chances are, someone else has already done it, which brings me to my next point.
 
-**The Rust Ecosystem**
+#### **The Rust Ecosystem**
 
 Rust has become larger than just a language, it has a large ecosystem supporting it.
 
@@ -180,11 +181,12 @@ There are a ton of opensource projects created by the community. From web framew
 
 For a full list of resources, see [Awesome Rust](https://github.com/rust-unofficial/awesome-rust), a curated list of Rust code and resources.
 
-**Rust and WebAssembly**
+#### **Rust and WebAssembly**
 
 Another reason that people get so excited about Rust is how well it plays with WebAssembly. [Webassembly](https://webassembly.org/) is a binary instruction format that can run in most major browsers. It aims to execute at native speed by taking advantage of common hardware capabilities available on a wide range of platforms. Wasm can be run in the place of, or alongside traditional javascript, allowing developers to offload performance critical tasks from javascript, improving their application's performance without having to completely rewrite their existing codebase.
 
 Rust can be compiled directly into WebAssembly and run in the browser with Cargo:
+
 ```rust
 $ cargo build --target=wasm32-unknown-emscripten
 ```
@@ -195,6 +197,6 @@ There are some really cool Rust + Wasm projects out there. For example, [Yew](ht
 
 For more information regarding Rust and WebAssembly, see the [rustwasm book](https://rustwasm.github.io/docs/book/introduction.html)
 
-**Getting Started**
+#### **Getting Started**
 
-Hopefully you understand why Rust is such a beloved language by developers. To get started with learning Rust, you should check out [the Rust book](https://doc.rust-lang.org/book/). For other learning options and hands-on project, [click here](https://www.rust-lang.org/learn)
+Hopefully you understand why Rust is such a beloved language by developers. To get started with learning Rust, you should check out [the Rust book](https://doc.rust-lang.org/book/). For other learning options and hands-on projects, [click here](https://www.rust-lang.org/learn)
