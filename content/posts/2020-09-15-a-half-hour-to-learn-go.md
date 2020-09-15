@@ -302,3 +302,54 @@ default:
 ```
 
 In a switch statement, only the first matched case is executed.
+
+The `defer` statement defers the execution of a function until the surrounding function returns:
+```
+defer fmt.Print("world")
+fmt.Print("hello ")
+
+// => "hello world"
+```
+
+Named types are declared with the `type` keyword:
+```go
+type MyString string
+```
+
+Structs are declared with the `struct` keyword:
+```go
+type MyStruct struct {
+  x int
+  y int
+}
+```
+
+They can be initialized using struct literals:
+```go
+s1 := MyStruct{ x: 1, y: 2 }
+// the order does not matter, only the names do
+```
+
+For smaller structs, you can omit the names of the fields
+```go
+s1 := MyStruct{ 1, 2 }
+// here, the order **does** matter
+```
+
+You can also create a new struct and get a pointer to it:
+```go
+s1 := new(MyStruct)
+// s1 is a pointer to MyStruct
+```
+
+You can assign a struct's field to a value:
+```go
+s1 := new(MyStruct)
+s1.x = 1
+s1.y = 2
+```
+
+Because this is so common, Go has built in syntax for it:
+```go
+s1 := &MyStruct{ x: 1, y: 2 }
+```
