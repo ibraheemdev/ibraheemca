@@ -213,6 +213,16 @@ You create arrays using *array literals*:
 helloWorld := [2]string{"Hello", "World"}
 ```
 
+You cannot increase an array beyond its capacity. Doing so will panic:
+```go
+helloWorld := [2]string{"Hello", "World"}
+helloWorld[10] = "Space"
+
+// panic: runtime error: index out of range [10] with length 2
+```
+
+To get around this issue, Go provides slices.
+
 #### **Slices**
 
 Slices are more common than arrays. They do not have a fixed length, and are therefore more flexible:
@@ -222,8 +232,11 @@ nums := []int{1, 2, 3, 4, 5}
 
 Slices can also be created with the built-in function `make`:
 ```go
+make([]string, len)
+
+// most of the time you will not need cap
+// but it can be set for memory optimization
 make([]string, len, cap)
-make([]string, len)  // cap defaults to len
 ```
 
 You can also create a slice by *slicing* an existing array:
@@ -235,11 +248,13 @@ fmt.Println(s)
 // => [2 3 4]
 ```
 
-You can omit the start or end index when slicing an array, so these expressions are equivalent:
-
+You can omit the start or end index when slicing an array, so for this array:
 ```go
 var a [10]int
+```
+These expressions are equivalent:
 
+```go
 a[0:10]
 a[:10]
 a[0:]
@@ -257,7 +272,7 @@ fmt.Println(nums)
 // => [999 2 3 4 5 6]
 ```
 
-Slices are just wrappers over arrays. You cannot increase a slice beyond its capacity. Doing so will panic:
+Slices are just a fancy way to manage an underlying array. You cannot increase a slice beyond its capacity. Doing so will panic, just like with an array:
 ```go
 nums := []int{1, 2, 3, 4, 5, 6}
 nums[20] = 9
@@ -265,10 +280,7 @@ nums[20] = 9
 // panic: runtime error: index out of range [20] with length 6
 ```
 
-However, Go has built-in functions to make slices feel like arrays.
-
-To add something to a slice, you can use the `append` function:
-
+However, Go has built-in functions to make slices feel like arrays, such as the `append` function, which can be used to add items to the end of a slice:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 nums = append(nums, 6)
