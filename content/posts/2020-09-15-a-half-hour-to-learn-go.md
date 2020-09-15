@@ -23,6 +23,7 @@ Every go program is made up of packages,
 Programs start by running in package `main`.
 
 You can use external packages by importing them:
+
 ```go
 package main
 
@@ -31,7 +32,9 @@ import (
   "math/rand"
 )
 ```
+
 You can use exported names in an imported package by using the package name as an identifier:
+
 ```
 import (
   "fmt"
@@ -42,6 +45,7 @@ fmt.Println("My favorite number is", rand.Intn(10))
 ```
 
 A name is exported if it begins with a capital letter. This is similar to `public` and `private` in other languages:
+
 ```go
 x := "hello" // x is unexported, or private
 A := "hello" // A will be exported, or public
@@ -92,12 +96,14 @@ println(y) // => ""
 ```
 
 You can convert values between different types:
+
 ```go
 var f float64 = 1 // +1.000000
 i := int(f)       // 1
 ```
 
 Unchanging values can be declared with the `const` keyword. Constants can be character, string, boolean, or numeric values:
+
 ```go
 const Pi = 3.14
 ```
@@ -205,11 +211,13 @@ func main() {
 ```
 
 Go has only one loop, the `for` loop. It has three components:
-- the init statement: executed before the first iteration
-- the condition: evaluated before every iteration
-- the post statement: executed at the end of every iteration
+
+* the init statement: executed before the first iteration
+* the condition: evaluated before every iteration
+* the post statement: executed at the end of every iteration
 
 Here's an example:
+
 ```go
 sum := 0
 for i := 0; i < 10; i++ {
@@ -219,6 +227,7 @@ for i := 0; i < 10; i++ {
 ```
 
 The init and post statements are optional:
+
 ```go
 // this loop will run forever
 yup := true
@@ -228,6 +237,7 @@ for yup {
 ```
 
 An infinite for loop can also be written like this:
+
 ```
 // this loop will also run forever
 for {
@@ -236,6 +246,7 @@ for {
 ```
 
 Go's `if` statements have a similar syntax to it's loops:
+
 ```go
 // this prints "true"
 if 1 == 1 {
@@ -244,6 +255,7 @@ if 1 == 1 {
 ```
 
 `if` conditions can also have an init statement:
+
 ```go
 // this prints "hello"
 if x := "hello"; x != nil {
@@ -251,3 +263,42 @@ if x := "hello"; x != nil {
 }
 // "x" is now out of scope
 ```
+
+Go also has `else` and `else if` statements:
+
+```go
+if something {
+  doSomething()
+} else if somethingElse {
+  doSomethingElse()
+} else {
+  return
+}
+```
+
+If your `if - else` statements is getting long, switch to a `switch` statement!
+```go
+switch {
+case something:
+  doSomething()
+case somethingElse:
+  doSomethingElse()
+default:
+  return
+}
+```
+
+You can also switch on a condition expression:
+```go
+switch x := 2; x {
+case 1:
+  doSomething()
+case 2:
+  // this will be executed
+  doSomethingElse()
+default:
+  return
+}
+```
+
+In a switch statement, only the first matched case is executed.
