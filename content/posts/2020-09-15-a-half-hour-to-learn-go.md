@@ -436,14 +436,14 @@ type Signed interface {
 
 Functions can take interface arguments, and can call any method in it's method set:
 ```go
-func IsStrictlyNegative(n Negativable) bool {
+func IsActuallyNegative(n Negativable) bool {
   return n.isStrictlyNegative()
 }
 ```
 
 A struct *implements* an interface if it implements all of its methods:
 ```go
-func (n *Number) IsStrictlyNegative() bool {
+func (n *Number) IsActuallyNegative() bool {
   n.value < 0
 }
 ```
@@ -454,25 +454,88 @@ So this works:
 ```go
 // *Number has the isStrictlyNegative method
 // therefore, Number implements the Signed interface
-IsStrictlyNegative(&Number{})
+IsActuallyNegative(&Number{})
 ```
 
 But `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`, so this doesn't work:
 ```go
 // Number doesn't implement Signed
 // because isStrictlyNegative is defined only on *Number
-isStrictlyNegative(Number{})
+IsActuallyNegative(Number{})
 ```
 
 And neither does this:
 ```go
 // here, 7 does not implement the Signed interface
-isStrictlyNegative(7)
+IsActuallyNegative(7)
 ```
 
 Functions that can fail typically return an `error`, along with their regular return value:
 ```go
 file, err := os.Open("foo.txt")
+```
+
+The interface type that specifies zero methods is known as the empty interface:
+```go
+interface{}
+```
+
+An empty interface may hold values of any type. (Every type implements at least zero methods.):
+```go
+var x interface{} = Number{} // literally anything
+```
+
+But since the empty interface does not have any methods, we cannot call the Number methods on Number.
+```go
+var x interface{} = Number{} // literally anything
+
+// this fails as the compiler does not know the underlying type of x
+x.isStrictlyNegative()
+```
+
+Because we know what x really is, we can use a type assertion:
+```go
+var x interface{} = Number{}
+
+n = x.(Number)
+
+// now the compiler knows that n is a Number
+// so this is fine
+n.isStrictlyNegative()
+```
+
+If a type assertion fails (x wasn't really a Number), then it will trigger a panic:
+```go
+var x interface{} = "not a number"
+
+n = x.(Number)
+
+// panic: interface conversion: interface {} is string, not Number
+```
+
+To prevent a `panic`, we can use the second return value of a type assertion:
+```go
+var x interface{} = "not a number"
+
+// this code will not panic
+n, ok := x.(Number)
+
+// here, ok is false because the type assertion failed
+if !ok { ... }
+```
+
+To perform multiple type assertions, we can use a *type switch*:
+```go
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about type %T!\n", v)
+	}
+}
 ```
 
 In Go, errors are values, so this is a very common practice:
