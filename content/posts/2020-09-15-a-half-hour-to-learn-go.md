@@ -311,6 +311,30 @@ fmt.Print("hello ")
 // => "hello world"
 ```
 
+Go has pointers. A pointer holds the memory address of a value.
+
+```go
+// "p" is a pointer to an integer
+var p *int
+```
+
+The `&` operator generates a pointer to its operand:
+```
+i := 42
+p := &i // point to i
+```
+
+The `*` operator denotes the pointer's underlying value:
+```go
+i := 42
+p := &i     // point to i
+println(*p) // read i through the pointer
+// "i" is 42 
+
+*p = 21  // set i through the pointer
+// "i" is now 21 
+```
+
 Named types are declared with the `type` keyword:
 ```go
 type MyString string
@@ -324,10 +348,25 @@ type MyStruct struct {
 }
 ```
 
-They can be initialized using struct literals:
+Struct fields are accessed using a dot:
+```go
+s := MyStruct{}
+s.x = 1
+println(s.x)
+```
+Struct fields can also be accessed through a struct pointer:
+```go
+s := MyStruct{}
+p := &s
+// this is a shortcut for (*p).X
+p.x = 19
+println(s.x) // => 19
+```
+
+You can create new structs using *struct literals*:
 ```go
 s1 := MyStruct{ x: 1, y: 2 }
-s2 := &MyStruct{ x: 1, y: 2 } // s1 is a pointer to MyStruct
+s2 := &MyStruct{ x: 1, y: 2 } // here, s2 is a pointer to MyStruct
 
 // the order does not matter, only the names do
 ```
@@ -336,13 +375,6 @@ For smaller structs, you can omit the names of the fields
 ```go
 s1 := MyStruct{ 1, 2 }
 // here, the order **does** matter
-```
-
-You can assign a struct's field to a value:
-```go
-s1 := MyStruct{}
-s1.x = 1
-s1.y = 2
 ```
 
 You can declare methods on your own types:
@@ -391,4 +423,36 @@ n.makeOdd()
 
 println(n.odd)
 // => true
+```
+
+Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient for large structs.
+
+Interfaces are something multiple types have in common:
+```go
+type Signed interface {
+  isStrictlyNegative() bool
+}
+```
+
+A struct *implements* an interface if it implements all of its methods:
+```go
+func (n *Number) isStrictlyNegative() bool {
+  return n.value < 0
+}
+
+var s Signed
+
+// Number has the isStrictlyNegative method
+// therefore, Number implements the Signed interface
+// so this is fine
+s = &Number{}
+
+// Number doesn't implement Signed
+// because isStrictlyNegative is defined only on *Number
+// so this will not compile
+s = Number{}
+
+// here, 7 does not implement the Signed interface
+// so this will not compile
+s = 7
 ```
