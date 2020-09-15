@@ -132,16 +132,6 @@ if x := 1; x != 0 { ... }
 
 (We'll go over if statements later).
 
-Statements can span multiple lines:
-
-```go
-x := doSomething(
-  withThis(),
-  andThis(),
-  andThis(),
-)
-```
-
 `func` declares a function.
 
 Here's a void function:
@@ -211,5 +201,36 @@ func main() {
     println(x)
   }
   println(x)
+}
+```
+
+Go has only one loop, the `for` loop. It has three components:
+- the init statement: executed before the first iteration
+- the condition: evaluated before every iteration
+- the post statement: executed at the end of every iteration
+
+Here's an example:
+```go
+sum := 0
+for i := 0; i < 10; i++ {
+  sum ++
+}
+// "sum" is now 10
+```
+
+The init and post statements are optional:
+```go
+// this loop will run forever
+yup := true
+for yup {
+  println("yup!")
+}
+```
+
+An infinite for loop can also be written like this:
+```
+// this loop will also run forever
+for {
+  println("yup!")
 }
 ```
