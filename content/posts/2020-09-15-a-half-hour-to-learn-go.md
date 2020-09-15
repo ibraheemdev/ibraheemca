@@ -1,6 +1,6 @@
 ---
 template: post
-title: A half-hour to learn Go
+title: A Half Hour to Learn Go
 slug: a-half-hour-to-learn-go
 socialImage: /media/gopher.jpg
 draft: false
@@ -248,8 +248,13 @@ fmt.Println(nums)
 // => [999 2 3 4 5 6]
 ```
 
-If you don't know the length of your array, you can use a slice literal. It will create the array, and then build the slice that references it:
+You can use `make` to create dynamically sized arrays. It will create a zeroed array, and then build the slice that references it:
+```go
+make([]string, len)
+make([]string, len, cap)
+```
 
+Or you can use a *slice literal*:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 ```
