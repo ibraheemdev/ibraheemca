@@ -117,3 +117,23 @@ func sayHello(name string) {
   fmt.Printf("hello %s", name)
 }
 ```
+
+Or an arbitrary number of arguments:
+```go
+func variadic(nums ...int) {
+  println(nums)
+}
+```
+
+These are called *Variadic Functions*.
+
+They can be called just like regular functions:
+```go
+variadic(1, 2, 3) // => [1, 2, 3]
+```
+
+Or you can pass in a slice directly:
+```go
+nums := []int{1, 2, 3}
+variadic(nums) // => [1, 2, 3]
+```
