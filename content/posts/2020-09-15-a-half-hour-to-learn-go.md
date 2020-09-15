@@ -4,10 +4,8 @@ title: A half-hour to learn Go
 slug: a-half-hour-to-learn-go
 socialImage: /media/gopher.jpg
 draft: true
-date: 2020-09-15T15:56:03.101Z
-description: In order to increase fluency in a programming language, one has to
-  read a lot of it. But how can you read a lot of it if you don't know what it
-  means?
+date: 2020-09-15T21:04:19.754Z
+description: A thorough crash course in Go.
 mainTag: Golang
 tags:
   - Golang
@@ -886,3 +884,7 @@ Here is the output:
 16
 quit
 ```
+
+And with that, we hit 15 minutes estimated reading time. I know the title said 30 minutes, but that's pretty much it! Go is a simple yet powerful language. If there's anything I missed, let me know in the comments. After reading this, you should be able to read most of the Go code you find online.
+
+Thanks for reading!
