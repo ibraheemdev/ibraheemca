@@ -215,8 +215,18 @@ helloWorld := [2]string{"Hello", "World"}
 
 #### **Slices**
 
-Slices don't store any data. They just reference an underlying array. You can create one by slicing an existing array:
+Slices are more common than arrays. They do not have a fixed length, and are therefore more flexible:
+```go
+nums := []int{1, 2, 3, 4, 5}
+```
 
+Slices can also be created with the built-in function `make`:
+```go
+make([]string, len, cap)
+make([]string, len)  // cap defaults to len
+```
+
+You can also create a slice by *slicing* an existing array:
 ```go
 nums := [6]int{1, 2, 3, 4, 5, 6}
 s := nums[1:4]
@@ -236,8 +246,7 @@ a[0:]
 a[:]
 ```
 
-Modifying a slice will modify its underlying array:
-
+Modifying the elements of a slice will modify its underlying array:
 ```go
 nums := [6]int{1, 2, 3, 4, 5, 6}
 
@@ -248,18 +257,17 @@ fmt.Println(nums)
 // => [999 2 3 4 5 6]
 ```
 
-You can use `make` to create dynamically sized arrays. It will create a zeroed array, and then build the slice that references it:
+Slices are just wrappers over arrays. You cannot increase a slice beyond its capacity. Doing so will panic:
 ```go
-make([]string, len)
-make([]string, len, cap)
+nums := []int{1, 2, 3, 4, 5, 6}
+nums[20] = 9
+
+// panic: runtime error: index out of range [20] with length 6
 ```
 
-Or you can use a *slice literal*:
-```go
-nums := []int{1, 2, 3, 4, 5}
-```
+However, Go has built-in functions to make slices feel like arrays.
 
-To add something to a slice, you can use the append function. It will handle creating a new underlying array if the original array is too small:
+To add something to a slice, you can use the `append` function:
 
 ```go
 nums := []int{1, 2, 3, 4, 5}
