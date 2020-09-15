@@ -232,11 +232,10 @@ nums := []int{1, 2, 3, 4, 5}
 
 Slices can also be created with the built-in function `make`:
 ```go
-make([]string, len)
+make([]string, initialLength)
 
-// most of the time you will not need cap
-// but it can be set for memory optimization
-make([]string, len, cap)
+// initialCapacity can be set for memory optimization
+make([]string, initialLength, initialCapacity)
 ```
 
 You can also create a slice by *slicing* an existing array:
@@ -255,10 +254,10 @@ var a [10]int
 These expressions are equivalent:
 
 ```go
-a[0:10]
-a[:10]
-a[0:]
 a[:]
+a[0:]
+a[:10]
+a[0:10]
 ```
 
 Modifying the elements of a slice will modify its underlying array:
