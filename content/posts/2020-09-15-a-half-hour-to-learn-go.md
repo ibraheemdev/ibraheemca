@@ -91,6 +91,17 @@ println(x) // => 0
 println(y) // => ""
 ```
 
+You can convert values between different types:
+```go
+var f float64 = 1 // +1.000000
+i := int(f)       // 1
+```
+
+Unchanging values can be declared with the `const` keyword. Constants can be character, string, boolean, or numeric values:
+```go
+const Pi = 3.14
+```
+
 The blank identifier `_` is an anonymous placeholder. It basically means to throw away something:
 
 ```go
