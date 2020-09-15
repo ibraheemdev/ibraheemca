@@ -613,7 +613,7 @@ func (n *Number) IsActuallyNegative() bool {
 }
 ```
 
-Now *Number implements the Signed interface.
+Now `*Number` implements the Signed interface.
 
 So this works:
 
