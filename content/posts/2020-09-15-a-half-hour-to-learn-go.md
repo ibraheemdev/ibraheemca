@@ -469,3 +469,30 @@ And neither does this:
 // here, 7 does not implement the Signed interface
 isStrictlyNegative(7)
 ```
+
+Functions that can fail typically return an `error`, along with their regular return value:
+```go
+file, err := os.Open("foo.txt")
+```
+
+In Go, errors are values, so this is a very common practice:
+```go
+func DoStuff() err {
+  file, err := os.Open("foo.txt")
+  if err != nil { 
+    return err
+  }
+  DoMoreStuff(file)
+}
+```
+
+If code cannot continue because of a certain error, you can violently stop execution with `panic`:
+```go
+if err != nil { 
+  panic(fmt.Errorf("Could not continue due to error: %w", err))
+}
+
+// panic: Could not continue due to error...
+// goroutine 1 [running]:
+// main.main() /tmp/sandbox091462361/prog.go:5 +0x39
+```
