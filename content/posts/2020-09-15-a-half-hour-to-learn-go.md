@@ -89,10 +89,12 @@ If you declare a variable without initializing it, it will implicitly be assigne
 var b bool
 var x int
 var y string
+var z []int
 
 println(b) // => false
 println(x) // => 0
 println(y) // => ""
+println(z) // => nil
 ```
 
 You can convert values between different types:
@@ -130,13 +132,110 @@ Or to avoid compiler errors during development:
 var _ = devFunction() // TODO: delete when done
 ```
 
-You don't need semi-colons in Go, as they are automatically inserted by the compiler. If you wan't multiple statements on the same line however, you must use semi-colons:
-
+In Go, arrays have a fixed length:
 ```
-if x := 1; x != 0 { ... }
+var a [2]string // an array of 10 integers
+a[0] = "Hello"
+a[1] = "World"
+println(a) // => ["Hello", "World"]
 ```
 
-(We'll go over if statements later).
+You can fill an array with values with an *array literal*:
+```go
+helloWorld := [2]string{"Hello", "World"}
+```
+
+Slices don't store any data. They just reference an underlying array. You can create one by slicing an existing array:
+```go
+nums := [6]int{1, 2, 3, 4, 5, 6}
+s := nums[1:4]
+
+fmt.Println(s)
+// => [2 3 4]
+```
+
+These expressions are equivalent:
+```
+var a [10]int
+
+a[0:10]
+a[:10]
+a[0:]
+a[:]
+```
+
+If you don't know the length of your array, you can use a slice literal. It will create the array, and then build the slice that references it:
+```go
+nums := []int{1, 2, 3, 4, 5}
+```
+
+Modifying the slice will modify the underlying array:
+```go
+nums := [6]int{1, 2, 3, 4, 5, 6}
+
+s := nums[0:4]
+s[0] = 999
+
+fmt.Println(nums)
+// => [999 2 3 4 5 6]
+```
+
+To add something to a slice, you can use the append function. It will handle creating a new underlying array if the original array is too small:
+```go
+nums := []int{1, 2, 3, 4, 5}
+nums = append(nums, 6)
+
+fmt.Println(nums)
+// => [1 2 3 4 5 6]
+```
+
+You can iterate over slices, arrays, and maps with `range`:
+```go
+names := []string{"john", "joe", "jessica"}
+for index, name := range names {
+  println(index, name)
+}
+
+// 0 john
+// 1 joe
+// 2 jessica
+```
+
+We can use the blank identifier from before to omit the index, or the value:
+```go
+for _, name := range names
+
+// these are the same
+for index, _ := range names
+for index := range names
+```
+
+Maps are like hashes in ruby, or dictionaries in python:
+```
+var m map[string]string
+m["key"] = "value"
+
+x = m["key"] // => "value"
+```
+
+You can also create them with a map literal:
+```go
+var m = map[int]string{1: "one", 2: "two"}
+```
+
+You can delete map keys:
+```go
+delete(m, key)
+```
+
+And check whether a key is present:
+```go
+var m map[string]string
+m["key"] = "value"
+
+x, ok = m["key"] // => "value", true
+x, ok = m["doesnt-exist"] // => nil, false
+```
 
 `func` declares a function.
 
@@ -335,11 +434,6 @@ println(*p) // read i through the pointer
 // "i" is now 21 
 ```
 
-Named types are declared with the `type` keyword:
-```go
-type MyString string
-```
-
 Structs are declared with the `struct` keyword:
 ```go
 type MyStruct struct {
@@ -426,6 +520,7 @@ println(n.odd)
 ```
 
 Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient for large structs.
+
 
 Interfaces are something multiple types have in common:
 ```go
@@ -527,14 +622,16 @@ if !ok { ... }
 To perform multiple type assertions, we can use a *type switch*:
 ```go
 func do(i interface{}) {
-	switch v := i.(type) {
-	case int:
-		fmt.Printf("Twice %v is %v\n", v, v*2)
-	case string:
-		fmt.Printf("%q is %v bytes long\n", v, len(v))
-	default:
-		fmt.Printf("I don't know about type %T!\n", v)
-	}
+  switch v := i.(type) {
+  case int:
+    fmt.Println("i is an int")
+  case string:
+    fmt.Println("i is an string")
+  default:
+    // %T is a special formatting verb
+    // It prints the underlying type of a value
+    fmt.Printf("I don't know about this type %T!", v)
+  }
 }
 ```
 
@@ -547,6 +644,14 @@ func DoStuff() err {
   }
   DoMoreStuff(file)
 }
+```
+
+You can create errors using the `errors` package:
+```go
+import "errors"
+
+var err error = errors.New("I am an error")
+println(err.Error()) // => "I am an error"
 ```
 
 If code cannot continue because of a certain error, you can violently stop execution with `panic`:
