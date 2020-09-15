@@ -88,3 +88,18 @@ x := doSomething(
   andThis(),
 )
 ```
+
+`func` declares a function.
+
+Here's a void function:
+```go
+func greet() {
+  println("Hi there!")
+}
+```
+And here's a function that returns an integer:
+```go
+func fairDiceRoll() int {
+  return 4
+}
+```
