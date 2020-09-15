@@ -899,7 +899,7 @@ if err != nil {
 // main.main() /tmp/sandbox091462361/prog.go:5 +0x39
 ```
 
-You can `defer` a call to `recover`, to regain control of a panicking goroutine. `recover` will return the value passed the panic:
+You can `defer` a call to `recover`, to regain control of a panicking goroutine. `recover` will return the value passed to panic:
 ```go
 defer func() {
   if r := recover(); r != nil {
