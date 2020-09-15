@@ -103,3 +103,17 @@ func fairDiceRoll() int {
   return 4
 }
 ```
+
+Functions can return multiple values:
+```go
+func oneTwoThree() (int, int, int) {
+  return 1, 2, 3
+}
+```
+
+They can also take specified arguments:
+```go
+func sayHello(name string) {
+  fmt.Printf("hello %s", name)
+}
+```
