@@ -753,7 +753,7 @@ if err != nil {
 // main.main() /tmp/sandbox091462361/prog.go:5 +0x39
 ```
 
-#### **Concurrency**
+#### **Goroutines**
 
 Golang is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a go routine, you simple prefix a function call with the keyword `go`:
 ```go
@@ -771,6 +771,8 @@ But this code only takes one second, because both sleep calls are taking place a
 go time.Sleep(time.Second * 1)
 time.Sleep(time.Second * 1)	
 ```
+
+#### **Channels**
 
 Goroutines communicate through *channels*. You can send values to a channel:
 ```go
@@ -830,4 +832,55 @@ To receive all the values from a channel until it is closed, you can use `range`
 for value := range channel {
   fmt.Println(value)
 }
+```
+
+#### **Handling Multiple Channels**
+
+To handle communicating with multiple channels, you can use `select`:
+```go
+func doubler(c, quit chan int) {
+  x := 1
+  for {
+    select {
+      // send x to channel and double it
+      case c <- x:
+        x += x
+      // ... until a value is sent to "quit"
+      case <-quit:
+        println("quit")
+        return
+    }
+  }
+}
+```
+
+Let's test the doubler function out:
+```go
+func main() {
+  // make the neccessary channels
+  c := make(chan int)
+  quit := make(chan int)
+
+  go func() {
+    // receive five values from the channel
+    for i := 0; i < 5; i++ {
+      println(<-c)
+    }
+    // ... and then quit
+    quit <- 0
+  }()
+
+  // run doubler
+  doubler(c, quit)
+}
+```
+
+Here is the output:
+```go
+1
+2
+4
+8
+16
+quit
 ```
