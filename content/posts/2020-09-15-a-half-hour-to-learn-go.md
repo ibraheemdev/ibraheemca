@@ -327,6 +327,8 @@ type MyStruct struct {
 They can be initialized using struct literals:
 ```go
 s1 := MyStruct{ x: 1, y: 2 }
+s2 := &MyStruct{ x: 1, y: 2 } // s1 is a pointer to MyStruct
+
 // the order does not matter, only the names do
 ```
 
@@ -336,20 +338,43 @@ s1 := MyStruct{ 1, 2 }
 // here, the order **does** matter
 ```
 
-You can also create a new struct and get a pointer to it:
-```go
-s1 := new(MyStruct)
-// s1 is a pointer to MyStruct
-```
-
 You can assign a struct's field to a value:
 ```go
-s1 := new(MyStruct)
+s1 := MyStruct{}
 s1.x = 1
 s1.y = 2
 ```
 
-Because this is so common, Go has built in syntax for it:
+You can declare methods on your own types:
 ```go
-s1 := &MyStruct{ x: 1, y: 2 }
+type Number struct {
+  odd bool
+  value int
+}
+
+func (n Number) isStrictlyPositive() bool {
+  n.value > 0
+}
+```
+
+And use them like usual:
+```go
+minusTwo := Number{ odd: false, value: -2 }
+printf("positive? %t", minusTwo.isStrictlyPositive())
+// this prints "positive? false"
+```
+
+Struct methods by default will be copied, meaning their field's will not be mutated:
+```go
+func (n Number) makeOdd() {
+  // n is a copy of the original number struct
+  // this modifies the copy
+  n.odd = true
+}
+
+n := Number{}
+n.makeOdd()
+
+println(n.odd)
+// => false
 ```
