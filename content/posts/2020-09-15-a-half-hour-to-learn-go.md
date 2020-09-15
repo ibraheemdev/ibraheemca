@@ -37,7 +37,7 @@ import (
 
 You can use exported names in an imported package by using the package name as an identifier:
 
-```
+```go
 import (
   "fmt"
   "math/rand"
@@ -751,4 +751,83 @@ if err != nil {
 // panic: Could not continue due to error...
 // goroutine 1 [running]:
 // main.main() /tmp/sandbox091462361/prog.go:5 +0x39
+```
+
+#### **Concurrency**
+
+Golang is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a go routine, you simple prefix a function call with the keyword `go`:
+```go
+go DoSomething()
+```
+
+Goroutines are executed `concurrently`. For example, this code will execute in take two seconds to complete:
+```go
+time.Sleep(time.Second * 1)
+time.Sleep(time.Second * 1)	
+```
+
+But this code only takes one second, because both sleep calls are taking place at the same time!
+```go
+go time.Sleep(time.Second * 1)
+time.Sleep(time.Second * 1)	
+```
+
+Goroutines communicate through *channels*. You can send values to a channel:
+```go
+channel <- value
+```
+
+And receive values from a channel:
+```go
+x := <-channel
+```
+
+Here is an example of a simple multiplication function that communicates through channels:
+```go
+func multiplyByTwo(num int, result chan<- int) {
+  // calculate result
+  m := num * 2
+  // and send it through the channel
+  result <- m
+}
+```
+
+We can create a channel and send it to our function:
+```go
+result := make(chan int)
+go multiplyByTwo(n, result)
+```
+
+The result channel now contains the number calculated by `multiplyByTwo`:
+```go
+fmt.Println(<-out)
+// => 6
+```
+
+Channels can be created with a limit, once too many values are sent to the channel, the channel will block:
+```go
+ch := make(chan int, 1)
+ch <- 1
+ch <- 2
+// fatal error: all goroutines are asleep - deadlock!
+```
+
+These are called *buffered channels*.
+
+Channels can be closed:
+```go
+close(channel)
+```
+
+You can test whether a channel has been closed:
+```go
+v, ok := <-ch
+// if "ok" is false, then the channel is closed
+```
+
+To receive all the values from a channel until it is closed, you can use `range`:
+```go
+for value := range channel {
+  fmt.Println(value)
+}
 ```
