@@ -899,6 +899,20 @@ if err != nil {
 // main.main() /tmp/sandbox091462361/prog.go:5 +0x39
 ```
 
+You can `defer` a call to `recover`, to regain control of a panicking goroutine. `recover` will return the value passed the panic:
+```go
+defer func() {
+  if r := recover(); r != nil {
+    fmt.Println("Recovered from panic: ", r)
+  }
+}()
+
+fmt.Println("Panicking")
+panic("AAAHHH!!!")
+
+// => Panicking
+// => Recovered from panic:  AAAHHH!!!
+```
 #### **Goroutines**
 
 Golang is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a go routine, you simple prefix a function call with the keyword `go`:
