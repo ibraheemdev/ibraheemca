@@ -234,3 +234,20 @@ for {
   println("yup!")
 }
 ```
+
+Go's `if` statements have a similar syntax to it's loops:
+```go
+// this prints "true"
+if 1 == 1 {
+  println("true")
+}
+```
+
+`if` conditions can also have an init statement:
+```go
+// this prints "hello"
+if x := "hello"; x != nil {
+  println(x)
+}
+// "x" is now out of scope
+```
