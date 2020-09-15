@@ -3,9 +3,9 @@ template: post
 title: A half-hour to learn Go
 slug: a-half-hour-to-learn-go
 socialImage: /media/gopher.jpg
-draft: true
-date: 2020-09-15T21:04:19.754Z
-description: A thorough crash course in Go.
+draft: false
+date: 2020-09-15T21:55:09.600Z
+description: A thorough crash course in Golang.
 mainTag: Golang
 tags:
   - Golang
@@ -545,6 +545,27 @@ case 2:
 
 In a switch statement, only the first matched case is executed.
 
+Go also has *labels* to help manage control flow:
+```go
+MyLabel:
+```
+
+You can jump to a specific label with the `goto` keyword:
+```go
+print(1)
+
+// jump to the "Three" label
+goto Three
+print(2)
+
+Three:
+print(3)
+
+// => 1 3
+```
+
+Labels have a very specific use case. They can make code less readable, and should be avoided most of the time.
+
 #### **Pointers**
 
 Go has pointers. A pointer holds the memory address of a value.
@@ -992,6 +1013,8 @@ Here is the output:
 quit
 ```
 
-And with that, we hit 15 minutes estimated reading time. I know the title said 30 minutes, but that's pretty much it! Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
+And with that, we hit 20 minutes estimated reading time. I know the title said 30 minutes, but that's pretty much it! We've covered all 25 keywords of Go's keywords.
+
+Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
 
 Thanks for reading!
