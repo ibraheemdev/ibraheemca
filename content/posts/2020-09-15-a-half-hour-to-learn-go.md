@@ -882,9 +882,9 @@ An alias declaration doesn't create a new distinct type. It just introduces an a
 
 #### **Struct Composition**
 
-Structs can be composed of one another.
+Structs can be composed of one another through anonymous fields.
 
-For example, here we have a struct called `Animal`:
+For example, here we have a struct called `Animal` that has a `Talk` method:
 ```go
 type Animal struct {
   sound string 
@@ -903,7 +903,7 @@ type Cat struct {
 }
 ```
 
-You can instantiate a new `Cat`:
+You can instantiate a new `Cat`, setting the embedded `Animal's` fields:
 ```go
 cat := &Cat{ Animal{ sound: "meow", feet: 4 } }
 ```
@@ -914,7 +914,7 @@ cat.Talk() // => "meow"
 cat.feet   // => 4
 ```
 
-You can override an embedded struct's methods:
+You can also override an embedded struct's methods:
 ```go
 func (c Cat) Talk() {
   println("meow meow meow")
@@ -924,7 +924,7 @@ cat.Talk()
 // => "meow meow meow"
 ```
 
-You can also call the method through the embedded type directly. This is similar to `super` in other languages:
+To imitate a call to `super` as found in other languages, you can call the method through the embedded type directly:
 ```go
 cat.Animal.Talk() // still prints "meow"
 ```
