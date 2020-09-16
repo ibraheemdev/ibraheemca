@@ -644,6 +644,13 @@ fmt.Print("hello ")
 // => "hello world"
 ```
 
+Defer is often used with an anonymous function:
+```go
+defer func() {
+  println("I'm done!")
+}()
+```
+
 #### **Anonymous Functions**
 
 Go supports anonymous functions. Anonymous functions are useful when you want to define a function inline without having to name it:
@@ -1252,6 +1259,12 @@ time.Sleep(time.Second * 1)
 // exec time: 1 second
 ```
 
+Goroutines are often used with anonymous functions:
+```go
+go func() {
+  println("hello")
+}()
+```
 #### **Channels**
 
 Goroutines communicate through *channels*. You can send values to a channel:
