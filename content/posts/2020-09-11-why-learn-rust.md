@@ -163,7 +163,20 @@ for (int i = 0; i < 10; ++i)
 
 As you can see, Rust can be used create a vector containing the first ten square numbers much more concisely than C, but still highly performant.
 
-Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust* and works just like regular Rust, but gives you extra capabilities. If you can't do something in safe Rust, you can implement it yourself, or, chances are, someone else has already done it, which brings me to my next point.
+Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust*. Wrapping code with the `unsafe` block effectively tells the compiler to shut up, because you know what you are doing. Doing so gives you *unsafe superpowers*. For example, you can dereference a raw pointer:
+```go
+let mut num = 5;
+
+let r1 = &num as *const i32;
+let r2 = &mut num as *mut i32;
+
+unsafe {
+  println!("r1 is: {}", *r1);
+  println!("r2 is: {}", *r2);
+}
+```
+
+If you can't do something in safe Rust, you can implement it yourself with `unsafe`, or, chances are, someone else has already done it, which brings me to my next point.
 
 #### **The Rust Ecosystem**
 
