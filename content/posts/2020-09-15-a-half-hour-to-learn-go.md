@@ -1109,24 +1109,37 @@ cat.Animal.Talk() // still prints "meow"
 ```
 
 
-This behavior is not limited to struct fields. A struct can embed any type. Whether a primitive:
+This behavior is not limited to struct fields. A struct can embed a primitive:
 ```go
-type CustomString struct {
+type MyStruct struct {
   string
+  int
+  bool
 }
 ```
 
-A pointer:
+Or any other named type, such as a pointer:
 ```go
 type Cat struct {
   *Animal
 }
 ```
 
+A collection (array, map, or slice):
+```go
+type Assignments []string
+
+type Homework struct {
+  Assignments
+}
+```
+
 Or an interface:
 ```go
-type CustomString struct {
-  interface{}
+type MyInterface interface{}
+
+type MyStruct struct {
+  MyInterface
 }
 ```
 
