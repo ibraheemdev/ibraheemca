@@ -9,7 +9,7 @@ draft: false
 
 * 🙌 I’m looking to collaborate on **Open Source Software**
 * 🔭 All of my projects are available on github. [Check them out!](https://github.com/ibraheemdev?tab=repositories)
-* 📝 I regulary write articles on [ibraheem.ca](https://ibraheem.ca), my open source blog!
+* 📝 I regularly write articles on [ibraheem.ca](https://ibraheem.ca), my open source blog!
 * 🌱 I recently started learning **Typescript**
 * 📫 I’m currently available for hire. Let's get in touch! **[ibrah1440@gmail.com](mailto:ibrah1440@gmail.com)**
 
