@@ -46,12 +46,14 @@ Note: You'll also see a second link: http://localhost:8000/___graphql. This is a
 
 #### Running Typescript Checks
 
-Some of the gatsby config pages do not support the `.ts` extension. To get around this, there is a second typescript config file `tsconfig-gatsby.json` that will emit compiled `.js` files.
+Some of the gatsby config pages do not support the `.ts` extension. To get around this, there is a second typescript config file [`tsconfig-gatsby.json`](https://github.com/ibraheemdev/ibraheemca/blob/master/tsconfig-gatsby.json) that will emit compiled `.js` files.
 
 You can run all the typescript checks with:
 ```bash
 $ yarn typecheck
 ```
+
+All the type definitions used in this repo are located in [`src/index.d.ts`](https://github.com/ibraheemdev/ibraheemca/blob/master/src/index.d.ts)
 
 ## Configuration
 
