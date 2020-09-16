@@ -57,7 +57,7 @@ All the type definitions used in this repo are located in [`src/index.d.ts`](htt
 
 ## Configuration
 
-All the configuration options are located in `config.ts`. These include the site title, the path prefix, your disqus shortname, your google analytics id, menu and social links, as well as the number of posts per page.
+All the configuration options are located in [`config.ts`](https://github.com/ibraheemdev/ibraheemca/blob/master/config.ts). These include the site title, the path prefix, your disqus shortname, your google analytics id, menu and social links, as well as the number of posts per page.
 
 ## Deploy to Netlify
 
