@@ -880,11 +880,9 @@ type H = map[string]interface{}
 
 An alias declaration doesn't create a new distinct type. It just introduces an alias name - an alternate spelling.
 
-#### **Composition**
+#### **Struct Composition**
 
-Interfaces and structs can be composed of one another. Here are some examples.
-
-#### **Composing Structs**
+Structs can be composed of one another.
 
 For example, here we have a struct called `Animal`:
 ```go
@@ -951,6 +949,8 @@ type CustomString struct {
   interface{}
 }
 ```
+
+#### **Interface Composition**
 
 Interfaces can also be composed of each other:
 ```go
