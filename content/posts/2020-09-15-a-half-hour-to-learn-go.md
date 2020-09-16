@@ -1,11 +1,11 @@
 ---
 template: post
-title: A Half Hour to Learn Go
-slug: a-half-hour-to-learn-go
+title: Twenty Minutes to Learn Go
+slug: go-in-twenty
 socialImage: /media/gopher.jpg
 draft: false
 date: 2020-09-16T17:17:28.727Z
-description: A thorough crash course in Golang.
+description: A thorough twenty minute crash course in Golang.
 mainTag: Golang
 tags:
   - Golang
