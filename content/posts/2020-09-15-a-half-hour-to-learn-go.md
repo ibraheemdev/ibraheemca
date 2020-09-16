@@ -791,11 +791,14 @@ type Signed interface {
 }
 ```
 
-Functions can take interface arguments, and can call any method in its method set:
+Interface is a type, so it can be used as function arguments, struct fields, or in the place of any other type.
+
+An interface value holds a value of a specific underlying concrete type. Calling a method on an interface value executes the method of the same name on its underlying type:
 
 ```go
 func SignedIsNegative(s Signed) bool {
-  return n.isStrictlyNegative()
+  // call isStrictlyNegative() on the underlying type of `s`
+  return s.isStrictlyNegative()
 }
 ```
 
@@ -912,6 +915,9 @@ default:
 You can create an alias to another type:
 ```go
 type H map[string]interface{}
+
+// `map[string]interface{}` is very common in Go
+// now we can use `H` as a short form
 ```
 
 As opposed to a type definition:
