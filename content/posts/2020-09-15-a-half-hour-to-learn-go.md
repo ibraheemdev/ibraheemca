@@ -131,7 +131,7 @@ var x, y int
 x, y = 10, 20
 ```
 
-If you declare a variable without initializing it, it will implicitly be assigned to the zero value of it's type:
+If you declare a variable without initializing it, it will implicitly be assigned to the zero value of its type:
 
 ```go
 var b bool
@@ -158,7 +158,7 @@ Note that this must be done explicitly. Unlike other languages, you cannot pass 
 
 #### **Constants**
 
-Unchanging values can be declared with the `const` keyword. Constants can be character, string, boolean, or numeric values:
+Unchanging values can be declared with the `const` keyword. Constants can be characters, strings, booleans, or numeric values:
 
 ```go
 const Pi = 3.14
@@ -315,7 +315,7 @@ Slices are more complicated than they seem. To understand the inner workings of 
 
 #### **Maps**
 
-Maps are like hashes in ruby, or dictionaries in python:
+Maps are like hashes in ruby or dictionaries in python:
 
 ```go
 var m map[string]string
@@ -494,7 +494,7 @@ for i := 0; i < 5; i++ {
 
 #### **Control Flow**
 
-Go's `if` statements have a similar syntax to it's loops:
+Go's `if` statements have a similar syntax to its loops:
 
 ```go
 // this prints "true"
@@ -525,7 +525,7 @@ if something {
 }
 ```
 
-If your `if - else` statements is getting long, switch to a `switch` statement :)
+If your `if - else` statement is getting long, switch to a `switch` statement :)
 
 ```go
 switch {
@@ -554,7 +554,7 @@ default:
 }
 ```
 
-You can use `fallthrough` to fallthrough to the case below the current case:
+You can use `fallthrough` to fall through to the case below the current case:
 ```go
 switch 1 {
 case 1:
@@ -588,7 +588,7 @@ print(3)
 // => 1 3
 ```
 
-Labels have a very specific use case. They can make code less readable, and should be avoided most of the time.
+Labels have a very specific use case. They can make code less readable and should be avoided most of the time.
 
 #### **Pointers**
 
@@ -650,7 +650,7 @@ For smaller structs, you can omit the names of the fields
 s1 := MyStruct{ 1, 2 }
 ```
 
-If a field is not initialized, it defaults to it's zero value:
+If a field is not initialized, it defaults to its zero value:
 ```go
 s1 := MyStruct{}
 s1.x // => 0
@@ -695,7 +695,7 @@ func (n Number) isStrictlyPositive() bool {
 }
 ```
 
-And use them like usual:
+And use them as usual:
 
 ```go
 minusTwo := Number{ 
@@ -707,7 +707,7 @@ minusTwo.isStrictlyPositive()
 // => false
 ```
 
-Struct methods receivers are copied by default, meaning their field's will not be mutated:
+Struct methods receivers are copied by default, meaning their fields will not be mutated:
 
 ```go
 func (n Number) makeOdd() {
@@ -750,7 +750,7 @@ type Signed interface {
 }
 ```
 
-Functions can take interface arguments, and can call any method in it's method set:
+Functions can take interface arguments, and can call any method in its method set:
 
 ```go
 func SignedIsNegative(s Signed) bool {
@@ -936,7 +936,7 @@ type Cat struct {
 }
 ```
 
-This behaviour is not limited to struct fields. A struct can embed any type. Whether a primitive:
+This behavior is not limited to struct fields. A struct can embed any type. Whether a primitive:
 ```go
 type CustomString struct {
   string
@@ -1029,12 +1029,12 @@ panic("AAAHHH!!!")
 ```
 #### **Goroutines**
 
-Golang is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a go routine, you simple prefix a function call with the keyword `go`:
+Golang is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a goroutine, you simple prefix a function call with the keyword `go`:
 ```go
 go DoSomething()
 ```
 
-Goroutines are executed `concurrently`. For example, this code will execute in take two seconds to complete:
+Goroutines are executed `concurrently`. For example, this code will take two seconds to complete:
 ```go
 time.Sleep(time.Second * 1)
 time.Sleep(time.Second * 1)
