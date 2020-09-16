@@ -1118,6 +1118,14 @@ var err error = errors.New("I am an error")
 println(err.Error()) // => "I am an error"
 ```
 
+Packages often export common error values. You can perform equality checks between errors:
+```go
+err := makeDatabaseCall()
+if errors.Is(err, mongo.ErrNoDocuments) {
+  return 404
+}
+```
+
 If code cannot continue because of a certain error, you can stop execution with `panic`:
 
 ```go
