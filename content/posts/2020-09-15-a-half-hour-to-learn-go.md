@@ -644,6 +644,69 @@ fmt.Print("hello ")
 // => "hello world"
 ```
 
+#### **Anonymous Functions**
+
+Go supports anonymous functions. Anonymous functions are useful when you want to define a function inline without having to name it:
+```go
+func printNumber(getNum func() int) {
+  num := getNum()
+  println(num)
+}
+
+one := func() int { 
+  return 1 
+}
+printNumber(one)
+
+// => 1
+```
+
+A function can also return an anonymous function:
+```go
+func getOne() func() int {
+  return func() int {
+    return 1
+  }
+}
+
+one := getOne()
+println(one()) 
+
+// => 1
+```
+
+Anonymous functions allow us to dynamically change what a function does at runtime:
+```go
+DoStuff := func() {
+  fmt.Println("Doing stuff!")
+}
+DoStuff()
+
+DoStuff = func() {
+  fmt.Println("Doing other stuff.")
+}
+DoStuff()
+
+// => Doing stuff!
+// => Doing other stuff.
+```
+
+Anonymous functions can form *closures*. A closure is an anonymous function that references a variable from outside itself:
+```go
+n := 0
+counter := func() int {
+  n += 1
+  return n
+}
+println(counter())
+println(counter())
+
+// => 1
+// => 2
+```
+
+Note how `counter` has access to `n`, even though it was never passed as a parameter.
+
 #### **Pointers**
 
 Go has pointers. A pointer holds the memory address of a value.
