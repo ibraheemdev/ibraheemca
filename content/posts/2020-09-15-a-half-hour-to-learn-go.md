@@ -689,17 +689,49 @@ You can define methods on your custom types:
 ```go
 type MyString string
 
-func (m *MyString) BecomeHello() {
-  *m = "hello"
+func (m MyString) Print() {
+  println(m)
 }
 
-var x MyString = "blabla"
-x.DoSomething()
+var x MyString = "hello"
+x.Print()
 
-fmt.Println(x) // => "hello"
+// => "hello"
 }
 ```
 
+Methods receivers are copied by default, meaning their fields will not be mutated:
+
+```go
+func (m MyString) BecomeHello() {
+  // m is a copy of the original MyString type
+  // this modifies the copy
+  m = "hello"
+}
+
+var x MyString = "nothello"
+n.BecomeHello()
+
+println(x)
+// => "nothello"
+```
+
+To mutate the original receiver, use a pointer receiver:
+
+```go
+func (m *MyString) BecomeHello() {
+  // m is a pointer to the original `MyString`
+  *m = "hello"
+}
+
+var x MyString = "nothello"
+n.BecomeHello()
+
+println(x)
+// => "hello"
+```
+
+Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient for large datatypes.
 
 #### **Structs**
 
@@ -785,39 +817,6 @@ minusTwo := Number{
 minusTwo.isStrictlyPositive()
 // => false
 ```
-
-Struct methods receivers are copied by default, meaning their fields will not be mutated:
-
-```go
-func (n Number) makeOdd() {
-  // n is a copy of the original Number struct
-  // this modifies the copy
-  n.odd = true
-}
-
-n := Number{}
-n.makeOdd()
-
-println(n.odd)
-// => false
-```
-
-To mutate the original struct, use a pointer receiver:
-
-```go
-func (n *Number) makeOdd() {
-  // here, n is a pointer to the original number struct
-  n.odd = true
-}
-
-n := Number{}
-n.makeOdd()
-
-println(n.odd)
-// => true
-```
-
-Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient for large structs.
 
 #### **Interfaces**
 
