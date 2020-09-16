@@ -364,6 +364,41 @@ for key, value := range names {
 // 2 "two"
 ```
 
+#### **Iota**
+
+The `iota` keyword represents successive integer constants:
+```go
+const (
+  one = iota
+  two
+  three
+)
+fmt.Println(one, two, three) // "0 1 2"
+```
+
+You can start from a different number:
+```go
+const (
+  four = iota + 4
+  five
+  six
+)
+
+fmt.Println(four, five, six) // "4 5 6"
+```
+
+And use the blank identifier to skip a value:
+```go
+const (
+  one = iota
+  three
+  four
+)
+fmt.Println(one, three, four) // "0 3 4"
+```
+
+Iota's are most commonly used to represent enums, which Go does not support natively.
+
 #### **Functions**
 
 `func` declares a function.
