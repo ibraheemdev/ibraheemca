@@ -2,9 +2,7 @@
 
 The repo for ibraheem.ca, my open source blog. [Check it out!](https://ibraheem.ca/).
 
-This site was built with [gatsby.js](https://www.gatsbyjs.org/), [netlifycms](https://github.com/netlify/netlify-cms), [typescript](https://www.typescriptlang.org/) and a ton of other awesome open source packages you can check out in the [package.json](https://github.com/ibraheemdev/ibraheemca/blob/master/package.json).
-
-*This project was initally scaffolded with [the gatsby-lumen-starter](https://github.com/alxshelepenok/gatsby-starter-lumen)*
+This project was initally scaffolded with [the gatsby-lumen-starter](https://github.com/alxshelepenok/gatsby-starter-lumen). However, the author of that repo seems to not be accepting new changes. This repo will be regularly maintained and updated, as I use it for my personal blog. I also converted the entire app from flow to typescript, which I prefer.
 
 ## Features
 + [Lost Grid](http://lostgrid.org).
@@ -46,7 +44,7 @@ Your site is now running at http://localhost:8000!
 
 Note: You'll also see a second link: http://localhost:8000/___graphql. This is a tool you can use to experiment with querying your data. Learn more about using this tool in [the Gatsby tutorial](https://www.gatsbyjs.com/tutorial/part-five/#introducing-graphiql).
 
-#### Running Typescript
+#### Running Typescript Checks
 
 Some of the gatsby config pages do not support the `.ts` extension. To get around this, there is a second typescript config file `tsconfig-gatsby.json` that will emit compiled `.js` files.
 
@@ -54,6 +52,10 @@ You can run all the typescript checks with:
 ```bash
 $ yarn typecheck
 ```
+
+## Configuration
+
+All the configuration options are located in `config.ts`. These include the site title, the path prefix, your disqus shortname, your google analytics id, menu and social links, as well as the number of posts per page.
 
 ## Deploy to Netlify
 
@@ -75,7 +77,7 @@ To deploy to github pages, simply do the following:
 npm run deploy
 ```
 
-## Using The CMS
+## Accessing The CMS
 
 To access the CMS, you can navigate to `/admin` in a production build. To access the CMS, locally, you can build the site with gatsby:
 ```bash
