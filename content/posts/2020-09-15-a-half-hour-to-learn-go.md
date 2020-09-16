@@ -315,7 +315,7 @@ Slices are more complicated than they seem. To understand the inner workings of 
 
 #### **Maps**
 
-Maps are like hashes in ruby or dictionaries in python:
+Maps are like hashes in ruby or dictionaries in python. You create them like this:
 
 ```go
 var m map[string]string
@@ -324,10 +324,16 @@ m["key"] = "value"
 x = m["key"] // => "value"
 ```
 
-You can also create them with a *map literal*:
+Or with a *map literal*:
 
 ```go
-var m = map[int]string{1: "one", 2: "two"}
+m := map[int]string{1: "one", 2: "two"}
+```
+
+Or the `make` function:
+
+```go
+m := make(map[int]string)
 ```
 
 You can delete map keys:
