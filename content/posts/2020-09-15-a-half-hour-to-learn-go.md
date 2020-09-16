@@ -882,12 +882,15 @@ An alias declaration doesn't create a new distinct type. It just introduces an a
 
 #### **Composition**
 
-Interfaces and structs can be composed of one another.
+Interfaces and structs can be composed of one another. Here are some examples.
+
+#### **Composing Structs**
 
 For example, here we have a struct called `Animal`:
-```
+```go
 type Animal struct {
-  sound string
+  sound string 
+  feet int
 }
 
 func (a Animal) Talk() {
@@ -895,17 +898,37 @@ func (a Animal) Talk() {
 }
 ```
 
-And a struct called `Cat` that is composed of `Animal`:
-```
+And a struct called `Cat` that is composed of `Animal`. All of `Animal`'s fields are promoted to `Cat`:
+```go
 type Cat struct {
   Animal
 }
 ```
-This means that all of `Animal`'s fields are promoted to `Cat`:
+
+You can instantiate a new `Cat`:
+```go
+cat := &Cat{ Animal{ sound: "meow", feet: 4 } }
 ```
-cat := &Cat{ Animal{ sound: "meow" } }
+
+And use any `Animal` methods or fields:
+```go
 cat.Talk() // => "meow" 
-cat.sound  // => "meow" 
+cat.feet   // => 4
+```
+
+You can override an embedded struct's methods:
+```go
+func (c Cat) Talk() {
+  println("meow meow meow")
+}
+
+cat.Talk()
+// => "meow meow meow"
+```
+
+You can also call the method through the embedded type directly. This is similar to `super` in other languages:
+```go
+cat.Animal.Talk() // still prints "meow"
 ```
 
 A struct can also embed a pointer to another struct:
