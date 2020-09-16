@@ -177,14 +177,24 @@ const (
 The `iota` keyword represents successive integer constants:
 ```go
 const (
-  one = iota
-  two
-  three
+  zero = iota
+  one  = iota
+  two  = iota
 )
-fmt.Println(one, two, three) // "0 1 2"
+fmt.Println(zero, one, two) // "0 1 2"
 ```
 
-You can start from a different number:
+This can be written in short form:
+```go
+const (
+  zero = iota
+  one
+  two
+)
+fmt.Println(zero, one, two) // "0 1 2"
+```
+
+You can perform operations on an iota:
 ```go
 const (
   four = iota + 4
@@ -198,11 +208,12 @@ fmt.Println(four, five, six) // "4 5 6"
 And use the blank identifier to skip a value:
 ```go
 const (
-  one = iota
+  zero = iota
+  _    // skip 1
+  two
   three
-  four
 )
-fmt.Println(one, three, four) // "0 3 4"
+fmt.Println(zero, two, three) // "0 2 3"
 ```
 
 Iota's are most commonly used to represent enums, which Go does not support natively.
@@ -673,7 +684,7 @@ You can create a type with the `type TypeName SourceType` syntax:
 type UserName string
 ```
 
-This is called a *type definition*. A new type is it's own distinct type that is based on the structure of an underlying type.
+This is called a *type definition*. A new type is its own distinct type that is based on the structure of an underlying type.
 
 A type can have any of the following source types:
 ```go
@@ -733,11 +744,11 @@ println(x)
 // => "hello"
 ```
 
-Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient for large datatypes.
+Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient for large data types.
 
 #### **Structs**
 
-Structs are a built in Go type. You can declare one with the `struct` keyword. They can have any number of fields a specified type:
+Structs are a built-in Go type. You can declare one with the `struct` keyword. They can have any number of fields a specified type:
 
 ```go
 type MyStruct struct {
