@@ -6,6 +6,7 @@
   "scripts": {
     "develop": "yarn run clean && yarn run typecheck && gatsby develop",
     "build": "yarn run clean && yarn run typecheck && gatsby build",
+    "gh-deploy": "yarn run clean && yarn run typecheck && gatsby build --prefix-paths && gh-pages -d public",
     "clean": "rimraf .cache public",
     "typecheck": "tsc --noEmit && tsc -p ./tsconfig-gatsby.json"
   },
