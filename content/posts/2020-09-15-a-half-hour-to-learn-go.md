@@ -399,81 +399,6 @@ for key, value := range names {
 // 2 "two"
 ```
 
-#### **Functions**
-
-`func` declares a function.
-
-Here's a void function:
-
-```go
-func greet() {
-  println("Hi there!")
-}
-```
-
-And here's a function that returns an integer:
-
-```go
-func fairDiceRoll() int {
-  return 4
-}
-```
-
-Functions can return multiple values:
-
-```go
-func oneTwoThree() (int, int, int) {
-  return 1, 2, 3
-}
-```
-
-They can also take specified arguments:
-
-```go
-func sayHello(name string) {
-  fmt.Printf("hello %s", name)
-}
-```
-
-Or an arbitrary number of arguments:
-
-```go
-func variadic(nums ...int) {
-  println(nums)
-}
-```
-
-If a function takes two or more arguments of the same type, you can group them together:
-```go
-func multiply(x, y int) int {
-  return x * y
-}
-```
-
-These are called *Variadic Functions*.
-
-They can be called just like regular functions:
-
-```go
-variadic(1, 2, 3) // => [1, 2, 3]
-```
-
-Or you can pass in a slice directly:
-
-```go
-nums := []int{1, 2, 3}
-variadic(nums) // => [1, 2, 3]
-```
-
-The `defer` statement defers the execution of a function until the surrounding function returns:
-
-```go
-defer fmt.Print("world")
-fmt.Print("hello ")
-
-// => "hello world"
-```
-
 #### **Looping**
 
 Go has only one loop, the `for` loop. It has three components:
@@ -631,6 +556,81 @@ print(3)
 
 Labels have a very specific use case. They can make code less readable and should be avoided most of the time.
 
+#### **Functions**
+
+`func` declares a function.
+
+Here's a void function:
+
+```go
+func greet() {
+  println("Hi there!")
+}
+```
+
+And here's a function that returns an integer:
+
+```go
+func fairDiceRoll() int {
+  return 4
+}
+```
+
+Functions can return multiple values:
+
+```go
+func oneTwoThree() (int, int, int) {
+  return 1, 2, 3
+}
+```
+
+They can also take specified arguments:
+
+```go
+func sayHello(name string) {
+  fmt.Printf("hello %s", name)
+}
+```
+
+Or an arbitrary number of arguments:
+
+```go
+func variadic(nums ...int) {
+  println(nums)
+}
+```
+
+If a function takes two or more arguments of the same type, you can group them together:
+```go
+func multiply(x, y int) int {
+  return x * y
+}
+```
+
+These are called *Variadic Functions*.
+
+They can be called just like regular functions:
+
+```go
+variadic(1, 2, 3) // => [1, 2, 3]
+```
+
+Or you can pass in a slice directly:
+
+```go
+nums := []int{1, 2, 3}
+variadic(nums) // => [1, 2, 3]
+```
+
+The `defer` statement defers the execution of a function until the surrounding function returns:
+
+```go
+defer fmt.Print("world")
+fmt.Print("hello ")
+
+// => "hello world"
+```
+
 #### **Pointers**
 
 Go has pointers. A pointer holds the memory address of a value.
@@ -663,9 +663,47 @@ p := &i
 // "i" is now 21 
 ```
 
+#### **Custom Types**
+
+You can create a type with the `type TypeName SourceType` syntax:
+```go
+type UserName string
+```
+
+This is called a *type definition*. A new type is it's own distinct type that is based on the structure of an underlying type.
+
+A type can have any of the following source types:
+```go
+basic types: string, bool, int, ...
+pointers
+structs
+functions
+arrays
+slices
+maps
+channels
+interfaces
+```
+
+You can define methods on your custom types:
+```go
+type MyString string
+
+func (m *MyString) BecomeHello() {
+  *m = "hello"
+}
+
+var x MyString = "blabla"
+x.DoSomething()
+
+fmt.Println(x) // => "hello"
+}
+```
+
+
 #### **Structs**
 
-Structs are declared with the `struct` keyword. They can have any number of fields a specified type:
+Structs are a built in Go type. You can declare one with the `struct` keyword. They can have any number of fields a specified type:
 
 ```go
 type MyStruct struct {
@@ -914,7 +952,7 @@ default:
 
 You can create an alias to another type:
 ```go
-type H map[string]interface{}
+type H = map[string]interface{}
 
 // `map[string]interface{}` is very common in Go
 // now we can use `H` as a short form
@@ -922,7 +960,7 @@ type H map[string]interface{}
 
 As opposed to a type definition:
 ```go
-type H = map[string]interface{}
+type H map[string]interface{}
 ```
 
 An alias declaration doesn't create a new distinct type. It just introduces an alias name - an alternate spelling.
