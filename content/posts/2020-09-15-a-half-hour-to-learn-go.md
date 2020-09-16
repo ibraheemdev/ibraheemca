@@ -624,21 +624,43 @@ p := &i
 
 #### **Structs**
 
-Structs are declared with the `struct` keyword:
+Structs are declared with the `struct` keyword. They can have any number of fields a specified type:
 
 ```go
 type MyStruct struct {
   x int
   y int
+  z MyOtherStruct
 }
+```
+
+You can create new structs using *struct literals*:
+
+```go
+s1 := MyStruct{ x: 1, y: 2 }
+s2 := &MyStruct{ x: 1, y: 2 } // s2 is a pointer to MyStruct
+
+// the order does not matter, only the names do
+```
+
+For smaller structs, you can omit the names of the fields
+
+```go
+// here, the order **does** matter
+s1 := MyStruct{ 1, 2 }
+```
+
+If a field is not initialized, it defaults to it's zero value:
+```go
+s1 := MyStruct{}
+s1.x // => 0
 ```
 
 Struct fields are accessed using a dot:
 
 ```go
 s := MyStruct{}
-s.x = 1
-println(s.x)
+s.x = 1 
 ```
 
 Struct fields can also be accessed and modified through a struct pointer:
@@ -660,23 +682,7 @@ p := &s
 p.x = 19
 ```
 
-You can create new structs using *struct literals*:
-
-```go
-s1 := MyStruct{ x: 1, y: 2 }
-s2 := &MyStruct{ x: 1, y: 2 } // s2 is a pointer to MyStruct
-
-// the order does not matter, only the names do
-```
-
-For smaller structs, you can omit the names of the fields
-
-```go
-// here, the order **does** matter
-s1 := MyStruct{ 1, 2 }
-```
-
-You can declare methods on your own types:
+You can declare methods on your own struct types:
 
 ```go
 type Number struct {
@@ -859,6 +865,24 @@ default:
   fmt.Printf("I don't know about this type %T!", v)
 }
 ```
+
+#### **Type Aliases**
+
+You can create an alias to another type:
+```go
+type H map[string]interface{}
+```
+
+As opposed to a type definition:
+```go
+type H = map[string]interface{}
+```
+
+An alias declaration doesn't create a new distinct type. It just introduces an alias name - an alternate spelling.
+
+#### **Composition**
+
+Interfaces and Structs can be composed of one another.
 
 #### **Error Handling**
 
