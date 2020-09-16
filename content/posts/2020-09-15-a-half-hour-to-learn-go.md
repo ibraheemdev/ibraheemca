@@ -875,6 +875,17 @@ And neither does this:
 SignedIsNegative(7)
 ```
 
+Note that you cannot define methods on an interface type:
+```go
+type MyString interface{}
+
+func (m MyString) DoSomething() {
+  ...
+}
+
+// error: invalid receiver type MyString (MyString is an interface type)
+```
+
 #### **Type Assertions**
 
 The interface type that specifies zero methods is known as the empty interface:
