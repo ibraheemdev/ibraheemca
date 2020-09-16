@@ -4,7 +4,7 @@ title: A Half Hour to Learn Go
 slug: a-half-hour-to-learn-go
 socialImage: /media/gopher.jpg
 draft: false
-date: 2020-09-15T21:55:09.600Z
+date: 2020-09-16T17:17:28.727Z
 description: A thorough crash course in Golang.
 mainTag: Golang
 tags:
@@ -12,13 +12,13 @@ tags:
 ---
 A lot of thanks goes to [Amos](https://fasterthanli.me/about) for inspiring this article with [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust). I thought I'd try it out, but instead of Rust, this article will try to explain Go in half an hour.
 
-Instead of focusing on one or two concepts, I'll try to go through as many Go snippets as I can, and explain what the keywords and symbols they contain mean.
+Instead of focusing on one or two concepts, I'll try to go through as many Go snippets as I can, and explain what the keywords and symbols they contain mean. This article can be used as a cheat sheet for developers familiar with Go, or a tutorial for developers new to Go, but familiar with other languages.
 
 Ready? Go!
 
 #### **Packages**
 
-Every go program is made up of packages,
+Every Go program is made up of packages,
 
 Programs start by running in package `main`.
 
@@ -67,7 +67,7 @@ A := "hello" // A will be exported, or public
 ```
 
 Packages can have an `init` function. This will be executed as soon as the package is imported:
-```
+```go
 func init() {
   performSideEffects()
 }
@@ -215,7 +215,8 @@ The blank identifier `_` is an anonymous placeholder. It basically means to thro
 // this does *nothing*
 _ := 42
 
-// this calls `getThing` but throws away the two return values
+// this calls `getThing` but throws away the 
+// two return values
 _, _ := getThing();
 ```
 
@@ -231,181 +232,13 @@ Or to avoid compiler errors during development:
 var _ = devFunction() // TODO: delete when done
 ```
 
-#### **Arrays**
-
-In Go, arrays have a fixed length:
-
-```go
-var a [2]string // an array of 10 integers
-a[0] = "Hello"
-a[1] = "World"
-println(a) // => ["Hello", "World"]
-```
-
-You create arrays using *array literals*:
-
-```go
-helloWorld := [2]string{"Hello", "World"}
-```
-
-You cannot increase an array beyond its capacity. Doing so will panic:
-```go
-helloWorld := [2]string{"Hello", "World"}
-helloWorld[10] = "Space"
-
-// panic: runtime error: index out of range [10] with length 2
-```
-
-To get around this issue, Go provides slices.
-
-#### **Slices**
-
-Slices are more common than arrays. They do not have a fixed length, and are therefore more flexible:
-```go
-nums := []int{1, 2, 3, 4, 5}
-```
-
-Slices can also be created with the built-in function `make`:
-```go
-make([]string, initialLength)
-
-// initialCapacity can be set for memory optimization
-make([]string, initialLength, initialCapacity)
-```
-
-You can also create a slice by *slicing* an existing array:
-```go
-nums := [6]int{1, 2, 3, 4, 5, 6}
-s := nums[1:4]
-
-fmt.Println(s)
-// => [2 3 4]
-```
-
-You can omit the start or end index when slicing an array, so for this array:
-```go
-var a [10]int
-```
-These expressions are equivalent:
-
-```go
-a[:]
-a[0:]
-a[:10]
-a[0:10]
-```
-
-Modifying the elements of a slice will modify its underlying array:
-```go
-nums := [6]int{1, 2, 3, 4, 5, 6}
-
-s := nums[0:4]
-s[0] = 999
-
-fmt.Println(nums)
-// => [999 2 3 4 5 6]
-```
-
-Slices are just a fancy way to manage an underlying array. You cannot increase a slice beyond its capacity. Doing so will panic, just like with an array:
-```go
-nums := []int{1, 2, 3, 4, 5, 6}
-nums[20] = 9
-
-// panic: runtime error: index out of range [20] with length 6
-```
-
-However, Go has built-in functions to make slices feel like arrays, such as the `append` function, which can be used to add items to the end of a slice:
-```go
-nums := []int{1, 2, 3, 4, 5}
-nums = append(nums, 6)
-
-fmt.Println(nums)
-// => [1 2 3 4 5 6]
-```
-
-You can iterate over slices and arrays with `range`:
-
-```go
-names := []string{"john", "joe", "jessica"}
-for index, name := range names {
-  println(index, name)
-}
-
-// 0 john
-// 1 joe
-// 2 jessica
-```
-
-We can use the blank identifier to omit the index or the value from `range`:
-
-```go
-for _, name := range names
-
-// these are the same
-for index, _ := range names
-for index := range names
-```
-
-Slices are more complicated than they seem. To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
-
-#### **Maps**
-
-Maps are like hashes in ruby or dictionaries in python. You create them like this:
-
-```go
-var m map[string]string
-m["key"] = "value"
-
-x = m["key"] // => "value"
-```
-
-Or with a *map literal*:
-
-```go
-m := map[int]string{1: "one", 2: "two"}
-```
-
-Or the `make` function:
-
-```go
-m := make(map[int]string)
-```
-
-You can delete map keys:
-
-```go
-delete(m, key)
-```
-
-Check whether a key is present:
-
-```go
-var m map[string]string
-m["key"] = "value"
-
-x, ok = m["key"] // => "value", true
-x, ok = m["doesnt-exist"] // => nil, false
-```
-
-And range over their keys and values:
-
-```go
-var m = map[int]string{1: "one", 2: "two"}
-for key, value := range names {
-  println(key, value)
-}
-
-// 1 "one"
-// 2 "two"
-```
-
 #### **Looping**
 
 Go has only one loop, the `for` loop. It has three components:
 
-* the init statement: executed before the first iteration
-* the condition: evaluated before every iteration
-* the post statement: executed at the end of every iteration
+* The init statement: executed before the first iteration
+* The condition: evaluated before every iteration
+* The post statement: executed at the end of every iteration
 
 Here's an example:
 
@@ -504,7 +337,7 @@ default:
 }
 ```
 
-You can also switch on a condition expression:
+You can also switch on a condition:
 
 ```go
 switch x := 2; x {
@@ -524,10 +357,10 @@ You can use `fallthrough` to fall through to the case below the current case:
 ```go
 switch 1 {
 case 1:
-    print("1 ")
+    print("1")
     fallthrough
 case 2:
-    print("2 ")
+    print("2")
 }
 
 // => 1 2
@@ -555,6 +388,177 @@ print(3)
 ```
 
 Labels have a very specific use case. They can make code less readable and should be avoided most of the time.
+
+
+#### **Arrays**
+
+In Go, arrays have a fixed length:
+
+```go
+var a [2]string // an array of 10 integers
+a[0] = "Hello"
+a[1] = "World"
+println(a) // => ["Hello", "World"]
+```
+
+You create arrays using *array literals*:
+
+```go
+helloWorld := [2]string{"Hello", "World"}
+```
+
+You cannot increase an array beyond its capacity. Doing so will panic:
+```go
+helloWorld := [2]string{"Hello", "World"}
+helloWorld[10] = "Space"
+
+// panic: runtime error: index out of range [10] 
+// with length 2
+```
+
+To get around this issue, Go provides slices.
+
+#### **Slices**
+
+Slices are more common than arrays. They do not have a fixed length, and are therefore more flexible:
+```go
+nums := []int{1, 2, 3, 4, 5}
+```
+
+Slices can also be created with the built-in function `make`:
+```go
+make([]string, initialLength)
+
+// initialCapacity can be set for memory optimization
+make([]string, initialLength, initialCapacity)
+```
+
+You can also create a slice by *slicing* an existing array:
+```go
+nums := [6]int{1, 2, 3, 4, 5, 6}
+s := nums[1:4]
+
+fmt.Println(s)
+// => [2 3 4]
+```
+
+You can omit the start or end index when slicing an array, so for this array:
+```go
+var a [10]int
+```
+These expressions are equivalent:
+
+```go
+a[:]
+a[0:]
+a[:10]
+a[0:10]
+```
+
+Modifying the elements of a slice will modify its underlying array:
+```go
+nums := [6]int{1, 2, 3, 4, 5, 6}
+
+s := nums[0:4]
+s[0] = 999
+
+fmt.Println(nums)
+// => [999 2 3 4 5 6]
+```
+
+Slices are just a fancy way to manage an underlying array. You cannot increase a slice beyond its capacity. Doing so will panic, just like with an array:
+```go
+nums := []int{1, 2, 3, 4, 5, 6}
+nums[20] = 9
+
+// panic: runtime error: index out of range [20] 
+// with length 6
+```
+
+However, Go has built-in functions to make slices feel like arrays, such as the `append` function, which can be used to add items to the end of a slice:
+```go
+nums := []int{1, 2, 3, 4, 5}
+nums = append(nums, 6)
+
+fmt.Println(nums)
+// => [1 2 3 4 5 6]
+```
+
+You can iterate over slices and arrays with `range`:
+
+```go
+names := []string{"john", "joe", "jessica"}
+for index, name := range names {
+  println(index, name)
+}
+
+// 0 john
+// 1 joe
+// 2 jessica
+```
+
+We can use the blank identifier to omit the index or the value from `range`:
+
+```go
+for _, name := range names
+
+// these are the same
+for index, _ := range names
+for index := range names
+```
+
+Slices are more complicated than they seem. To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
+
+#### **Maps**
+
+Maps are like hashes in ruby or dictionaries in python. You create them like this:
+
+```go
+var m map[string]string
+m["key"] = "value"
+
+x = m["key"] // => "value"
+```
+
+Or with a *map literal*:
+
+```go
+m := map[int]string{1: "one", 2: "two"}
+```
+
+Or the `make` function:
+
+```go
+m := make(map[int]string)
+```
+
+You can delete map keys:
+
+```go
+delete(m, key)
+```
+
+Check whether a key is present:
+
+```go
+var m map[string]string
+m["key"] = "value"
+
+x, ok = m["key"] // => "value", true
+x, ok = m["doesnt-exist"] // => nil, false
+```
+
+And range over their keys and values:
+
+```go
+var m = map[int]string{1: "one", 2: "two"}
+for key, value := range names {
+  println(key, value)
+}
+
+// 1 "one"
+// 2 "two"
+```
 
 #### **Functions**
 
@@ -600,16 +604,7 @@ func variadic(nums ...int) {
 }
 ```
 
-If a function takes two or more arguments of the same type, you can group them together:
-```go
-func multiply(x, y int) int {
-  return x * y
-}
-```
-
-These are called *Variadic Functions*.
-
-They can be called just like regular functions:
+These are called *Variadic Functions*. They can be called just like regular functions:
 
 ```go
 variadic(1, 2, 3) // => [1, 2, 3]
@@ -620,6 +615,13 @@ Or you can pass in a slice directly:
 ```go
 nums := []int{1, 2, 3}
 variadic(nums) // => [1, 2, 3]
+```
+
+If a function takes two or more arguments of the same type, you can group them together:
+```go
+func multiply(x, y int) int {
+  return x * y
+}
 ```
 
 The `defer` statement defers the execution of a function until the surrounding function returns:
@@ -658,7 +660,8 @@ println(*p) // read i through the pointer => 42
 You can use `*` to modify the original value:
 ```go
 i := 42
-p := &i
+
+p := &i  // point to i 
 *p = 21  // set i through the pointer
 // "i" is now 21 
 ```
@@ -697,7 +700,6 @@ var x MyString = "hello"
 x.Print()
 
 // => "hello"
-}
 ```
 
 Methods receivers are copied by default, meaning their fields will not be mutated:
@@ -709,11 +711,11 @@ func (m MyString) BecomeHello() {
   m = "hello"
 }
 
-var x MyString = "nothello"
-n.BecomeHello()
+var x MyString = "not hello"
+x.BecomeHello()
 
 println(x)
-// => "nothello"
+// => "not hello"
 ```
 
 To mutate the original receiver, use a pointer receiver:
@@ -724,8 +726,8 @@ func (m *MyString) BecomeHello() {
   *m = "hello"
 }
 
-var x MyString = "nothello"
-n.BecomeHello()
+var x MyString = "not hello"
+x.BecomeHello()
 
 println(x)
 // => "hello"
@@ -739,6 +741,7 @@ Structs are a built in Go type. You can declare one with the `struct` keyword. T
 
 ```go
 type MyStruct struct {
+  a string
   x int
   y int
   z MyOtherStruct
@@ -749,7 +752,9 @@ You can create new structs using *struct literals*:
 
 ```go
 s1 := MyStruct{ x: 1, y: 2 }
-s2 := &MyStruct{ x: 1, y: 2 } // s2 is a pointer to MyStruct
+
+// s2 is a pointer to MyStruct
+s2 := &MyStruct{ x: 1, y: 2 } 
 
 // the order does not matter, only the names do
 ```
@@ -761,17 +766,17 @@ For smaller structs, you can omit the names of the fields
 s1 := MyStruct{ 1, 2 }
 ```
 
-If a field is not initialized, it defaults to its zero value:
-```go
-s1 := MyStruct{}
-s1.x // => 0
-```
-
 Struct fields are accessed using a dot:
 
 ```go
 s := MyStruct{}
 s.x = 1 
+```
+
+If a field is not initialized, it defaults to its type's zero value:
+```go
+s1 := MyStruct{}
+s1.x // => 0
 ```
 
 Struct fields can also be accessed and modified through a struct pointer:
@@ -780,8 +785,9 @@ Struct fields can also be accessed and modified through a struct pointer:
 s := MyStruct{}
 p := &s
 
-(*p).x = 19 // modify s
-// "s.x" is now 19
+(*p).x = 19 // modify "s" through "p"
+
+println(s.x) // => 19
 ```
 
 Because this is so common, Go allows you to modify the underlying struct of a pointer without explicitly dereferencing:
@@ -793,7 +799,7 @@ p := &s
 p.x = 19
 ```
 
-You can declare methods on your own struct types:
+You can declare methods on your own struct types, just like with any other custom type:
 
 ```go
 type Number struct {
@@ -834,7 +840,8 @@ An interface value holds a value of a specific underlying concrete type. Calling
 
 ```go
 func SignedIsNegative(s Signed) bool {
-  // call isStrictlyNegative() on the underlying type of `s`
+  // call isStrictlyNegative() on the 
+  // underlying type of `s`
   return s.isStrictlyNegative()
 }
 ```
@@ -871,8 +878,8 @@ SignedIsNegative(Number{})
 And neither does this:
 
 ```go
-// here, 7 does not implement the Signed interface
-SignedIsNegative(7)
+// strings do not implement the Signed interface
+SignedIsNegative("a string")
 ```
 
 Note that you cannot define methods on an interface type:
@@ -883,7 +890,8 @@ func (m MyString) DoSomething() {
   ...
 }
 
-// error: invalid receiver type MyString (MyString is an interface type)
+// error: invalid receiver type MyString 
+// (MyString is an interface type)
 ```
 
 #### **Type Assertions**
@@ -905,8 +913,9 @@ But since the empty interface does not have any methods, we cannot call the Numb
 ```go
 var x interface{} = Number{}
 
-// this fails as the compiler does not know the underlying type of x
-// so it does not know whether it has the isStrictlyNegative method
+// this fails as the compiler does not know the 
+// underlying type of x so it does not know 
+// whether it has the isStrictlyNegative method
 x.isStrictlyNegative()
 ```
 
@@ -928,7 +937,8 @@ If a type assertion fails (x wasn't really a Number), then it will trigger a pan
 var x interface{} = "not a number"
 n = x.(Number)
 
-// panic: interface conversion: interface {} is string, not Number
+// panic: interface conversion: 
+// interface {} is string, not Number
 ```
 
 To prevent a `panic`, we can use the second return value of a type assertion:
@@ -1024,17 +1034,18 @@ To imitate a call to `super` as found in other languages, you can call the metho
 cat.Animal.Talk() // still prints "meow"
 ```
 
-A struct can also embed a pointer to another struct:
-```go
-type Cat struct {
-  *Animal
-}
-```
 
 This behavior is not limited to struct fields. A struct can embed any type. Whether a primitive:
 ```go
 type CustomString struct {
   string
+}
+```
+
+A pointer:
+```go
+type Cat struct {
+  *Animal
 }
 ```
 
@@ -1100,7 +1111,8 @@ If code cannot continue because of a certain error, you can stop execution with 
 
 ```go
 if err != nil { 
-  panic(fmt.Errorf("Could not continue due to error: %w", err))
+  panic(
+    fmt.Errorf("Could not continue due to error: %w", err))
 }
 
 // panic: Could not continue due to error...
@@ -1108,7 +1120,7 @@ if err != nil {
 // main.main() /tmp/sandbox091462361/prog.go:5 +0x39
 ```
 
-You can `defer` a call to `recover`, to regain control of a panicking goroutine. `recover` will return the value passed to panic:
+You can defer a call to `recover` to regain control of a panicking goroutine. `recover` will return the value passed to panic:
 ```go
 defer func() {
   if r := recover(); r != nil {
@@ -1184,12 +1196,16 @@ fmt.Println(<-out)
 Channels can be created with a limit, once too many values are sent to the channel, the channel will block:
 ```go
 ch := make(chan int, 1)
+
+// this is fine
 ch <- 1
+
+// but now the channel is full
 ch <- 2
 // fatal error: all goroutines are asleep - deadlock!
 ```
 
-These are called *buffered channels*.
+Channels with a limit are called *buffered channels*.
 
 Channels can be closed:
 ```go
@@ -1260,8 +1276,6 @@ Here is the output:
 quit
 ```
 
-And with that, we hit 20 minutes estimated reading time. I know the title said 30 minutes, but that's pretty much it! We've covered all 25 keywords of Go's keywords.
-
-Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
+And with that, we have hit 20 minutes estimated reading time. Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
 
 Thanks for reading!
