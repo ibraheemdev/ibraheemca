@@ -59,7 +59,7 @@ The `config.rs` file will contain the logic for deserializing and storing the co
 
 In this example, all of our config files contain the same variables, so we can define a single type, `Config`, that contains fields and embedded structs corresponding to the yaml config file.
 
-```go
+```rust
 // src/config.rs
 
 use serde::Deserialize;
@@ -155,7 +155,7 @@ $ cargo run
      password: ""
      host: "localhost"
      port: 8080
-     database: "mytribe"
+     database: "myapp"
 ```
 
 Perfect! Now, we can use `serde` to serialize that string into the `Config` struct. Let's write this logic in an `init` function:
@@ -286,3 +286,51 @@ Thankfully, there is an easy way to deal with static variable initialization tha
 #[macro_use]
 extern crate lazy_static;
 ```
+
+We'll call this variable, `CONFIG`:
+```rust
+lazy_static! {
+  static ref CONFIG: Config = Config::init();
+}
+```
+
+Now, we have to provide a function to access this variable:
+```rust
+impl Config {
+  ...
+  pub fn get() -> Self {
+    CONFIG.to_owned()
+  }
+}
+```
+
+And that's it! Let's test it out:
+```rust
+// src/main.rs
+mod config;
+mod error;
+
+#[macro_use]
+extern crate lazy_static;
+
+fn main() {
+  let config = config::Config::get();
+  println!("{:#?}", config);
+}
+```
+
+```rust
+cargo run
+
+Config {
+  database: DatabaseConfig {
+    user: "",
+    password: "",
+    host: "localhost",
+    port: 8080,
+    database: "myapp",
+  },
+}
+```
+
+All of the code from this post is available on [github](TODO).
