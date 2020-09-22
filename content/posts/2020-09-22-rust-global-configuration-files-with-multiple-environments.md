@@ -278,3 +278,11 @@ is not stable as `const fn`
    |     ^^^^^^^^^^^^^^^^^
    |
 ```
+
+Thankfully, there is an easy way to deal with static variable initialization that depends on other function calls through the `lazy_static!` macro. We can use this macro through the `lazy_static` crate:
+```rust
+// src/main.rs
+
+#[macro_use]
+extern crate lazy_static;
+```
