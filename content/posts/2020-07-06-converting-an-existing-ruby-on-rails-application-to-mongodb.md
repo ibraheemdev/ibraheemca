@@ -2,6 +2,7 @@
 template: post
 title: Converting an existing Ruby on Rails application to MongoDB
 slug: convert-rails-to-mongodb
+socialImage: /media/rails-logo.png
 draft: false
 date: 2020-07-06T17:18:23.372Z
 description: How to convert an existing Ruby on Rails application from a
