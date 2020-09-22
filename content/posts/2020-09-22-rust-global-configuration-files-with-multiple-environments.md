@@ -26,7 +26,7 @@ cargo new --bin myapp
 Add the necessary dependencies:
 
 ```rust
-// Cargo.toml[package]
+// Cargo.toml
 [dependencies]
 serde = { version = "1.0.116", features = ["derive"] }
 serde_yaml = "0.8"
