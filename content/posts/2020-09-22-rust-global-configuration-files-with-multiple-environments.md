@@ -320,9 +320,9 @@ fn main() {
 ```
 
 ```rust
-cargo run
+$ cargo run
 
-Config {
+=> Config {
   database: DatabaseConfig {
     user: "",
     password: "",
