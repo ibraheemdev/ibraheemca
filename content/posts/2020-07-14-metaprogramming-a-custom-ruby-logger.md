@@ -2,11 +2,11 @@
 template: post
 title: Spicing up your Ruby Logger
 slug: custom-ruby-logger
+socialImage: /media/ruby-logo.jpeg
 draft: false
 date: 2020-07-23T23:45:54.829Z
 description: Spicing up your ruby logger by metaprogramming a custom ruby logger class
 mainTag: Ruby
-socialImage: /media/beautiful_logs.gif
 tags:
   - Ruby
   - Metaprogramming
