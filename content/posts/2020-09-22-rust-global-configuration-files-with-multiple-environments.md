@@ -33,7 +33,7 @@ serde_yaml = "0.8"
 lazy_static = "1.4.0"
 ```
 
-We will be using `serde`, the most popular Rust serialization framework, and `lazy_static`, a macro for declaring lazily evaluated statics in Rust. We will get these later.
+We will be using `serde`, the most popular Rust serialization framework, and `lazy_static`, a macro for declaring lazily evaluated statics in Rust. We will get to these later.
 
 In this application, we will have three environments. `testing`, `development`, and `production`. You can create yaml files for each of these environments in a `config/` directory at the root of your project:
 
