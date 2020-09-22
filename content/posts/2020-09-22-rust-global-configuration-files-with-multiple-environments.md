@@ -162,21 +162,12 @@ Perfect! Now, we can use `serde` to serialize that string into the `Config` stru
 
 ```rust
 fn init() -> Self {
-  let env = Config::get_environment();
-  let env = match env {
-    Ok(e) => match e.as_ref() {
-      "development" | "testing" | "production" => e,
-      _ => panic!("Must set {} to valid environment", APP_ENV),
-    },
-    Err(_) => panic!("Must set {} to valid environment", APP_ENV),
-  };
-
-  let contents = Self::read_config_file(env.as_ref()).expect("File not found");
-  return serde_yaml::from_str(&contents).expect("Error while reading json");
+  ...
 }
 ```
 
 Inside this function, we can get the current environment:
+
 ```rust
 let env = Config::get_environment();
 ```
@@ -193,86 +184,97 @@ let env = match env {
 };
 ```
 
-Alternatively, you could default to the `development` environment as is common in other frameworks:
+Alternatively, you could default to the `development` environment. This is common in other frameworks:
 
 ```rust
 let env = match env {
   Ok(e) => match e.as_ref() {
     "development" | "testing" | "production" => e,
-    _ => "development",
+    _ => String::from("development"),
   },
-  Err(_) => "development",
+  Err(_) => String::from("development"),
 };
 ```
 
-```go
-package config
+Next, we can read the config file and panic if there is an error:
 
-import (
-  "fmt"
-  "os"
-)
-...
+```rust
+let contents = Self::read_config_file(env.as_ref()).unwrap();
+```
 
-func readConfig() *EnvironmentConfig {
-  file := fmt.Sprintf("config/environments/%s.yml", getEnv())
-  f, err := os.Open(file)
-  if err != nil {
-    log.Fatal(err)
-    os.Exit(2)
-  }
-  defer f.Close()
+And finally, we use the `serde_yaml` crate to serialize the string into the `Config` struct:
+
+```rust
+return serde_yaml::from_str(&contents).unwrap();
+```
+
+Here is the final `init` function:
+
+```rust
+fn init() -> Self {
+  let env = Config::get_environment();
+  let env = match env {
+    Ok(e) => match e.as_ref() {
+      "development" | "testing" | "production" => e,
+      _ => String::from("development"),
+    },
+    Err(_) => String::from("development"),
+  };
+
+  let contents = Self::read_config_file(env.as_ref()).unwrap();
+  return serde_yaml::from_str(&contents).unwrap();
 }
 ```
 
-It uses the os package to open the config file corresponding to the current environment. Now we can use the [yaml.v3](https://github.com/go-yaml/yaml) package to decode the file into an EnvironmentConfig struct and return a pointer:
+Now we just have to store `Config` in a global variable. You might think we can use a constant:
+```rust
+const CONFIG: Config = Config::init();
+```
 
-```go
-func readConfig() *EnvironmentConfig {
+However, this is not possible in Rust:
+```rust
+error[E0015]: calls in constants are limited to 
+constant functions, tuple structs and tuple variants
+  --> src/config.rs:21:24
+   |
+21 | const CONFIG: Config = Config::init();
+   |  
+```
+
+What about a static variable?
+```rust
+static CONFIG: Config = Config::init();
+```
+
+Nope:
+```rust
+error[E0015]: calls in statics are limited to 
+constant functions, tuple structs and tuple variants
+  --> src/config.rs:21:25
+   |
+21 | static CONFIG: Config = Config::init();
+   |   
+```
+
+One solution here would be to use a constant function: 
+```rust
+const fn init() -> Self {
   ...
-  var cfg EnvironmentConfig
-  decoder := yaml.NewDecoder(f)
-  err = decoder.Decode(&cfg)
-  if err != nil {
-    log.Fatal(err)
-    os.Exit(2)
-  }
-  return &cfg
+}
+
+pub const fn get_environment() -> Result<String, env::VarError> {
+  ...
 }
 ```
 
-The config package is done! Now in your application's main.go, you can import the config package with a blank identifier:
-
-```go
-package main
-
-import (
-  _ "github.com/yourapp/config"
-)
-
-...
+However, a constant function can only call other constant functions. Because that is not the case with `init()`, this code will not compile:
+```rust
+error[E0723]: can only call other `const fn` 
+within a `const fn`, but `const std::env::var::<&str>` 
+is not stable as `const fn`
+  --> src/config.rs:58:5
+   |
+58 |     env::var(APP_ENV)
+   |     ^^^^^^^^^^^^^^^^^
+   |
 ```
-
-The blank identifier is used to import a package solely for its side-effects (initialization), meaning that we are only using the config package for its init function. If you remember, the init function assigns the Config global variable to a pointer of an EnvironmentConfig struct. 
-
-This means that the Config struct is now accessible to your entire application. For example, you can use the http host and port variables in your router's ListenAndServer function:
-
-```go
-import (
-  "fmt"
-  "log"
-  "net/http"
-  "github.com/yourapp/config"
-)
-
-
-// ListenAndServe :
-func ListenAndServe() {
-  log.Fatal(
-    http.ListenAndServe(
-      fmt.Sprintf("%s:%s", config.Config.Server.Host, config.Config.Server.Port),
-      initRoutes()))
-}
-```
-
-Hopefully this post gave you a better idea of how you can use configuration files and environment variables to streamline your application development and deployment. You can view the entire source code on [github](https://gist.github.com/ibraheemdev/dfb0801bd5190fdef46e7fe89bc8b4cd)
