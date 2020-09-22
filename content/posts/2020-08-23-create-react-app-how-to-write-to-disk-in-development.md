@@ -2,6 +2,7 @@
 template: post
 title: "Create React App: How to Write to Disk in Development"
 slug: cra-write-to-disk-in-dev
+socialImage: /media/react-logo-825x510.jpg
 draft: false
 date: 2020-08-28T15:58:13.616Z
 description: How to add a development build mode in create-react-app which
