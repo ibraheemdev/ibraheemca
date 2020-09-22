@@ -2,6 +2,7 @@
 template: post
 title: Easier Async State in React + Redux with Finite State Machines
 slug: fsm-react-redux
+socialImage: /media/redux-logo.png
 draft: false
 date: 2020-07-16T19:17:26.879Z
 description: Implementing the Finite State Machine Model with Reactjs and Redux
