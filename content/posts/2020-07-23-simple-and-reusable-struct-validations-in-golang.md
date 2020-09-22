@@ -2,6 +2,7 @@
 template: post
 title: Simple yet Powerful Struct Validations In Go Without Reflection!
 slug: golang-struct-validations
+socialImage: /media/gopher.jpg
 draft: false
 date: 2020-07-23T15:41:14.076Z
 description: Creating a Simple yet Powerful Struct Validation Package for Golang
