@@ -2,6 +2,7 @@
 template: post
 title: "Interview Question: Most Common N Page Path"
 slug: most-common-n-page-path
+socialImage: /media/ruby-logo.jpeg
 draft: false
 date: 2020-08-14T20:57:17.926Z
 description: You are given a file named 'paths.txt'. Each line in the file
