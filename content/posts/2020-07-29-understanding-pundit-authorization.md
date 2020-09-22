@@ -2,6 +2,7 @@
 template: post
 title: Understanding Pundit Authorization
 slug: understanding-pundit
+socialImage: /media/ruby-logo.jpeg
 draft: false
 date: 2020-07-29T16:29:21.543Z
 description: Recreating the Pundit authorization gem in a Ruby on Rails
