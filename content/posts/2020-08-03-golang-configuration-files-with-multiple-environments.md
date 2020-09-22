@@ -2,6 +2,7 @@
 template: post
 title: Golang Global Configuration Files with Multiple Environments
 slug: go-global-config-files
+socialImage: /media/gopher.jpg
 draft: false
 date: 2020-08-03T16:57:44.304Z
 description: A simple way to decode configuration files based on the current
