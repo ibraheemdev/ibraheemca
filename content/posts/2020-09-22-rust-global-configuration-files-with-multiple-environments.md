@@ -2,8 +2,8 @@
 template: post
 title: Rust Global Configuration Files with Multiple Environments
 slug: rust-global-config-files
-socialImage: /media/profile.png
-draft: true
+socialImage: /media/rust-logo.png
+draft: false
 date: 2020-09-22T16:01:02.408Z
 description: A simple way to decode configuration files based on the current
   application environment into globally accessible variables
