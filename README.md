@@ -2,7 +2,7 @@
 
 The repo for ibraheem.ca, my open source blog. [Check it out!](https://ibraheem.ca/).
 
-This project was initally scaffolded with [the gatsby-lumen-starter](https://github.com/alxshelepenok/gatsby-starter-lumen). However, the author of that repo seems to not be accepting new changes. This repo will be regularly maintained and updated, as I use it for my personal blog. I also converted the entire app from flow to typescript, which I prefer.
+This project was initally scaffolded with [the gatsby-lumen-starter](https://github.com/alxshelepenok/gatsby-starter-lumen). It has been updated with many new features, and was converted from flow to typescript.
 
 ## Features
 + [Lost Grid](http://lostgrid.org).
