@@ -3,9 +3,9 @@ template: post
 title: Secure Error Handling With Actix-Web
 slug: "actix-web-error-handling "
 socialImage: /media/actix-web.png
-draft: true
+draft: false
 date: 2020-10-15T21:37:15.944Z
-description: Custom secure error responses with Rust and Actix-Web; with no external crates.
+description: Secure error responses for Rust and Actix-Web with no external crates.
 mainTag: Rust
 tags:
   - Rust
@@ -123,12 +123,12 @@ impl fmt::Display for ResponseError {
 If the response error contains a message, it will display a json response that looks like this:
 
 ```rust
-{ "error": "Invalid login attempt" }
+{ "error": "The Error Message" }
 ```
 
 ### Actix-Web Response Error
 
-For `actix_web` to be able to display the error response, the error type must implement the `actix_web::ResponseError` trait. `ResponseError` contains two required methods, `status_code`, and `error_response`. 
+For `actix_web` to be able to display the error response properly, the error type must implement the `actix_web::ResponseError` trait. `ResponseError` has two required methods, `status_code`, and `error_response`. 
 
 The `status_code` method for the custom error type will either return the `Response` variant's status code, or 500 (internal server error):
 
@@ -148,6 +148,8 @@ impl actix_web::ResponseError for MyError {
 The `error_response` method will either return the json error message of the `Response` variant, or `{ "error": "An unexpected error occured" }`:
 
 ```rust
+use actix_web::{dev::HttpResponseBuilder, http::StatusCode, HttpResponse};
+
 impl actix_web::ResponseError for MyError {
   fn error_response(&self) -> HttpResponse {
     match *self {
