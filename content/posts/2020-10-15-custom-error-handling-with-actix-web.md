@@ -1,7 +1,7 @@
 ---
 template: post
 title: Secure Error Handling With Actix-Web
-slug: "actix-web-error-handling "
+slug: "actix-web-secure-error-handling "
 socialImage: /media/actix-web.png
 draft: false
 date: 2020-10-15T21:37:15.944Z
