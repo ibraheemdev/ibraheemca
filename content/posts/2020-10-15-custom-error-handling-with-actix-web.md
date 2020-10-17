@@ -11,7 +11,32 @@ tags:
   - Rust
   - Actix-Web
 ---
+### Introduction
+
+
+Imagine someone made an api call, logging into their account with a misspelled email address:
+
+```rust
+curl --data '{"email": "jJohn@example.org", "password" : "asdf1234"}'
+```
+
+Imagine if they got this response:
+
+```rust
+{ "error": "passwords do not match for User {
+  email: jJohn@example.org,
+  phone: 404 873 9099,
+  address: 1234 baker street,
+  password: sS#*)!MSJ(09adAHD's}io#
+} "}
+```
+
+Although you might not think about it often, it is very possible for your application to leak sensitive data through error messages, In this post, I will walk you through how I handle error messages in my Rust (actix-web) web applications.
+
+### Custom Error Type
+
 In my Rust applications, I generally like to have a single error type for each domain that encompasses all the possible errors that can occur:
+
 ```rust
 #[derive(Debug)]
 pub enum MyError {
@@ -20,6 +45,7 @@ pub enum MyError {
   Db(db::error::Error),
 }
 ```
+
 I implement for the standard `Error` trait for my error type:
 
 ```rust
@@ -27,6 +53,7 @@ impl std::error::Error for Error {}
 ```
 
 I also `fmt::Display` by simple calling `fmt()` on the respective enum variant:
+
 ```rust
 impl fmt::Display for MyError {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -38,7 +65,9 @@ impl fmt::Display for MyError {
   }
 }
 ```
+
 I then implement the `Into` conversion for each variant. This will allow the use of the `?` operator in functions that return `Result`:
+
 ```rust
 impl From<db::error::Error> for MyError {
   fn from(err: db::error::Error) -> MyError {
@@ -52,9 +81,13 @@ impl From<std::io::Error> for Error {
   }
 }
 ```
+
 While there is a decent amount of boilerplate involved in this, I don't see the need to introduce a third-party crate for simple error conversions.
 
-All of the above errors are only used for internal logging. Obviously, I don't want to expose sensitive information in api endpoints. For actual error responses, only the `Response` variant is used. `Response` holds a custom `ResponseError` type:
+### Response Error
+
+All of `MyError`'s variants are only used for internal logging. For actual error responses, only the `Response` variant is used. `Response` holds a custom `ResponseError` type:
+
 ```rust
 #[derive(Debug)]
 pub struct ResponseError {
@@ -64,6 +97,7 @@ pub struct ResponseError {
 ```
 
 `ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, which is also an enum. In this simple example, it contains one variant, which is a optional string message:
+
 ```rust
 #[derive(Debug, Clone)]
 pub enum ResponseErrorKind {
@@ -72,6 +106,7 @@ pub enum ResponseErrorKind {
 ```
 
 The `std::fmt::Display` implementation returns a json error response:
+
 ```rust
 impl fmt::Display for ResponseError {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -84,14 +119,19 @@ impl fmt::Display for ResponseError {
   }
 }
 ```
+
 If the response error contains a message, it will display a json response that looks like this:
+
 ```rust
 { "error": "Invalid login attempt" }
 ```
 
+### Actix-Web Response Error
+
 For `actix_web` to be able to display the error response, the error type must implement the `actix_web::ResponseError` trait. `ResponseError` contains two required methods, `status_code`, and `error_response`. 
 
 The `status_code` method for the custom error type will either return the `Response` variant's status code, or 500 (internal server error):
+
 ```rust
 use actix_web::http::StatusCode;
 
@@ -106,6 +146,7 @@ impl actix_web::ResponseError for MyError {
 ```
 
 The `error_response` method will either return the json error message of the `Response` variant, or `{ "error": "An unexpected error occured" }`:
+
 ```rust
 impl actix_web::ResponseError for MyError {
   fn error_response(&self) -> HttpResponse {
@@ -122,6 +163,7 @@ impl actix_web::ResponseError for MyError {
 ```
 
 Now, I create some convenience methods for `ResponseError`:
+
 ```rust
 impl ResponseError {
   pub fn message(code: u16, msg: &'static str) -> Self {
@@ -138,23 +180,46 @@ impl ResponseError {
     }
   }
 ```
+
+### Usage
+
 That's it for the `MyError`. Now, I can use it in my handlers. For example, a handler that returns a `ResponseError`:
+
 ```rust
 async fn hello() -> Result<HttpResponse, Error> {
   ResponseError::message(404, "Invalid Request")?
 }
 ```
+
 Will result in the following json response:
+
 ```rust
 [404] { "error": "Invalid Request" }
 ```
-However, when making a sensitive database call:
+
+However, when making a sensitive database call, you can still use the `?` operator for cleaner error handling:
+
 ```rust
 async fn login() -> Result<HttpResponse, Error> {
   make_sensitive_db_query()?
 }
 ```
-No sensitive information will be leaked:
+
+And no sensitive information will be leaked:
+
 ```rust
 [500] { "error": "An unexpected error occured" }
+```
+
+If you want to add some additional context to an error, you can simply map it to a `ResponseError`:
+
+```rust
+async fn login() -> Result<HttpResponse, Error> {
+  make_sensitive_db_query()
+    .map_err(|_| ResponseError::message(401, "Invalid Login Attempt"))?
+}
+```
+
+```rust
+[401] { "error": "Invalid Login Attempt" }
 ```
