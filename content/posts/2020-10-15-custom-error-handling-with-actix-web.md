@@ -1,7 +1,7 @@
 ---
 template: post
 title: Secure Error Handling With Actix-Web
-slug: "actix-web-secure-error-handling "
+slug: actix-web-secure-error-handling
 socialImage: /media/actix-web.png
 draft: false
 date: 2020-10-15T21:37:15.944Z
@@ -17,7 +17,7 @@ tags:
 Imagine someone made an api call, logging into their account with a misspelled email address:
 
 ```rust
-curl --data '{"email": "jJohn@example.org", "password" : "asdf1234"}'
+curl --data { "email": "jJohn@example.org", "password" : "asdf1234" }
 ```
 
 Imagine if they got this response:
