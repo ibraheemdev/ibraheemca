@@ -2,7 +2,7 @@ module.exports = {
   url: "https://ibraheem.ca",
   pathPrefix: "/",
   title: "Ibraheem Ahmed's Blog",
-  subtitle: "A blog by Ibraheem Ahmed | Freelance software developer",
+  subtitle: "A blog by Ibraheem Ahmed",
   copyright:
     '<p>This blog is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemca">github!</a></p>',
   disqusShortname: "ibraheem-3",
@@ -26,7 +26,7 @@ module.exports = {
     name: "Ibraheem Ahmed",
     photo: "/photo.png",
     bio:
-      '<div>Hey, I\'m Ibraheem Ahmed. I’m a freelance software developer from Toronto, Canada. I love working with Ruby on Rails, React.js, Golang, and Rust. <a href="/pages/about">More about me.</div>',
+      '<div>Hey, I\'m Ibraheem. I\'m a: Developer | Learner | Writer | Freelancer. <a href="/pages/about">More about me.</a></div>',
     contacts: {
       email: "ibrah1440@gmail.com",
       facebook: "",
