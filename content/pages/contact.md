@@ -57,7 +57,7 @@ draft: false
       alt=""
     />
   </a>
-  <a href="https://discord.com/channels/@me/ibraheem#6165" rel="nofollow">
+  <a href="https://discord.com/channels/@me/766409874497339444" rel="nofollow">
     <img
       align="left"
       style="margin-right: 5px; margin-bottom: 5px;"
