@@ -26,7 +26,7 @@ module.exports = {
     name: "Ibraheem Ahmed",
     photo: "/photo.png",
     bio:
-      '<div>Hey, I\'m Ibraheem. I\'m a: Developer | Learner | Writer | Freelancer. <a href="/pages/about">More about me.</a></div>',
+      '<div><b>@rails</b> developer and <b>@rustlang</b> enthusiast. <a href="/pages/about">More about me.</a></div>',
     contacts: {
       email: "ibrah1440@gmail.com",
       facebook: "",
