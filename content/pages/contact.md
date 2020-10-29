@@ -6,12 +6,13 @@ socialImage: /media/profile.png
 draft: false
 ---
 
-- 👨‍💻 &nbsp; Developer
-- 📖 &nbsp; Learner
-- 📝 &nbsp; Writer
-- Opensourcer
-- 🦀 &nbsp; Rustacean
-- 💼 &nbsp; Freelancer
+I enjoy programming in a variety of languages, most notably Ruby on Rails. I am very enthusiastic and active in the Rust community, a language which I work with in my spare time. I also work with frontend technologies like React, Redux, and Typescript.
+
+I love helping other people learn the languages I love, which is why I am active on stackoverflow and write weekly at [ibraheem.ca](https://ibraheem.ca/), where you can find tutorials, useful scripts, and other fun explorations.
+
+I open source a lot of my side projects, which you can find on [github](https://github.com/ibraheemdev).
+
+I am also open for freelance work. Want to talk about a project you think I can help with? [Let's get in touch!](https://ibraheem.ca/pages/about#---social-links)
 
 ### 🚀 &nbsp; I Love Working With These Technologies
 
