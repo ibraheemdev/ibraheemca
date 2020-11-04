@@ -2,7 +2,7 @@
 template: post
 title: The Strictest Rust Workflow
 slug: strictest-cargo-workflow
-socialImage: /media/profile.png
+socialImage: /media/rust-logo.png
 draft: true
 date: 2020-11-04T16:43:51.892Z
 description: Make your code more idiomatic with `clippy`, safer with `miri`, and
@@ -14,9 +14,17 @@ tags:
 ---
 The Rust compiler is known to be annoying. Sometimes, even trying to do the simplest thing will result in a compile time error. However, this is for good reason. Rust's borrow checker guarantees memory and thread-safety — enabling you to eliminate many classes of bugs at compile-time. In this article, I am going to try to create the strictest (most annoying) Rust workflow, making your code more idiomatic with `clippy`, safer with `miri`, and consistent with `rustfmt`.
 
-### Clippy:
+### Compilation
 
-Clippy is a community driven linter that helps catch common mistakes and improve your Rust code. For example, lint this little program:
+The first step in our workflow is a simple compile with all the compile targets, and features enabled:
+```rust
+cargo test --all-targets --all-features
+```
+
+
+### Clippy
+
+Clippy is a community driven linter that helps catch common mistakes and improve your Rust code. For example, try linting this little program:
 ```rust
 fn main() {
     let msg = "Hello";
@@ -47,7 +55,7 @@ Clippy has four lint levels:
 -D --deny OPT       Set lint denied
 -F --forbid OPT     Set lint forbidden
 ```
-The strictest level is `--forbid`. However, the forbid level is limited. For example, let's say that you have a specific reason to use `.len() > 0` instead of `!is_empty`. With the `deny` lint level, you can explicitly tell clippy to not lint that comparison:
+The strictest level is `forbid`. However, the forbid level is pretty limited. For example, let's say that you have a specific reason to use `.len() > 0` instead of `!is_empty`. With the `deny` lint level, you can explicitly tell clippy to not lint that comparison:
 ```rust
 #[allow(clippy::len_zero)]
 fn main() {
@@ -97,3 +105,21 @@ In the context of a CI workflow, you probably don't want rustfmt writing to the 
 ```rust
 cargo fmt --all -- --check
 ```
+
+### Miri
+
+Miri is an experimental interpreter for [ust's
+[mid-level intermediate representation](https://github.com/rust-lang/rfcs/blob/master/text/1211-mir.md).  It can run binaries and
+test suites of cargo projects and detect certain classes of
+[undefined behavior](https://doc.rust-lang.org/reference/behavior-considered-undefined.html),
+for example:
+
+* Out-of-bounds memory accesses and use-after-free
+* Invalid use of uninitialized data
+* Not sufficiently aligned memory accesses and references
+
+On top of that, Miri will also tell you about memory leaks: when there is memory
+still allocated at the end of the execution, and that memory is not reachable
+from a global `static`, Miri will raise an error.
+
+Miri has already discovered some [real-world bugs](https://github.com/rust-lang/miri/blob/master/README.md#bugs-found-by-miri) in the standard library!
