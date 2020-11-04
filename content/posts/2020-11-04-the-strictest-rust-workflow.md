@@ -18,7 +18,7 @@ The Rust compiler is known to be annoying. Sometimes, even trying to do the simp
 
 The first step in our workflow is a simple compile with all the compile targets, and features enabled:
 ```rust
-cargo test --all-targets --all-features
+$ cargo test --all-targets --all-features
 ```
 
 
@@ -44,7 +44,7 @@ error: length comparison to zero
 ```
 Clippy has a couple of configuration options that can make it stricter. For starters, we can tell it to check all targets and activate all features:
 ```rust
-cargo clippy --all-targets --all-features
+$ cargo clippy --all-targets --all-features
 ```
 Now let's get into the configuration for the actual linting. 
 
@@ -73,7 +73,7 @@ There is one more lint category, and that is `clippy::nursery`. These are lints 
 
 Let's go ahead and enable all the available clippy lints at the `forbidden` lint level. Here is the final clippy command:
 ```rust
-cargo clippy \
+$ cargo clippy \
   --all-targets \
   --all-features \
   -- \
@@ -88,7 +88,7 @@ cargo clippy \
 
 Testing in Rust is pretty straightforward. The most we can do here, is test all the compile targets, and enable all features:
 ```rust
-cargo test --all-targets --all-features
+$ cargo test --all-targets --all-features
 ```
 
 ### Formatting
@@ -98,12 +98,12 @@ process](https://github.com/rust-dev-tools/fmt-rfcs). We'll stick to the default
 
 We can tell Rustfmt to format all packages (in a workspace):
 ```rust
-cargo fmt --all
+$ cargo fmt --all
 ```
 
 In the context of a CI workflow, you probably don't want rustfmt writing to the file system. Instead, we can tell it to run in 'check' mode, which exits with 0 if input is formatted correctly, and exits with 1 and prints a diff if formatting is required.
 ```rust
-cargo fmt --all -- --check
+$ cargo fmt --all -- --check
 ```
 
 ### Miri
@@ -122,4 +122,27 @@ On top of that, Miri will also tell you about memory leaks: when there is memory
 still allocated at the end of the execution, and that memory is not reachable
 from a global `static`, Miri will raise an error.
 
-Miri has already discovered some [real-world bugs](https://github.com/rust-lang/miri/blob/master/README.md#bugs-found-by-miri) in the standard library!
+Miri has already discovered some [real-world bugs](https://github.com/rust-lang/miri/blob/master/README.md#bugs-found-by-miri) in the standard library! It is an amazing tool that is perfect for our workflow.
+
+As of now, Miri is only available on the nightly release channel. For a CI workflow, that is totally fine, as we can install the latest nightly release and run Miri with nightly enabled within the workflow:
+```rust
+$ MIRI_NIGHTLY=nightly-$(curl -s https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu/miri)
+$ rustup set profile minimal
+$ rustup default "$MIRI_NIGHTLY"
+$ rustup component add miri
+```
+
+Now you can run your test suite with the miri interpreter:
+```rust
+$ cargo miri test
+```
+
+As you probably guessed, Miri has a few configuration options that we can set to make our workflow even stricter. These can be enabled with the `MIRIFLAGS` environment variable:
+```rust
+export MIRIFLAGS="-Zmiri-symbolic-alignment-check -Zmiri-track-raw-pointers"
+cargo miri test
+```
+
+The `symbolic-alignment-check` flag makes the alignment check more strict, and `track-raw-pointers` makes Stacked Borrows track a pointer tag even for raw pointers.
+
+### Conclusion
