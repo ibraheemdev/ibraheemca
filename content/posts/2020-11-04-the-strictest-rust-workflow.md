@@ -5,12 +5,14 @@ slug: strictest-cargo-workflow
 socialImage: /media/profile.png
 draft: true
 date: 2020-11-04T16:43:51.892Z
-description: How to get the compiler to yell at you even more
+description: Make your code more idiomatic with `clippy`, safer with `miri`, and
+  consistent with `rustfmt`. AKA how to get the compiler to yell at you even
+  more
 mainTag: Rust
 tags:
   - Rust
 ---
-The Rust compiler is known to be annoying. Sometimes, even trying to do the simplest thing will result in a compile time error. In this article, I'm going to try to make the compiler as annoying as possible :)
+The Rust compiler is known to be annoying. Sometimes, even trying to do the simplest thing will result in a compile time error. However, this is for good reason. Rust's borrow checker guarantees memory and thread-safety — enabling you to eliminate many classes of bugs at compile-time. In this article, I am going to try to create the strictest (most annoying) Rust workflow, making your code more idiomatic with `clippy`, safer with `miri`, and consistent with `rustfmt`.
 
 ### Clippy:
 
@@ -59,7 +61,9 @@ But with `forbid`, Clippy will override your `allow`, and still fail the lint ch
 
 Clippy has linting *categories*. For example, `clippy:pedantic` enables the *really* strict lints, `clippy:cargo` tells clippy to check your manifest file, and `clippy:all` enables everything else. You can also tell clippy to fail when encountering warnings with `--forbid warnings`.
 
-There is one more lint category, and that is `clippy::nursery`. These are lints that are in a *beta*, or unreleased stage. Let's go ahead and enable those too. Here is the final clippy command:
+There is one more lint category, and that is `clippy::nursery`. These are lints that are in a *beta*, or unreleased stage.
+
+Let's go ahead and enable all the available clippy lints at the `forbidden` lint level. Here is the final clippy command:
 ```rust
 cargo clippy \
   --all-targets \
@@ -89,7 +93,7 @@ We can tell Rustfmt to format all packages (in a workspace):
 cargo fmt --all
 ```
 
-And, in the context of a workflow, we can tell it to run in 'check' mode, which exits with 0 if input is formatted correctly, and exits with 1 and prints a diff if formatting is required.
+In the context of a CI workflow, you probably don't want rustfmt writing to the file system. Instead, we can tell it to run in 'check' mode, which exits with 0 if input is formatted correctly, and exits with 1 and prints a diff if formatting is required.
 ```rust
 cargo fmt --all -- --check
 ```
