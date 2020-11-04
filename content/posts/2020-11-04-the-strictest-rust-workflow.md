@@ -3,8 +3,8 @@ template: post
 title: The Strictest Rust Workflow
 slug: strictest-cargo-workflow
 socialImage: /media/rust-logo.png
-draft: true
-date: 2020-11-04T16:43:51.892Z
+draft: false
+date: 2020-11-04T19:13:28.971Z
 description: Make your code more idiomatic with `clippy`, safer with `miri`, and
   consistent with `rustfmt`. AKA how to get the compiler to yell at you even
   more
@@ -146,3 +146,7 @@ cargo miri test
 The `symbolic-alignment-check` flag makes the alignment check more strict, and `track-raw-pointers` makes Stacked Borrows track a pointer tag even for raw pointers.
 
 ### Conclusion
+
+That's all for our workflow. As you can tell, Rust's tooling is amazing! There are many official cargo components that you can use to make development easier. 
+
+The final github workflow is available [here](http://todo.io). If I missed any configuration options or tooling, [let me know](javascript:document.body.scrollIntoView(false)).
