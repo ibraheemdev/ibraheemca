@@ -57,7 +57,7 @@ fn main() {
 ```
 But with `forbid`, Clippy will override your `allow`, and still fail the lint check. For the purposes of this article, we'll stick with the `forbid` level, but for most use cases, `deny` is probably a better option. 
 
-Clippy has linting *categories*. For example, `clippy:pedantic` enables the *really* strict lints, `clippy:cargo` tells clippy to check your manifest file, and `clippy:all` enables everything else. 
+Clippy has linting *categories*. For example, `clippy:pedantic` enables the *really* strict lints, `clippy:cargo` tells clippy to check your manifest file, and `clippy:all` enables everything else. You can also tell clippy to fail when encountering warnings with `--forbid warnings`.
 
 There is one more lint category, and that is `clippy::nursery`. These are lints that are in a *beta*, or unreleased stage. Let's go ahead and enable those too. Here is the final clippy command:
 ```rust
@@ -65,6 +65,7 @@ cargo clippy \
   --all-targets \
   --all-features \
   -- \
+  --forbid=warnings \
   --forbid=clippy::all \
   --forbid=clippy::pedantic \
   --forbid=clippy::cargo \
