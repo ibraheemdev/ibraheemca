@@ -5,14 +5,17 @@ slug: strictest-cargo-workflow
 socialImage: /media/rust-logo.png
 draft: false
 date: 2020-11-04T19:13:28.971Z
-description: Make your code more idiomatic with `clippy`, safer with `miri`, and
-  consistent with `rustfmt`. AKA how to get the compiler to yell at you even
-  more
+description: Make your code more idiomatic with
+  [clippy](https://ibraheem.ca/posts/strictest-cargo-workflow#clippy), safer
+  with [miri](https://ibraheem.ca/posts/strictest-cargo-workflow#miri), and more
+  consistent with
+  [rustfmt](https://ibraheem.ca/posts/strictest-cargo-workflow#formatting). AKA
+  how to get the compiler to yell at you even more
 mainTag: Rust
 tags:
   - Rust
 ---
-The Rust compiler is known to be annoying. Sometimes, even trying to do the simplest thing will result in a compile time error. However, this is for good reason. Rust's borrow checker guarantees memory and thread-safety — enabling you to eliminate many classes of bugs at compile-time. In this article, I am going to try to create the strictest (most annoying) Rust workflow, making your code more idiomatic with `clippy`, safer with `miri`, and consistent with `rustfmt`.
+The Rust compiler is known to be annoying. Sometimes, even trying to do the simplest thing will result in a compile time error. However, this is for good reason. Rust's borrow checker guarantees memory and thread-safety — enabling you to eliminate many classes of bugs at compile-time. In this article, I am going to try to create the strictest (most annoying) Rust workflow, making your code more idiomatic with [clippy](#clippy), safer with [miri](#miri), and mor consistent with [rustfmt](#formatting).
 
 ### Compilation
 
