@@ -14,7 +14,7 @@ The Rust compiler is known to be annoying. Sometimes, even trying to do the simp
 
 ### Clippy:
 
-Clippy is a community driven linter that helps catch common mistakes and improve your Rust code. For example, linting this little program:
+Clippy is a community driven linter that helps catch common mistakes and improve your Rust code. For example, lint this little program:
 ```rust
 fn main() {
     let msg = "Hello";
@@ -65,10 +65,31 @@ cargo clippy \
   --all-targets \
   --all-features \
   -- \
-  --forbid=warnings \
-  --forbid=clippy::all \
-  --forbid=clippy::pedantic \
-  --forbid=clippy::cargo \
-  --forbid=clippy::nursery
+  --forbid warnings \
+  --forbid clippy::all \
+  --forbid clippy::pedantic \
+  --forbid clippy::cargo \
+  --forbid clippy::nursery
 ```
 
+### Testing:
+
+Testing in Rust is pretty straightforward. The most we can do here, is test all the compile targets, and enable all features:
+```rust
+cargo test --all-targets --all-features
+```
+
+### Formatting
+
+Rustfmt is a tool for formatting Rust code according to style guidelines. It has hundreds of [configuration options](https://github.com/rust-lang/rustfmt/blob/master/Configurations.md) that can be set with a config file, or throught the command line. By default, it uses a style which conforms to the [Rust style guide](https://github.com/rust-dev-tools/fmt-rfcs/blob/master/guide/guide.md) that has been formalized through the [style RFC
+process](https://github.com/rust-dev-tools/fmt-rfcs). We'll stick to the default formatting options for this article, but there are some other options we can enable. 
+
+We can tell Rustfmt to format all packages (in a workspace):
+```rust
+cargo fmt --all
+```
+
+And, in the context of a workflow, we can tell it to run in 'check' mode, which exits with 0 if input is formatted correctly, and exits with 1 and prints a diff if formatting is required.
+```rust
+cargo fmt --all -- --check
+```
