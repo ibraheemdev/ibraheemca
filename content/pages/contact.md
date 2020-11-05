@@ -1,35 +1,32 @@
 ---
 template: page
-title: Hi 👋, I'm Ibraheem
+title: Hey 👋 there
 slug: about
 socialImage: /media/profile.png
 draft: false
 ---
+I'm Ibraheem. Here's a little bit about me:
 
 I enjoy programming in a variety of languages, most notably Ruby on Rails. I am very enthusiastic and active in the Rust community, a language which I work with in my spare time. I also work with frontend technologies like React, Redux, and Typescript.
 
-I love helping other people learn the languages I love, which is why I am active on stackoverflow and write weekly at [ibraheem.ca](https://ibraheem.ca/), where you can find tutorials, useful scripts, and other fun explorations.
+I love helping other people learn the languages I love, which is why I am active on [stackoverflow](https://stackoverflow.com/users/8858995/ibraheem-ahmed?tab=profile) and write weekly at [ibraheem.ca](https://ibraheem.ca/), where you can find tutorials, useful scripts, and other fun explorations.
 
 I open source a lot of my side projects, which you can find on [github](https://github.com/ibraheemdev).
 
-I am also open for freelance work. Want to talk about a project you think I can help with? [Let's get in touch!](https://ibraheem.ca/pages/about#---social-links)
+I am also open for freelance work. Want to talk about a project you think I can help with? [Let's get in touch!](javascript:document.body.scrollIntoView(false))
 
 ### 🚀 &nbsp; I Love Working With These Technologies
 
 | <img align="left" style="margin-right:10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/144px-Rust_programming_language_black_logo.svg.png" width=55> | <img align="left" style="margin-right:10px;" src="https://avatars.githubusercontent.com/u/4223" width=55> | <img align="left" style="margin-right:10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width=55> | <img align="left" style="margin-right:10px;" src="https://cdn.auth0.com/blog/react-js/react.png" width=55> | <img align="left" style="margin-right:10px;" src="https://seeklogo.com/images/R/redux-logo-9CA6836C12-seeklogo.com.png" width=55> | <img align="left" style="margin-right:10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png" width=55> | <img align="left" style="margin-right:10px;" src="https://cdn.jsdelivr.net/npm/programming-languages-logos/src/go/go.png" width=55> | <img align="left" style="margin-right:10px;" src="https://infinapps.com/wp-content/uploads/2018/10/mongodb-logo.png" width=55> |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------: |
-
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 
 ### 📖 &nbsp; Latest Blog Posts
 
-<!-- BLOG-POST-LIST:START -->
-
+- [The Strictest Rust Workflow](https://ibraheem.ca/posts/strictest-cargo-workflow)
 - [Secure Error Handling With Actix-Web](https://ibraheem.ca/posts/actix-web-secure-error-handling)
 - [Rust Global Configuration Files with Multiple Environments](https://ibraheem.ca/posts/rust-global-config-files)
 - [Twenty Minutes to Learn Go](https://ibraheem.ca/posts/go-in-twenty)
 - [Why Developers Love Rust](https://ibraheem.ca/posts/why-devs-love-rust)
-- [Create React App: How to Write to Disk in Development](https://ibraheem.ca/posts/cra-write-to-disk-in-dev)
-<!-- BLOG-POST-LIST:END -->
 
 ### 🔗 &nbsp; Social Links
 
