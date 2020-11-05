@@ -6,11 +6,8 @@ socialImage: /media/rust-logo.png
 draft: false
 date: 2020-11-04T19:13:28.971Z
 description: Make your code more idiomatic with
-  [clippy](https://ibraheem.ca/posts/strictest-cargo-workflow#clippy), safer
-  with [miri](https://ibraheem.ca/posts/strictest-cargo-workflow#miri), and more
-  consistent with
-  [rustfmt](https://ibraheem.ca/posts/strictest-cargo-workflow#formatting). AKA
-  how to get the compiler to yell at you even more
+  clippy, safer with miri, and more consistent with
+  rustfmt. AKA how to get Rust to yell at you even more
 mainTag: Rust
 tags:
   - Rust
