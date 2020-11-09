@@ -18,6 +18,69 @@ Rust has been getting a lot of media attention recently. It has been [voted the 
 
 Rust was built to solve many of the hassles associated with other popular languages. Let's look at a couple of examples:
 
+#### **Memory Safety**
+
+Rust focuses on speed and safety. It balances speed and safety through many ‘zero-cost abstractions’. This means that in Rust, abstractions cost as little as possible in order to make them work. The ownership system is a prime example of a zero cost abstraction. All of the analysis we’ll talk about in this guide is done at compile time. You do not pay any run-time cost for any of these features.
+
+ To track the ownership of each value: a value can only be used at most once, after which the compiler refuses to use it again.
+
+For example, the following code:
+```rust
+fn main() {
+    let original = String::from("hello");
+    takes_ownership(original);
+    println!("{}", original)
+} 
+
+fn takes_ownership(other: String) {
+    println!("{}", other);
+} 
+```
+
+Yields an error:
+```rust
+error[E0382]: borrow of moved value: `original`
+ --> src/main.rs:4:20
+3 |   takes_ownership(original);
+  |                     - value moved here
+4 |   println!("{}", original)
+  |                    ^ value borrowed here after mov
+```
+
+In the above code, the ownership of `original` was moved to the `take_ownership` function. Because the ownership was moved, Rust now cleans up the memory of `original`. Now, the compiler prevents you from using `original`. 
+
+Rust's ownership model guarantees, at compile time, that your application will be safe from dereferencing null or dangling pointers This prevents the dreaded double-free regularly encountered in C or C++, along with many other memory related issues.
+
+Rust also has a borrow checker. This means that functions can *borrow* ownership of a value. We can modify the example above to borrow `original`:
+```rust
+fn main() {
+    let original = String::from("hello");
+    borrow_ownership(&original);
+    println!("{}", original)
+} 
+
+fn borrow_ownership(other: &String) {
+    println!("{}", other);
+}
+```
+
+Now the code compiles. We call the &T type a ‘reference’. Instead of owning the resource, the function borrows ownership. A binding that borrows something does not deallocate the resource when it goes out of scope. This means that after the borrow, we can use our original bindings again. 
+
+Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust*. Wrapping code with the `unsafe` block effectively tells the compiler to shut up, because you know what you are doing. Doing so gives you *unsafe superpowers*. For example, you can dereference a raw pointer:
+```go
+let mut num = 5;
+
+let r1 = &num as *const i32;
+let r2 = &mut num as *mut i32;
+
+unsafe {
+  println!("r1 is: {}", *r1);
+  println!("r2 is: {}", *r2);
+}
+```
+
+If you can't do something in safe Rust, you can implement it yourself with `unsafe`, or, chances are, someone else has already done it, which brings me to my next point.
+
 #### **Rust vs. Dynamic Languages**
 
 Developers coming from dynamically typed languages will find it hard to argue the benefits of static typing. Static type definitions are even being added to many popular dynamic languages, such as javascript's [typescript](https://www.typescriptlang.org/), python's [type hints](https://github.com/python/mypy), and ruby's [rbs](https://github.com/ruby/rbs). Static languages are generally considered more "scalable" and better for larger codebases as the compiler does much of the work for you. Let's look at an example:
@@ -167,21 +230,6 @@ let squares: Vec<_> = (0..10).map(|i| i * i).collect();
 ```
 
 As you can see, Rust provides high level concepts with ergonomic interfaces, but is still highly performant.
-
-Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust*. Wrapping code with the `unsafe` block effectively tells the compiler to shut up, because you know what you are doing. Doing so gives you *unsafe superpowers*. For example, you can dereference a raw pointer:
-```go
-let mut num = 5;
-
-let r1 = &num as *const i32;
-let r2 = &mut num as *mut i32;
-
-unsafe {
-  println!("r1 is: {}", *r1);
-  println!("r2 is: {}", *r2);
-}
-```
-
-If you can't do something in safe Rust, you can implement it yourself with `unsafe`, or, chances are, someone else has already done it, which brings me to my next point.
 
 #### **The Rust Ecosystem**
 
