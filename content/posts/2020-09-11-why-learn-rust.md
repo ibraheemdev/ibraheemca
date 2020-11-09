@@ -64,7 +64,11 @@ fn borrow_ownership(other: &String) {
 }
 ```
 
-Now the code compiles. We call the &T type a ‘reference’. Instead of owning the resource, the function borrows ownership. A binding that borrows something does not deallocate the resource when it goes out of scope. This means that after the borrow, we can use our original bindings again. 
+Now the code compiles. We call the &T type a ‘reference’. Instead of owning the resource, the function borrows ownership. A binding that borrows something does not deallocate the resource when it goes out of scope. This means that after the borrow, we can use our original bindings again.
+
+Rust memory safety comes at the cost of complexity. New developers often complain that getting a program to compile can be quite difficult. It’s pretty common for newcomers to the Rust community to get stuck "fighting the borrow checker". As [Rust learner](https://news.ycombinator.com/item?id=23437202#unv_23437831) explained:
+
+> "It's hard but I love it. Dealing with the compiler felt like being the novice in an old kung fu movie who spends day after day being tortured by his new master (rustc) for no apparent reason until one day it clicks and he realizes that he knows kung fu."
 
 Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust*. Wrapping code with the `unsafe` block effectively tells the compiler to shut up, because you know what you are doing. Doing so gives you *unsafe superpowers*. For example, you can dereference a raw pointer:
 ```go
@@ -79,7 +83,7 @@ unsafe {
 }
 ```
 
-If you can't do something in safe Rust, you can implement it yourself with `unsafe`. However, `unsafe` should be used with care. Abusing it can have unwanted consequences.
+If you can't do something in safe Rust, you can implement it yourself with `unsafe`. However, `unsafe` should be used with caution. Abusing it can have unwanted consequences.
 
 #### **Rust vs. Dynamic Languages**
 
