@@ -245,7 +245,7 @@ Rust also provides [cargo](https://doc.rust-lang.org/cargo/), a tool for managin
 
 Unlike many languages, there is an official tool for formatting Rust code in [rustfmt](https://github.com/rust-lang/rustfmt), as well as [clippy](https://github.com/rust-lang/rust-clippy), the linter that helps catch common mistakes and improve your code.
 
-Rust has a very welcoming community. You can reach out through the [discord chat](https://discord.com/invite/rust-lang), [forum](https://users.rust-lang.org/), [subreddit](https://www.reddit.com/r/rust/), [stackoverflow tag](https://stackoverflow.com/questions/tagged/rust), [slack channel](https://rust-slack.herokuapp.com/), or [gitter](https://gitter.im/rust-lang/rust).
+Rust has an extremely friendly and welcoming community. This is a breath of fresh air coming from other languages, such as [insert unfriendly community here]. You can reach out through the [discord chat](https://discord.com/invite/rust-lang), [forum](https://users.rust-lang.org/), [subreddit](https://www.reddit.com/r/rust/), [stackoverflow tag](https://stackoverflow.com/questions/tagged/rust), [slack channel](https://rust-slack.herokuapp.com/), or [gitter](https://gitter.im/rust-lang/rust).
 
 There are a ton of opensource projects created by the community. From web frameworks such as [actix web](https://github.com/actix/actix-web), [yew](https://github.com/yewstack/yew), and [rocket](https://github.com/SergioBenitez/Rocket), to Rust based text editors like [remacs](https://github.com/remacs/remacs) and [xi editor](https://github.com/xi-editor/xi-editor). Even [the language itself](https://github.com/rust-lang/rust) is opensource, and has 50,000 stars and over 3,000 contributors.
 
