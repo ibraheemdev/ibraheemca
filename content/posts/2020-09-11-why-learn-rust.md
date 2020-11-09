@@ -14,13 +14,13 @@ mainTag: Rust
 tags:
   - Rust
 ---
-Rust has been getting a lot of media attention recently. It has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running, and it [grew in use on Github](https://octoverse.github.com/#fastest-growing-languages) by **235%** from 2018 to 2019. Large companies such as Mozilla, Apple, Amazon, Facebook, Google, Twitter, and Microsoft have began adopting it in their codebases. So, why do so many people love Rust?
+Rust has been getting a lot of media attention recently. It seems like a "X written in Rust" post makes the front page of hackernews every other day. Rust has been [voted the most loved language](https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages) for five years running, and it [grew in use on Github](https://octoverse.github.com/#fastest-growing-languages) by **235%** from 2018 to 2019. Large companies such as Mozilla, Apple, Amazon, Facebook, Google, Twitter, and Microsoft have began adopting it in their codebases. So, why do so many people love Rust?
 
 Rust was built to solve many of the hassles associated with other popular languages. Let's look at a couple of examples:
 
 #### **Memory Safety**
 
-Rust focuses on speed and safety. It balances speed and safety through many ‘zero-cost abstractions’. This means that in Rust, abstractions cost as little as possible in order to make them work. The ownership system is a prime example of a zero cost abstraction. All of the analysis we’ll talk about in this section. You do not pay any run-time cost for any of these features.
+Rust focuses on speed and safety. It balances speed and safety through many ‘zero-cost abstractions’. This means that in Rust, abstractions cost as little as possible in order to make them work. The ownership system is a prime example of a zero cost abstraction. All of the analysis we’ll talk about in this section is done at compile time. You do not pay any run-time cost for any of these features.
 
 To track the ownership of each value: a value can only be used at most once, after which the compiler refuses to use it again.
 
@@ -51,7 +51,7 @@ In the above code, the ownership of `original` was moved to the `take_ownership`
 
 Rust's ownership model guarantees, at compile time, that your application will be safe from dereferencing null or dangling pointers This prevents the dreaded double-free regularly encountered in C or C++, along with many other memory related issues.
 
-Rust also has a borrow checker. This means that functions can *borrow* ownership of a value. We can modify the example above to borrow `original`, instead of taking ownership:
+In Rust, functions can *borrow* ownership of a value. Rust tracks borrowed ownership with the borrow checker. We can modify the example above to borrow `original`, instead of taking ownership:
 ```rust
 fn main() {
     let original = String::from("hello");
@@ -64,7 +64,7 @@ fn borrow_ownership(other: &String) {
 }
 ```
 
-Now the code compiles. We call the &T type a ‘reference’. Instead of owning the resource, the function borrows ownership. A binding that borrows something does not deallocate the resource when it goes out of scope. This means that after the borrow, we can use our original bindings again.
+Now the code compiles, because the ownership of `original` stays in the main function. Instead of owning the resource, the function borrows ownership. We call the &T type a ‘reference’. A binding that borrows something does not deallocate the resource when it goes out of scope. This means that after the borrow, we can use our original bindings again.
 
 Rust memory safety comes at the cost of complexity. New developers often complain that getting a program to compile can be quite difficult. It’s pretty common for newcomers to the Rust community to get stuck "fighting the borrow checker". As [Rust learner](https://news.ycombinator.com/item?id=23437202#unv_23437831) explained:
 
@@ -125,11 +125,13 @@ The points in this section apply to pretty much all strongly typed languages. No
 
 #### **No Nulls**
 
-Most languages have a concept of null. Any value can either be what you expect, or nothing at all. If you accidentally miss a null check, you code can blow up at runtime. Tony Hoare, the inventor of null references, calls it his his [Billion Dollar Mistake](https://www.youtube.com/watch?v=ybrQvs4x0Ps&ab_channel=JoseCan).
+Most languages have a concept of null. Any value can either be what you expect, or nothing at all. If you accidentally miss a null check, you code can blow up at runtime. Tony Hoare, the inventor of null references had [this to say](https://qconlondon.com/london-2009/qconlondon.com/london-2009/speaker/Tony+Hoare.html) about the concept:
+
+> I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn't resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years
 
 Rust, unlike most other languages, does not have a concept of null. It does not exist! If `x = 1`, then x *is* an integer, and will *always* be an integer.
 
-Rust expresses optional values with an enum called `Option`: 
+Rust expresses optional values with an type called `Option`: 
 ```rust
 pub enum Option<T> {
     None,
@@ -137,7 +139,7 @@ pub enum Option<T> {
 }
 ```
 
-An `Option` is either nothing, or something. You can pattern match on an option to access the underlying value:
+An `Option` is either something, or nothing. This union is expressed succinctly with Rust enum's, which can hold values. You can pattern match on an option enum to access the underlying value:
 ```rust
 match x {
   None => handle_none(),
@@ -145,7 +147,7 @@ match x {
 }
 ```
 
-But what happens if you forget to check for `None`? Doesn't this pose the same problems as null? Rust solves this problem my enforcing exhaustive pattern matching. This means that this code, which does not check for `None`:
+But what happens if you forget to check for `None`? Doesn't this pose the same problems as null? Nope! Rust solves this problem my enforcing exhaustive pattern matching. This means that this code, which does not check for `None`:
 
 ```rust
 match x {
@@ -166,11 +168,13 @@ error[E0004]: non-exhaustive patterns: `None` not covered
     possibly by adding wildcards or more match arms
 ```
 
-In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, issue, and potential solution to the error.
+In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, problem, and potential solution to the error.
 
 #### **Rust vs. Statically Typed Languages**
 
-Rust does its best to get out of the developer's way when it comes to static typing. Rust has a very smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Let's see how that type inference works. We can start my initializing a integer:
+Rust does its best to get out of the developer's way when it comes to static typing. Rust has a very smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Let's see how that type inference works. 
+
+We can start by initializing a integer:
 ```rust
 let elem: u8 = 5;
 ```
@@ -210,7 +214,7 @@ Why is Rust so much better? Rust is blazingly fast and memory-efficient without 
 // and will be freed from memory
 ```
 
-Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one function, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and can be cleaned up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
+Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one function, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and clean it up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
 
 [Skylight](https://www.skylight.io/), an early adopter of Rust was able to [reduce their memory usage](https://www.rust-lang.org/static/pdfs/Rust-Tilde-Whitepaper.pdf) from 5GB to 50MB by rewriting certain endpoints from Java to Rust.
 
@@ -230,18 +234,18 @@ for (int i = 0; i < 10; ++i)
 }
 ```
 
-And the equivalent code in Rust, using [iterators](https://doc.rust-lang.org/std/iter/trait.Iterator.html):
+And the equivalent code in Rust, using an [iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html):
 ```rust
 let squares: Vec<_> = (0..10).map(|i| i * i).collect();
 ```
 
-As you can see, Rust provides high level concepts with ergonomic interfaces, but is still highly performant.
+As you can see, Rust provides high level concepts with ergonomic interfaces. It does this while still being highly performant.
 
 #### **The Rust Ecosystem**
 
-Rust has become larger than just a language, it has a large ecosystem supporting it.
+Rust has become larger than just a language, it has a large ecosystem and community supporting it.
 
-You can manage multiple installations and easily switch between stable, beta, and nightly compilers with [rustup](https://rustup.rs/). It also makes cross compiling between multiple platforms simpler.
+Rust provides [rustup](https://rustup.rs/), an official language installer. It allows you can manage multiple installations and easily switch between stable, beta, and nightly compilers. It also makes cross compiling between multiple platforms simpler.
 
 Rust also provides [cargo](https://doc.rust-lang.org/cargo/), a tool for managing a Rust packages dependencies, running tests, generating documentation, compiling your package. Rust packages or "crates" created with cargo can be published to [crates.io](https://crates.io/) and made available for use by anyone. There are currently almost 50,000 available crates, and over 3.5 Billion downloads! Any library published to crates.io will have its documentation automatically built and published to [docs.rs](https://github.com/rust-lang/rustup).
 
