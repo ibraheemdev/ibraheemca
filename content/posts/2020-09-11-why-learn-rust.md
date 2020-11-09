@@ -22,7 +22,7 @@ Rust was built to solve many of the hassles associated with other popular langua
 
 Rust focuses on speed and safety. It balances speed and safety through many ‘zero-cost abstractions’. This means that in Rust, abstractions cost as little as possible in order to make them work. The ownership system is a prime example of a zero cost abstraction. All of the analysis we’ll talk about in this section. You do not pay any run-time cost for any of these features.
 
- To track the ownership of each value: a value can only be used at most once, after which the compiler refuses to use it again.
+To track the ownership of each value: a value can only be used at most once, after which the compiler refuses to use it again.
 
 For example, the following code:
 ```rust
@@ -51,7 +51,7 @@ In the above code, the ownership of `original` was moved to the `take_ownership`
 
 Rust's ownership model guarantees, at compile time, that your application will be safe from dereferencing null or dangling pointers This prevents the dreaded double-free regularly encountered in C or C++, along with many other memory related issues.
 
-Rust also has a borrow checker. This means that functions can *borrow* ownership of a value. We can modify the example above to borrow `original`:
+Rust also has a borrow checker. This means that functions can *borrow* ownership of a value. We can modify the example above to borrow `original`, instead of taking ownership:
 ```rust
 fn main() {
     let original = String::from("hello");
@@ -123,7 +123,7 @@ Most languages have a concept of null. Any value can either be what you expect, 
 
 Rust, unlike most other languages, does not have a concept of null. It does not exist! If `x = 1`, then x *is* an integer, and will *always* be an integer.
 
-Rust expresses optional typed with an enum called `Option`: 
+Rust expresses optional values with an enum called `Option`: 
 ```rust
 pub enum Option<T> {
     None,
