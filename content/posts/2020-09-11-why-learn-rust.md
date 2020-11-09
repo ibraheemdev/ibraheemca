@@ -20,7 +20,7 @@ Rust was built to solve many of the hassles associated with other popular langua
 
 #### **Memory Safety**
 
-Rust focuses on speed and safety. It balances speed and safety through many ‘zero-cost abstractions’. This means that in Rust, abstractions cost as little as possible in order to make them work. The ownership system is a prime example of a zero cost abstraction. All of the analysis we’ll talk about in this guide is done at compile time. You do not pay any run-time cost for any of these features.
+Rust focuses on speed and safety. It balances speed and safety through many ‘zero-cost abstractions’. This means that in Rust, abstractions cost as little as possible in order to make them work. The ownership system is a prime example of a zero cost abstraction. All of the analysis we’ll talk about in this section. You do not pay any run-time cost for any of these features.
 
  To track the ownership of each value: a value can only be used at most once, after which the compiler refuses to use it again.
 
