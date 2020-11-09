@@ -46,23 +46,41 @@ $ silly(-1)
 => TypeError (String can't be coerced into Integer)
 ```
 
-You get a `TypeError` at runtime. A simple mistake like this can cause runtime errors that can sometimes be hard to debug without comprehensive test coverage. Since Rust is statically typed, all type errors will be caught at compile time, and this problem never occurs.
+You get a `TypeError` at runtime. 
 
-Static typing also results in compiled code that executes faster as the compiler knows the exact data types that are in use, and therefore can produce optimized machine code. Static types also serve as documentation.
+A simple mistake like this can cause runtime errors that can be hard to debug without comprehensive test coverage. Since Rust is statically typed, all type errors will be caught at compile time, and this problem never occurs.
 
-The points in this section apply to pretty much all strongly typed languages. Let's look at some of the things Rust does differently than other statically typed languages.
+Static typing also results in compiled code that executes faster as the compiler knows the exact data types that are in use, and therefore can produce optimized machine code.
+
+The points in this section apply to pretty much all strongly typed languages. Now let's look at some of the things Rust does differently than other statically typed languages.
 
 #### **No Nulls**
 
-Most languages have a concept of `Null`. Any value can either be what you expect, or nothing. If you accidentally miss a null check, you code can blow up. In Rust, `Null` is not even a concept, it does not exist! If `x = "x"`, then x IS a string, and will always be a string.
+Most languages have a concept of null. Any value can either be what you expect, or nothing at all. If you accidentally miss a null check, you code can blow up at runtime. Tony Hoare, the inventor of null references, calls it his his [Billion Dollar Mistake](https://www.youtube.com/watch?v=ybrQvs4x0Ps&ab_channel=JoseCan).
 
-If you really want nulls, you can use the `Option` enum. You can pattern match on that enum, and because Rust has exhaustive pattern matching, this code:
+Rust, unlike most other languages, does not have a concept of null. It does not exist! If `x = 1`, then x *is* an integer, and will *always* be an integer.
+
+Rust expresses optional typed with an enum called `Option`: 
+```rust
+pub enum Option<T> {
+    None,
+    Some(T),
+}
+```
+
+An `Option` is either nothing, or something. You can pattern match on an option to access the underlying value:
+```rust
+match x {
+  None => handle_none(),
+  Some(value) => return value
+}
+```
+
+But what happens if you forget to check for `None`? Doesn't this pose the same problems as null? Rust solves this problem my enforcing exhaustive pattern matching. This means that this code, which does not check for `None`:
 
 ```rust
-fn print_size(vector: Option<Vec<string>>) {
-  match vector {
-    Some(vector) => println!("{}", vector.len())
-  }
+match x {
+  Some(value) => println!("{}", value)
 }
 ```
 
@@ -72,52 +90,38 @@ Will not compile:
 error[E0004]: non-exhaustive patterns: `None` not covered
 --> src/main.rs:6:11
   |
-6 |  match vector {
+6 |  match x {
   |  ^^^^^^ pattern `None` not covered
   |
   = help: ensure that all possible cases are being handled, 
     possibly by adding wildcards or more match arms
-  = note: the matched value is of type
-    `std::option::Option<std::vec::Vec<std::string::String>>`
-
-For more information about this error, try `rustc --explain E0004`.
-
-To learn more, run the command again with --verbose.
 ```
 
 In Rust, the code above would never make it to production, and clients would never experience the error because the compiler is so strict. Also note how detailed the error message is, telling you the exact location, issue, and potential solution to the error.
 
 #### **Rust vs. Statically Typed Languages**
 
-Rust does its best to get out of the developer's way when it comes to static typing. Rust has a very smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Here's an advanced example of type inference, straight from the [docs](https://doc.rust-lang.org/stable/rust-by-example/types/inference.html).
-
+Rust does its best to get out of the developer's way when it comes to static typing. Rust has a very smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Let's see how that type inference works. We can start my initializing a integer:
 ```rust
-fn main() {
-  // Because of the annotation, the compiler knows that 
-  // `elem` has type u8.
-  let elem = 5u8;
-
-  // Create an empty vector (a growable array).
-  let mut vec = Vec::new();
-  // At this point the compiler doesn't know the exact type of 
-  // `vec`, it just knows that it's a vector of something (`Vec<_>`).
-
-  // Insert `elem` in the vector.
-  vec.push(elem);
-  // Aha! Now the compiler knows that `vec` is 
-  // a vector of `u8`s (`Vec<u8>`)
-
-  println!("{:?}", vec);
-}
+let elem: u8 = 5;
 ```
+Because of the annotation, the compiler knows that elem is of type u8. Now we can create a mutable vector (a growable array):
+```rust
+let mut vec = Vec::new();
+```
+At this point the compiler doesn't know the exact type of the vector. It just knows that it's a vector of something (`Vec<_>`). But once we insert the element into the vector
+```rust
+vec.push(elem);
+```
+Aha! Now the compiler knows that `vec` is a vector of u8's (`Vec<u8>`)
 
 No type annotation of variables was needed, the compiler is happy and so is the programmer!
 
 #### **Rust vs. Garbage Collected Languages**
 
-Garbage collection is an automatic memory management system that looks for unused variables and frees their memory. This can introduce performance issues at scale. 
+Garbage collection is an automatic memory management system that looks for unused variables and frees their memory. It is a concept employed by many widely used languages, such as Java, Ruby, and Python. However, garbage collection can introduce performance issues at scale.
 
-For example, [Discord](https://discord.com/) used Golang, a garbage collected language, for keeping track of which channels and messages a user read, which they call "Read States". They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache to determine which memory needed to be handled by GC.
+For example, [Discord](https://discord.com/) used Golang, a garbage collected language, for keeping track of which channels and messages a user read. They began experiencing latency and CPU spikes consistently every 2 minutes. This is because Go will force a garbage collection run every 2 minutes, scanning the entire LRU cache to determine which memory needed to be handled by GC.
 
 Here is a before and after of them switching from Go, to Rust. Go is purple, Rust is blue.
 
@@ -125,7 +129,7 @@ Here is a before and after of them switching from Go, to Rust. Go is purple, Rus
 
 Read the full post here: [Why Discord is Switching from Go to Rust](https://blog.discord.com/why-discord-is-switching-from-go-to-rust-a190bbca2b1f)
 
-Why is Rust so much better? Rust is blazingly fast and memory-efficient without needing a garbage collector, due to its ownership model.
+Why is Rust so much better? Rust is blazingly fast and memory-efficient without needing a garbage collector, due to its ownership model. Here is a simple example:
 
 ```rust
 // s is not valid here, it’s not yet declared
@@ -137,7 +141,7 @@ Why is Rust so much better? Rust is blazingly fast and memory-efficient without 
 // and will be freed from memory
 ```
 
-Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one (or several) function variables, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and can be cleaned up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
+Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a program is strictly tied to one function, which will ultimately go out of scope. This also allows Rust to determine when memory is no longer needed and can be cleaned up at compile time, resulting in efficient usage of memory *and* more performant memory access. 
 
 [Skylight](https://www.skylight.io/), an early adopter of Rust was able to [reduce their memory usage](https://www.rust-lang.org/static/pdfs/Rust-Tilde-Whitepaper.pdf) from 5GB to 50MB by rewriting certain endpoints from Java to Rust.
 
@@ -145,13 +149,9 @@ Thanks to Rust's ownership tracking, the lifetime of ALL memory allocated by a p
 
 Rust was built by Mozilla to be a the next step in the evolution of C or C++, two other systems programming languages. Rust gives you the low level control, while still providing features and conveniences that make it feel like a high-level languages. It gives you the technical power without allowing it to degrade from the developer experience.
 
-Unlike something like Ruby, which disregards performance for developer experience, Rust provides as many *zero-cost abstractions* as possible; abstractions that are as performant as the equivalent hand-written code. Let's look at iterators for example:
+Unlike something like Ruby, which disregards performance for developer experience, or C, which takes a more barebones approach, Rust provides as many *zero-cost abstractions* as possible; abstractions that are as performant as the equivalent hand-written code.
 
-```rust
-let squares: Vec<_> = (0..10).map(|i| i * i).collect();
-```
-
-And the equivalent code in C:
+For example, here is how you would create an array containing the first ten square numbers in C:
 
 ```c
 int squares[10];
@@ -161,7 +161,12 @@ for (int i = 0; i < 10; ++i)
 }
 ```
 
-As you can see, Rust can be used create a vector containing the first ten square numbers much more concisely than C, but still highly performant.
+And the equivalent code in Rust, using [iterators](https://doc.rust-lang.org/std/iter/trait.Iterator.html):
+```rust
+let squares: Vec<_> = (0..10).map(|i| i * i).collect();
+```
+
+As you can see, Rust provides high level concepts with ergonomic interfaces, but is still highly performant.
 
 Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust*. Wrapping code with the `unsafe` block effectively tells the compiler to shut up, because you know what you are doing. Doing so gives you *unsafe superpowers*. For example, you can dereference a raw pointer:
 ```go
