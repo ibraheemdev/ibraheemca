@@ -79,7 +79,7 @@ unsafe {
 }
 ```
 
-If you can't do something in safe Rust, you can implement it yourself with `unsafe`, or, chances are, someone else has already done it, which brings me to my next point.
+If you can't do something in safe Rust, you can implement it yourself with `unsafe`. However, `unsafe` should be used with care. Abusing it can have unwanted consequences.
 
 #### **Rust vs. Dynamic Languages**
 
