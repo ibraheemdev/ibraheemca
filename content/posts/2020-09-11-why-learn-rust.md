@@ -70,6 +70,8 @@ Rust memory safety comes at the cost of complexity. New developers often complai
 
 > "It's hard but I love it. Dealing with the compiler felt like being the novice in an old kung fu movie who spends day after day being tortured by his new master (rustc) for no apparent reason until one day it clicks and he realizes that he knows kung fu."
 
+Fighting the borrow checker can be frustrating, but trust me, it's worth it. Rust is often compared to Haskell and Scala in the sense that if your code compiles, you can sleep at night without having to worry about runtime errors. This is even more true after looking at the memory safety Rust enforces through its ownership model.
+
 Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust*. Wrapping code with the `unsafe` block effectively tells the compiler to shut up, because you know what you are doing. Doing so gives you *unsafe superpowers*. For example, you can dereference a raw pointer:
 ```go
 let mut num = 5;
@@ -83,7 +85,7 @@ unsafe {
 }
 ```
 
-If you can't do something in safe Rust, you can implement it yourself with `unsafe`. However, `unsafe` should be used with caution. Abusing it can have unwanted consequences.
+If you can't do something in safe Rust, you can implement it yourself with `unsafe`. However, `unsafe` should be used with caution. Abusing it can have unwanted consequences. Because of this, Rust forces you to explicitly mark code as unsafe. You cannot use an unsafe function in a safe block. Many developers even opt to mark there entire project with `![forbid(unsafe_code)]`.
 
 #### **Rust vs. Dynamic Languages**
 
