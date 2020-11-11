@@ -28,7 +28,7 @@ I am also open for freelance work. Want to talk about a project you think I can 
 - [Twenty Minutes to Learn Go](https://ibraheem.ca/posts/go-in-twenty)
 - [Why Developers Love Rust](https://ibraheem.ca/posts/why-devs-love-rust)
 
-### 🔗 &nbsp; Social Links
+### 📫 &nbsp; Contact
 
 <div>
   <a href="https://ibraheem.ca" rel="nofollow">
