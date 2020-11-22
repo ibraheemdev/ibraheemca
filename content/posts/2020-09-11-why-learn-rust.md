@@ -129,9 +129,26 @@ Most languages have a concept of null. Any value can either be what you expect, 
 
 > I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn't resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years
 
-Rust, unlike most other languages, does not have a concept of null. It does not exist! If `x = 1`, then x *is* an integer, and will *always* be an integer.
+In Rust, dereferencing of raw pointers is an `unsafe` operation. So if you try using a value that has been assigned to `null`: 
+```rust
+let p: *const i32 = std::ptr::null();
+println!("{}", *p);
+```
 
-Rust expresses optional values with an type called `Option`: 
+Your code will not compile: 
+```rust
+error[E0133]: dereference of raw pointer is unsafe and requires unsafe function or block
+ --> src/main.rs
+  |
+5 |     println!("{}", *p);
+  |                    ^^ dereference of raw pointer
+  |
+  = note: raw pointers may be NULL, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+```
+
+Again, Rust is taking steps to prevent *undefined behavior*. This is a sigh of relief, as you will no longer be encountering a `NullPointerException`, or `foo is undefined` errors as you might be used to from other languages.
+
+Instead of using `null`, Rust expresses optional values with an type called `Option`: 
 ```rust
 pub enum Option<T> {
     None,
