@@ -162,22 +162,85 @@ To make our executor as simple as possible, let's aim for a simple API like this
 let xy = a.run_all(vec![fut_x, fut_y]);
 ```
 
+We can start off with a struct called `Executor` that has the `run_all` function:
 ```rust
 struct Executor;
 
 impl Executor {
   fn run(&mut self, futures: Vec<Future>) -> Vec<Future::Output>) {
     let mut results = Vec::new();
-    for (i, ) in &mut futures.iter_mut().enumerate() {
-      match f.poll() {
-        Poll::Ready(t) => {
-          results[i] = t;
-        },
-        Poll::Pending => {
-          continue;
-        }
+    let mut done = 0;
+
+    while done != futures.len() {
+      for (i, f) in &mut futures.iter_mut().enumerate() {
+        // ...
       }
     }
+
+    return results;
   }
 }
 ```
+We loop through the `futures` until they are all `done`. Now, the behavior of `run` depends on the state of the current future. We can access the future's state by `polling` it:
+```rust
+for (i, f) in &mut futures.iter_mut().enumerate() {
+  match f.poll() {
+    // ...
+  }
+}
+```
+
+If the future is ready, then we now have access to the future's `Output`. We can store the output in the `results` vector and mark the future as `done`:
+```rust
+match f.poll() {
+  Poll::Ready(val) => {
+    results.push(val);
+    done += 1;
+  }
+}
+```
+
+If the future is not ready, then it still has more work to do. We can leave this future for now:
+```rust
+match f.poll() {
+  Poll::Pending => {
+    continue;
+  }
+}
+```
+
+Here is the complete function:
+```rust
+fn run(&mut self, futures: Vec<Future>) -> Vec<Future::Output>) {
+  let mut results = Vec::new();
+  let mut done = 0;
+
+  while done != futures.len() {
+    for (i, f) in &mut futures.iter_mut().enumerate() {
+      match f.poll() {
+         Poll::Ready(val) => {
+          results.push(val);
+          done += 1;
+        },
+        Poll::Pending => continue;
+      }
+    }
+  }
+
+  return results;
+}
+```
+
+For each future in the `futures` parameter, we `poll` it. If the future is still `Pending`, then we leave it for now and move on to `poll` other futures. If the future is `Ready` (it finshed all of its work), then we store the result and mark it as `done`. Once all the futures are done, we can return the `results`. Make sense? The `run_all` function right now is broken in many ways, but it gives you a basic idea of how futures work. For example, what happens if there is only one future left?
+```rust
+while done != futures.len() {
+  match f.poll() {
+    // the future is not done
+    Poll::Pending => continue;
+  }
+  // come back the the same future again
+}
+```
+Here, we have a very inefficient busy loop. We need some way of getting scheduling future tasks. This is where `Context` comes in.
+
+### A Better `Executor`
