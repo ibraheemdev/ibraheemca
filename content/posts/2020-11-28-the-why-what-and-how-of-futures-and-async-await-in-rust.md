@@ -5,14 +5,7 @@ slug: futures-and-async-await-in-rust
 socialImage: /media/rust-logo.png
 draft: true
 date: 2020-11-28T17:47:12.906Z
-description: Futures are Rust's way of expressing asynchronous computations, 
-but even after reading the documentation, it can be hard to figure out how 
-all the pieces of futures (and tokio) fit together. While this may not matter 
-too much if you're just *using* futures, it becomes a stumbling block once you 
-want to implement asynchronous primitives yourself. The highly anticipated 
-async and await keywords that are coming down the pike promise to greatly 
-reduce the friction of writing and using asynchronous code, but add even more 
-to the mystery of how this stuff all works.
+description: Futures are Rust's way of expressing asynchronous computations, but even after reading the documentation, it can be hard to figure out how all the pieces of futures (and tokio) fit together. While this may not matter too much if you're just using futures, it becomes a stumbling block once you want to implement asynchronous primitives yourself. The async and await keywords greatly reduce the friction of writing and using asynchronous code, but add even more to the mystery of how this stuff all works.
 
 mainTag: Rust
 tags:
@@ -27,25 +20,29 @@ Today, we are going to tackle futures and async/await in Rust. The point of this
 
 ### Futures
 
-The idea behind futures is that we want some way to express a value that is not yet ready. This is similar to promises in Javascript or Scala. At a very high level you could think of futures as a building block for concurrent operations. For example, you might have a program that is connecting to two tcp servers:
+The idea behind futures is that we want some way to express a value that is not yet ready. This is similar to promises in Javascript or Scala. A future represents an operation that hasn't completed yet, but _promises_ a value at some point in the _future_. Futures are a building block for concurrent (asynchronous) operations. They are useful in compute heavy applications, as well as network operations. For example, you might have a program that is connecting to two TCP servers:
+
 ```rust
 let x = TcpStream::connect("127.0.0.1");
 let y = TcpStream::connect("127.0.0.1");
 ```
 
 Writing to both servers:
+
 ```rust
 x.write("foobar");
 y.write("foobar");
 ```
 
 And reading from them:
+
 ```rust
 assert_eq!(x.read(), "barfoo");
 assert_eq!(y.read(), "barfoo");
 ```
 
 The way the program is layed out write now, each line of code will be executed synchronously:
+
 ```rust
 // connect to the first server
 let x = TcpStream::connect("127.0.0.1");
@@ -59,7 +56,8 @@ x.write("foobar");
 // and so on...
 ```
 
-The program works, but alot of the time it is just waiting for the previous operation to succeed, instead of working on the next one. Why not connect to both servers at the same time? We could improve this code by making it multi-threaded:
+The program works, but a lot of the time it is just waiting for the previous operation to succeed, instead of working on the next one. Why not connect to both servers at the same time? We could improve this code by making it multi-threaded:
+
 ```rust
 let thread_x = thread::spawn(|| {
   let x = TcpStream::connect("127.0.0.1")
@@ -78,19 +76,21 @@ assert_eq!(thread_y.join().unwrap(), "barfoo");
 ```
 
 This works fine for many applications. After all, threads were designed to do just this: run multiple different tasks at once. However, they also come with some limitations. There's a lot of overhead involved in the process of switching between different threads and sharing data between threads. Even a thread which just sits and does nothing uses up valuable system resources. These are the costs that asynchronous code is designed to eliminate. In a futures based world, the program would look more like this:
+
 ```rust
 let fut_x = TcpStream::connect("127.0.0.1")
   .and_then(|x| x.write("foobar"))
   .and_then(|x| x.read())
-  .and_then(|c, b| assert_eq!(b, "barfoo"))
+  .and_then(|b| Ok(b == "barfoo"))
 
 let fut_y = TcpStream::connect("127.0.0.1")
   .and_then(|x| x.write("foobar"))
   .and_then(|x| x.read())
-  .and_then(|c, b| assert_eq!(b, "barfoo"))
+  .and_then(|b| Ok(b == "barfoo"))
 ```
 
 Each one of the operations returns a `future`. If you tried to print the value of `fut_x` to the console, you would not see a boolean like you might expect. Instead, you would get an error that looks like this:
+
 ```rust
 error[E0277]: `impl Future` doesn't implement `std::fmt::Display`
  --> src/main.rs:6:18
@@ -99,27 +99,85 @@ error[E0277]: `impl Future` doesn't implement `std::fmt::Display`
   |                  ^^^^^^ `impl Future` cannot be formatted with the default formatter
 ```
 
-At this point, `fut_x` is not a boolean. Instead, it is a future representing an operation that will *eventually* return a boolean. This is what we mean by asynchronous computations:
+At this point, `fut_x` is not a boolean. Instead, it is a future representing an operation that will _eventually_ return a boolean. This is what we mean by an asynchronous computation:
 
 > A future is a value that may not have finished computing yet. This kind of "asynchronous value" makes it possible for a thread to continue doing useful work while it waits for the value to become available.
 
-You can think as a future as a description of an operation. None of the steps have finished yet, actually, they may not have even started. This is where an executor comes in. An executor takes a set of futures and handles executing them at an appropriate time:
+You can think as a future as a description of an operation. None of the steps have finished yet, actually, they may not have even started. So if a `future` is a description of an operation, what actually runs it? This is where an executor comes in:
+
+```rust
+let a: Executor = Executor::new();
+
+let x = a.run(fut_x);
+assert!(x);
+
+let y = a.run(fut_y);
+assert!(y);
+```
+
+An executor handles running a future to completion. But how is the code above different from what we had in the beginning? We are still running the first future, waiting for it to finish, and then running the next future. Instead of executing each future synchronously, we tell the executor to spawn a new `task` for each future:
 
 ```rust
 let a: Executor;
 
-a.spawn(fut_x.and_then(|eq| assert!(eq)));
-a.spawn(fut_y.and_then(|eq| assert!(eq)));
-a.block_on_all();
+a.spawn(fut_x.and_then(|eq| Ok(assert!(eq))));
+a.spawn(fut_y.and_then(|eq| Ok(assert!(eq))));
+a.run();
 ```
 
-Now, instead of executing the task synchronously, we tell the executor to spawn a new asynchronous task that will handle running the futures in the background. We do not know exactly when the futures will finish running, so we can `and_then` to get the result of the computation and use it in our program.
+An asynchronous task will handle running the futures in the background. Tasks are prioritized by the executor depending on whether the future is ready to perform more computations. When the future is ready, the executor runs the `and_then`, passing in the result. If the future isn't ready, the executor can run a different future. If that future needs to wait for a different asynchronous operation, the executor moves to a new future. So how does the executor keep track of which futures are ready or not? We can start by looking at the [`Future`](https://doc.rust-lang.org/beta/std/future/trait.Future.html) trait from the standard library.
 
-So what exactly is the executor doing behind the scenes? We can start by looking at the [`Future`](https://doc.rust-lang.org/beta/std/future/trait.Future.html) trait from the standard library:
+### The `Future` Trait
+
 ```rust
 pub trait Future {
     type Output;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
+}
+```
+
+Every future has an `Output`, which represents the value that the future will return once it is complete. All of the magic of futures happens in the `poll` method. The poll method returns a `Poll` containing the `Output`. So what is `Poll`?
+
+```rust
+pub enum Poll<T> {
+    Ready(T),
+    Pending,
+}
+```
+
+`Poll` is an enum that has two states: `Ready` or `Pending`, which represents that a value is not ready yet. The `poll` function returns:
+
+- `Poll::Pending` if the future is not ready yet
+- `Poll::Ready(val)` with the result `val` of this future if it finished successfully.
+
+Futures can be advanced by calling the `poll` function, which will drive the future as far towards completion as possible. If the future completes, it returns `Poll::Ready(result)`. If the future is not able to complete yet, it returns `Poll::Pending`. The executor is responsible for polling futures and prioritizing them based on which ones are ready to make progess. Once the future is ready to make more progress, it alerts the executor throught the `Context`, and the executor driving the `Future` will call `poll` again so that the `Future` can make more progress.
+
+To help get a better understanding of the proccess of polling futures to completion, let's try implementing a simple executor ourselves.
+
+### A Simple Executor
+
+To make our executor as simple as possible, let's aim for a simple API like this:
+```rust
+let xy = a.run_all(vec![fut_x, fut_y]);
+```
+
+```rust
+struct Executor;
+
+impl Executor {
+  fn run(&mut self, futures: Vec<Future>) -> Vec<Future::Output>) {
+    let mut results = Vec::new();
+    for (i, ) in &mut futures.iter_mut().enumerate() {
+      match f.poll() {
+        Poll::Ready(t) => {
+          results[i] = t;
+        },
+        Poll::Pending => {
+          continue;
+        }
+      }
+    }
+  }
 }
 ```
