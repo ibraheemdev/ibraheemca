@@ -211,7 +211,7 @@ match f.poll() {
 
 Here is the complete function:
 ```rust
-fn run(&mut self, futures: Vec<Future>) -> Vec<Future::Output>) {
+fn run_all(&mut self, futures: Vec<Future>) -> Vec<Future::Output> {
   let mut results = Vec::new();
   let mut done = 0;
 
@@ -231,7 +231,11 @@ fn run(&mut self, futures: Vec<Future>) -> Vec<Future::Output>) {
 }
 ```
 
-For each future in the `futures` parameter, we `poll` it. If the future is still `Pending`, then we leave it for now and move on to `poll` other futures. If the future is `Ready` (it finshed all of its work), then we store the result and mark it as `done`. Once all the futures are done, we can return the `results`. Make sense? The `run_all` function right now is broken in many ways, but it gives you a basic idea of how futures work. For example, what happens if there is only one future left?
+For each future in the `futures` parameter, we `poll` it. If the future is still `Pending`, then we leave it for now and move on to `poll` other futures. If the future is `Ready` (it finshed all of its work), then we store the result and mark it as `done`. Once all the futures are done, we can return the `results`. Make sense? 
+
+This basic executor is non-blocking. This setup allows us to handle many computations efficiently. Instead of having 1000 threads that spend most of their time waiting for external io, we now have one thread that works on whatever is ready.
+
+The `run_all` function right now is broken in many ways, but it gives you a basic idea of how futures work. For example, what happens if there is only one future left?
 ```rust
 while done != futures.len() {
   match f.poll() {
@@ -244,3 +248,5 @@ while done != futures.len() {
 Here, we have a very inefficient busy loop. We need some way of getting scheduling future tasks. This is where `Context` comes in.
 
 ### A Better `Executor`
+
+Imagine a future that is waiting for a timer. You `poll` it until it finishes all the work it can do until it now is just waiting for the timer, and it returns `Poll::Pending`. The future does not have anything to do until it's timer finishes, so it can just go to sleep. Now we need a different source to register that the Future is waiting for an event to happen, and make sure that the Future wakes up when the event (the timer) is ready.
