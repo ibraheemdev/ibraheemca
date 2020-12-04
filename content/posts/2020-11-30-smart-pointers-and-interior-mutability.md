@@ -63,9 +63,9 @@ This means that references to a `Cell` cannot be shared between threads. If two 
 * No one has a shared reference to `Cell`'s inner value
 * `Cell` cannot be shared between threads
 
-So why is `Cell` useful? `Cell` provides the ability to pass multiple shared refernces to a single value. Imagine a graph where multiple nodes have access to a single shared value. Your program is single-thread, so you know that only one node will be mutating the value at any point in time. `Cell` allows multiple nodes to mutate that value in `safe` Rust. Now that we understand what `Cell` is, let's try implementing it ourselves:
+So why is `Cell` useful? `Cell` provides the ability to pass multiple shared refernces to a single value. Imagine a graph where multiple nodes have access to a single shared value. Your program is single-threaded, so you know that only one node will be mutating the value at any point in time. `Cell` allows multiple nodes to mutate that value in `safe` Rust. 
 
-We can start with a basic API for the `Cell` struct:
+Now that we understand what `Cell` is, let's try implementing it ourselves. We can start with a basic API for the `Cell` struct:
 ```rust
 pub struct Cell<T> {
   value: T
@@ -96,7 +96,7 @@ error[E0594]: cannot assign to `self.value` which is behind a `&` reference
    |     ^^^^^^^^^^ `self` is a `&` reference, so the data it refers to cannot be written
 ```
 
-So, how do we mutate an immutable reference? At the core of the `Cell` type in the standard is a type called `UnsafeCell`. `UnsafeCell` is the core primitve for interior mutability in Rust. On its own, it is completely unsafe to use. `UnsafeCell` allows you to get a raw mutable pointer to it's underlying value. It is up to the user to cast that raw pointer to an exlusive reference in a safe manner. `UnsafeCell` is essentially a building block for interrior mutability. 
+So, how do we mutate an immutable reference? At the heart of the `Cell` type in the standard library is a type called `UnsafeCell`. `UnsafeCell` is the core primitve for interior mutability in Rust. On its own, it is completely unsafe to use. `UnsafeCell` allows you to get a raw mutable pointer to it's underlying value. It is up to the user to cast that raw pointer to an exlusive reference in a safe manner. The **only** way in Rust to correctly go from a shared reference to an exclusive reference is through `UnsafeCell`. This is due to compiler mechanisms specific to `UnsafeCell`.
 
 Let's try wrapping the value `T` in an `UnsafeCell`:
 ```rust
@@ -158,18 +158,18 @@ mod test {
     
     let x1 = x.clone();
     std::thread::spawn(move || {
-      x1.set(44);
+      x1.set(1);
     });
 
     let x2 = x.clone();
     std::thread::spawn(move || {
-      x2.set(44);
+      x2.set(2);
     });
   }
 }
 ```
 
-Right now, we have not written anything to prevent the above code from being written. If two threads try to modify the same `Cell` at the same time, we are opening up the doors to undefined behavior. We need some way to tell the `Cell` is not safe to be shared between threads:
+Right now, we have not written anything to prevent the above code from being written. Two threads could potentially try to modify the same memory at the same time. This could result in data races or lost memory. We need some way to tell the `Cell` is not safe to be shared between threads:
 ```rust
 impl<T> !Sync for Cell<T> {}
 ```
@@ -204,6 +204,14 @@ where
 
 As explained above, we have to return a copy of the inner value, not a reference. If we returned a reference, then we are opening the doors to undefined behavior:
 ```rust
+impl<T> Cell<T> {
+  // violates the safety of interior mutability
+  pub fn get_reference(&self) -> T
+  {
+    unsafe { &*self.value.get() }
+  }
+}
+
 #[test]
 fn bad2() {
   let x = Cell::new(vec![String::from("Hello")]);
@@ -217,9 +225,75 @@ fn bad2() {
 }
 ```
 
-> If we know that no one else has a pointer to the value that we are storing inside of `Cell`, then changing that value is fine.
+Because we are never return a reference, we know that one else has a pointer to the value that we are storing inside of `Cell`, then changing that value is fine.
 
 Now our `Cell` type meets the two requirements of interior mutability listed above:
 
 * No one has a shared reference to `Cell`'s inner value: `get` returns a copy, not a reference
 * `Cell` cannot be shared between threads: `UnsafeCell` is `!Sync`, and therefore `Cell` is also `!Sync`
+
+Here is the final code for `Cell`:
+
+```rust
+use std::cell::UnsafeCell;
+
+pub struct Cell<T> {
+  value: UnsafeCell<T>
+}
+
+// implied by UnsafeCell
+// impl<T> !Sync for Cell<T> {}
+
+impl<T> Cell<T> {
+  pub fn new(value: T) -> Self {
+    Cell { value: UnsafeCell::new(value) }
+  }
+
+  pub fn set(&self, value: T) {
+    // SAFETY: We know that no-one else is mutating self.value (because Cell is !Sync) 
+    // and we know that we are not invalidating any references because we never give any out
+    unsafe { *self.value.get() = value };
+  } 
+
+  pub fn get(&self) -> T
+  where
+    T: Copy,
+  {
+    // SAFETY: We know that no-one else is mutating self.value (because Cell is !Sync)
+    unsafe { *self.value.get() }
+  }
+}
+```
+
+### RefCell
+
+`RefCell` is a mutable memory location with *dynamically checked borrow rules*. Normally in Rust, all borrow checking is done at compile-time. `RefCell` allows you to check *at runtime* whether anyone else is mutating the value. This can be very useful in some circumstances. For example, you might be traversing a graph cyclically. Maybe, earlier in the traversal you obtained a mutable reference to a value, and later, you try to obtain a mutable reference to the same value. The compiler will tell you at compile-time that you are violating Rust's ownership rules. However, if you check the graph at runtime for cycles, then you could use `RefCell` which would allow you to obtain a mutable reference to any given node, and panic at runtime if the value is already being borrowed by someone else. Let's look at the basic API of `RefCell`.
+
+You can create a new `RefCell` with the `new` method:
+```rust
+// pub const fn new(value: T) -> RefCell<T>
+
+let c = RefCell::new(5);
+```
+
+You can obtain an immutable reference to the inner value with `borrow`:
+```rust
+// pub fn borrow(&self) -> Ref<'_, T>
+
+let c = RefCell::new(5);
+
+let borrowed_five = c.borrow();
+let borrowed_five2 = c.borrow();
+```
+
+And you can obtain a mutable reference to the inner value with `borrow_mut`. Notice that `borrow_mut` takes an immutable reference to `self`, and yet still allows you to mutate the contained value. This is how `RefCell` provides interior mutability:
+```rust
+// pub fn borrow_mut(&self) -> RefMut<'_, T>
+
+let c = RefCell::new("hello".to_owned());
+
+*c.borrow_mut() = "bonjour".to_owned();
+
+assert_eq!(&*c.borrow(), "bonjour");
+```
+
