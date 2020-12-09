@@ -13,9 +13,9 @@ tags:
   - Configuration
   - YAML
 ---
-When developing an application, it is common to have configuration data that is used throughout the app. This data can include an http host and port or a database connection url. These configuration variables can change between environments. For example, you might be using a PostgresQL database in production and development, and SQlite in testing. It is considered best practice to put these config variables in a single source of truth, often in environment variables or config files. Doing this makes your app easier to manage and update than hardcoding strings. 
+When developing an application, it is common to have configuration data that is used throughout the app. This data can include an http port or a database connection url. These configuration variables can change between environments. For example, you might be using a PostgresQL database in production and development, and SQlite in testing. It is considered best practice to put these config variables in a single source of truth, often in environment variables or config files. Doing this makes your app easier to manage and update than hardcoding strings. 
 
-In this post, we will be going over configuration in golang applications through environment based YAML files. We can start by scaffolding out a file structure that looks like this:
+In this post, we will be going over configuration in go applications through environment based YAML files. We can start by scaffolding out a file structure that looks like this:
 
 ```go
     |-- config.go
@@ -26,7 +26,7 @@ In this post, we will be going over configuration in golang applications through
 
 ```
 
-We can fill the environment yaml files with configuration variables. In this example, the config files will simply contain the server host, port, and the buildpath of the static files to be served by a golang router.
+We can fill the environment yaml files with configuration variables. In this example, the config files will simply contain the server host, port, and the path to a static files directory that will be served by a router.
 
 ```yaml
 server:
@@ -37,9 +37,9 @@ server:
 
 ```
 
-The config.go file will contain the logic for decoding and storing the configuration struct. It stores the application's configuration as a global variable. That way, any package that needs access can import the config package, and access the application's configuration variables.
+`config.go` file contain the logic for decoding and storing the configuration struct. It stores the application's configuration as a global variable. That way, any package that needs access can import the config package, and access the application's configuration variables.
 
-In this example, all of our config files contain the same variables, so we can define a single type, EnvironmentConfig, that contains fields and embedded structs corresponding to the yaml config file.
+In this example, all of our config files contain the same variables, so we can define a single type, `EnvironmentConfig`, that contains fields corresponding to the yaml config file.
 
 ```go
 package config
@@ -63,14 +63,14 @@ type ServerConfig struct {
 
 ```
 
-We need a way to get the current environment (production, development, testing) of our application. We can store this as an environment variable.
+Now we need a way to get the current environment (production, development, testing) of our application. We can store this as an environment variable.
 
 ```env
 APP_ENV=development
 
 ```
 
-To get the environment variable, we can use the os package:
+To get the environment variable, we can use the `os` package from the standard library:
 
 ```go
 package config
@@ -78,7 +78,6 @@ package config
 import (
   "os"
 )
-...
 
 func getEnv() string {
   return os.Getenv("APP_ENV")
@@ -91,11 +90,10 @@ To start your application in a specific environment, you can set the environment
 $ APP_ENV=development go run main.go
 ``` 
 
-The config.go file will contain the package's init function. The init function is called when the package is initialized, or when the package is first imported. It will call the readConfig function and assign the returned pointer to the global Config variable:
+`config.go` will also contain the package's init function. The init function is called when the package is initialized or first imported. It will call the `readConfig` function and assign the returned pointer to the global `Config` variable. This way `Config` will be set as soon as the application starts up:
 
 ```go
 package config
-...
 
 func init() {
   Config = readConfig()
@@ -103,7 +101,7 @@ func init() {
 
 ```
 
-The readConfig function returns a pointer to an EnvironmentConfig struct:
+`readConfig` returns a pointer to an `EnvironmentConfig` struct:
 
 ```go
 package config
@@ -112,7 +110,6 @@ import (
   "fmt"
   "os"
 )
-...
 
 func readConfig() *EnvironmentConfig {
   file := fmt.Sprintf("config/environments/%s.yml", getEnv())
@@ -126,7 +123,7 @@ func readConfig() *EnvironmentConfig {
 
 ```
 
-It uses the os package to open the config file corresponding to the current environment. Now we can use the [yaml.v3](https://github.com/go-yaml/yaml) package to decode the file into an EnvironmentConfig struct and return a pointer:
+It uses the os package to open the config file corresponding to the current environment. Now we can use the [yaml.v3](https://github.com/go-yaml/yaml) package to decode the yaml into our struct:
 
 ```go
 func readConfig() *EnvironmentConfig {
@@ -156,9 +153,7 @@ import (
 
 ```
 
-The blank identifier is used to import a package solely for its side-effects (initialization), meaning that we are only using the config package for its init function. If you remember, the init function assigns the Config global variable to a pointer of an EnvironmentConfig struct. 
-
-This means that the Config struct is now accessible to your entire application. For example, you can use the http host and port variables in your router's ListenAndServer function:
+The blank identifier is used to import a package solely for its side-effects (initialization), meaning that we are only using the config package for its init function. If you remember, the init function intializes the Config global variable. This means that the config is now accessible to your entire application. For example, you can use the http host and port variables in your router's `ListenAndServer` function:
 
 ```go
 import (
