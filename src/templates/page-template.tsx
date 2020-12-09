@@ -20,7 +20,7 @@ const PageTemplate = ({ data }: PageTemplateProps) => {
 
   return (
     <Layout
-      title={pageTitle}
+      title={`${pageTitle} | ${siteTitle}`}
       description={metaDescription}
       socialImage={socialImage}
     >
