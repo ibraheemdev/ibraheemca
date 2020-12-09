@@ -30,3 +30,5 @@ I am also open for freelance work. Want to talk about a project you think I can 
 [![](https://img.shields.io/static/v1?label=&logo=discord&color=rgb(109,121,212)&logoColor=white&message=DISCORD&style=for-the-badge)](https://discordapp.com/users/755965137013309563)
 [![](https://img.shields.io/static/v1?label=&logo=stack-overflow&color=rgb(235,118,42)&logoColor=white&message=STACKOVERFLOW&style=for-the-badge)](https://stackoverflow.com/users/8858995/ibraheem-ahmed)
 [![](https://img.shields.io/static/v1?label=&logo=dribbble&color=ea4c89&logoColor=white&message=DRIBBBLE&style=for-the-badge)](https://dribbble.com/ibraheema)
+
+[Click here if you came for the blog template](https://github.com/ibraheemdev/ibraheemdev/blob/master/README-blog.md)
