@@ -1,12 +1,13 @@
 ---
 template: post
-title: Simple yet Powerful Struct Validations In Go Without Reflection!
+title: Simple Yet Powerful Struct Validations In Go Without Reflection!
 slug: golang-struct-validations
 socialImage: /media/gopher.jpg
 draft: false
 date: 2020-07-23T15:41:14.076Z
-description: Creating a Simple yet Powerful Struct Validation Package for Golang
-  Without any Reflection.
+description: Most go validation packages rely on reflection, which comes with a
+  runtime cost. In this post, we will create a simple yet powerful struct
+  validation package for Golang without any reflection!
 mainTag: Golang
 tags:
   - Golang
@@ -14,7 +15,7 @@ tags:
 ---
 **Introduction**
 
-Validations are needed to ensure that the structure of, well, a struct, is in the proper format your application requires. They can be used to check that a user's email is actually an email, or that a writer does not create a blog post without a title. There are many methods of implementing validations in golang. The most common method is to use simple if statements:
+Validations are needed to ensure that data structures are in the format your application requires. They can be used to check that a user's email is actually an email, or that a writer does not create a blog post without a title. There are many methods of implementing validations in golang. The most common method is to use simple `if` statements:
 
 ```ruby
 func (u *User) IsValid() error {
@@ -43,7 +44,7 @@ func main() {
 
 Using a library with struct tags comes with its own pros and cons. The [go-playground validator](https://github.com/go-playground/validator) package for example, is not that easy to customize. For simpler applications that do not want to add an additional dependency, or more complex applications who need flexibility, it is often easier to roll your own.
 
-Probably the best validation framework is ActiveRecord::Validations, a module provided by Ruby on Rails. ActiveRecord allows you to write validation methods on a model, which are automatically run after every database transaction:
+Probably the best validation framework is `ActiveRecord::Validations`, a module provided by Ruby on Rails. ActiveRecord allows you to write validation methods on a model, which are automatically run after every database transaction:
 
 ```ruby
 class User < ApplicationRecord
@@ -52,11 +53,11 @@ class User < ApplicationRecord
 end
 ```
 
-Let's see how we can implement something similar in Golang.
+Let's see how we can implement something similar in Go.
 
 **The Validator Package**
 
-We can start by creating a simple struct called Validator. This struct will have one field; a slice of errors. That way we can return all the errors to the user at once:
+We can start by creating a simple struct called `Validator`. This struct will have one field: a slice of errors. That way we can return all the errors to the user at once:
 
 ```go
 package validator
@@ -67,7 +68,7 @@ type Validator struct {
 }
 ```
 
-Now, we can create a Validate method that receives a pointer to a Validator:
+Now, we can create a `Validate` method that receives a pointer to a `Validator`:
 
 ```go
 package validator
@@ -84,7 +85,7 @@ func (v *Validator) Validate(cond bool, msg string, args ...interface{}) {
 }
 ```
 
-The Validate method takes a condition, an error message, and an arbitrary number of arguments. The optional args are of type `interface{}`, an empty interface, so that it can accept generic types. If the condition is not true (ie: the resource is not valid), ]a formatted error message will be appended to the Validator struct.
+The Validate method takes a condition, an error message, and an arbitrary number of arguments. The optional args are of type `interface{}`, so that it can accept generic types. If the condition is not true (ie: the resource is not valid), a formatted error message will be appended to the Validator struct.
 
 We can use the Validate method to build commonly used validations. These methods will take the name of the field (for error messages), it's value, as well as other parameters required for each validation:
 
@@ -167,9 +168,9 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 ```
 
-If the slice of errors returned by the call to validate is not nil, meaning that the user provided invalid input, we can return an array of error messages along with a 422 status code. We can define the Stringify method in our validator module:
+If the slice of errors returned by the call to validate is not nil, meaning that the user provided invalid input, we can return an array of error messages along with a 422 status code. We can define the `Stringify` method in our validator module:
 
-```ruby
+```go
 package validator
 
 ...
@@ -183,4 +184,4 @@ func Stringify(errs []error) []string {
 }
 ```
 
-That's all for the Golang struct validations! The final code is available [on github](https://gist.github.com/ibraheemdev/0f583cebf34f06c882085282d3aabf6b)
+That's all for struct validations! The final code is available [on github](https://gist.github.com/ibraheemdev/0f583cebf34f06c882085282d3aabf6b)
