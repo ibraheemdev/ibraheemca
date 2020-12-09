@@ -6,11 +6,11 @@ socialImage: /media/rust-logo.png
 draft: false
 date: 2020-12-09T03:43:03.938Z
 description: Today we are going to be talking about smart pointers and interior
-  mutability, specifically, the `Cell` type. `Cell` is a type that you come
-  across frequently in Rust programs that it can help to have a deeper
-  understanding of what it is and how it works. One of the best ways to
-  understand `Cell` and the fundemental concepts behind its implementation is to
-  actually write it yourself. So that is what we are going to do!
+  mutability, specifically, the Cell type. Cell is a type that you come across
+  frequently in Rust programs that it can help to have a deeper understanding of
+  what it is and how it works. One of the best ways to understand Cell and the
+  fundamental concepts behind its implementation is to actually write it
+  yourself. So that is what we are going to do!
 mainTag: Rust
 tags:
   - Rust
