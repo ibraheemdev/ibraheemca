@@ -1,8 +1,8 @@
 module.exports = {
   url: "https://ibraheem.ca",
   pathPrefix: "/",
-  title: "Ibraheem Ahmed's Blog",
-  subtitle: "A blog by Ibraheem Ahmed",
+  title: "Ibraheem Ahmed",
+  subtitle: "Lover of all things software",
   copyright:
     '<p>This blog is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemca">github!</a></p>',
   disqusShortname: "ibraheem-3",
@@ -26,7 +26,7 @@ module.exports = {
     name: "Ibraheem Ahmed",
     photo: "/photo.png",
     bio:
-      '<div><b>@rails</b> developer and <b>@rustlang</b> enthusiast. <a href="/pages/about">More about me.</a></div>',
+      '<div>Lover of all things software. <a href="/pages/about">More about me.</a></div>',
     contacts: {
       email: "ibrah1440@gmail.com",
       facebook: "",
