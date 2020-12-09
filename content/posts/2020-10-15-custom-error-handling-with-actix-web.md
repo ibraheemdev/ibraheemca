@@ -164,7 +164,7 @@ impl actix_web::ResponseError for MyError {
 }
 ```
 
-Now, I create some convenience methods for `ResponseError`:
+Now I can create some convenience methods for constructing a new `ResponseError`:
 
 ```rust
 impl ResponseError {
@@ -185,7 +185,7 @@ impl ResponseError {
 
 ### Usage
 
-That's it for the `MyError`. Now, I can use it in my handlers. For example, a handler that returns a `ResponseError`:
+That's it for my error type. Now I can use it in my handlers. For example:
 
 ```rust
 async fn hello() -> Result<HttpResponse, Error> {
@@ -193,13 +193,13 @@ async fn hello() -> Result<HttpResponse, Error> {
 }
 ```
 
-Will result in the following json response:
+The aboce handler returns following json response:
 
 ```rust
 [404] { "error": "Invalid Request" }
 ```
 
-However, when making a sensitive database call, you can still use the `?` operator for cleaner error handling:
+When making a sensitive database call, you can still use the `?` operator for cleaner error handling:
 
 ```rust
 async fn login() -> Result<HttpResponse, Error> {
