@@ -28,7 +28,7 @@ func (u *User) IsValid() error {
 }
 ```
 
-The above code is repetitive, cumbersome, and probably not the best fit for most applications. An alternative method is to use struct tags and reflection. Packages such as [go-playgrounds 'validator'](https://github.com/go-playground/validator) use this method to allow you to write code like this:
+The above code is repetitive, cumbersome, and probably not the best fit for most applications. An alternative method is to use struct tags and reflection. Packages such as [go-playgrounds 'validator'](https://github.com/go-playground/validator) provide reflection based apis that allow you to write code like this:
 
 ```go
 type User struct {
@@ -42,9 +42,9 @@ func main() {
 }
 ```
 
-Using a library with struct tags comes with its own pros and cons. The [go-playground validator](https://github.com/go-playground/validator) package for example, is not that easy to customize. For simpler applications that do not want to add an additional dependency, or more complex applications who need flexibility, it is often easier to roll your own.
+Using a library with struct tags comes with its own pros and cons. The [go-playground validator](https://github.com/go-playground/validator) package, for example, is not that easy to customize. For simpler applications that do not want to add an additional dependency, or more complex applications who need flexibility, it is often easier to roll your own.
 
-Probably the best validation framework is `ActiveRecord::Validations`, a module provided by Ruby on Rails. ActiveRecord allows you to write validation methods on a model, which are automatically run after every database transaction:
+Probably the best validation framework is `ActiveRecord::Validations`, a module provided by Ruby on Rails. It allows you to write validation methods on a model, which are then run automatically after every database transaction:
 
 ```ruby
 class User < ApplicationRecord
