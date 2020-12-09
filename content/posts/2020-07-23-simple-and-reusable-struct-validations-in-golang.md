@@ -15,7 +15,7 @@ tags:
 ---
 **Introduction**
 
-Validations are needed to ensure that data structures are in the format your application requires. They can be used to check that a user's email is actually an email, or that a writer does not create a blog post without a title. There are many methods of implementing validations in golang. The most common method is to use simple `if` statements:
+Validations are needed to ensure that data structures are in the format your application requires. They can be used to check that a user's email is actually an email, or that a writer does not create a blog post without a title. There are many methods of implementing validations in Go. The most common method is to use simple `if` statements:
 
 ```ruby
 func (u *User) IsValid() error {
@@ -44,7 +44,7 @@ func main() {
 
 Using a library with struct tags comes with its own pros and cons. The [go-playground validator](https://github.com/go-playground/validator) package, for example, is not that easy to customize. For simpler applications that do not want to add an additional dependency, or more complex applications who need flexibility, it is often easier to roll your own.
 
-Probably the best validation framework is `ActiveRecord::Validations`, a module provided by Ruby on Rails. It allows you to write validation methods on a model, which are then run automatically after every database transaction:
+The best validation framework I have come across is `ActiveRecord::Validations`, a module provided by Ruby on Rails. It allows you to write validation methods on a model, which are then run automatically after every database transaction:
 
 ```ruby
 class User < ApplicationRecord
@@ -68,16 +68,11 @@ type Validator struct {
 }
 ```
 
-Now, we can create a `Validate` method that receives a pointer to a `Validator`:
+Now, we can define `Validator.Validate()`:
 
 ```go
 package validator
 
-import "fmt"
-
-...
-
-// Validate :
 func (v *Validator) Validate(cond bool, msg string, args ...interface{}) {
 	if !cond {
 		v.Errors = append(v.Errors, fmt.Errorf(msg, args...))
@@ -85,45 +80,39 @@ func (v *Validator) Validate(cond bool, msg string, args ...interface{}) {
 }
 ```
 
-The Validate method takes a condition, an error message, and an arbitrary number of arguments. The optional args are of type `interface{}`, so that it can accept generic types. If the condition is not true (ie: the resource is not valid), a formatted error message will be appended to the Validator struct.
+The Validate method takes a condition, an error message, and an arbitrary number of arguments that will be used to format the error message. If the condition is not true (ie: the resource is not valid), an error message will be appended to the Validator's `Errors`.
 
-We can use the Validate method to build commonly used validations. These methods will take the name of the field (for error messages), it's value, as well as other parameters required for each validation:
+Because the Validate method is so generic, we can use it as a building block for other common validations. These methods will take the name of the field (for error messages), it's value, as well as other parameters required for each validation:
 
 ```go
 // ValidatePresenceOf : validates presence of struct string field
 func (v *Validator) ValidatePresenceOf(fieldName string, fieldValue string) {
-    // fieldValue must be greater than 0
 	cond := len(strings.TrimSpace(fieldValue)) > 0
 	v.Validate(cond, "%s cannot be blank", fieldName)
 }
 
 // ValidateMaxLengthOf : validates maximum character length of struct string field
 func (v *Validator) ValidateMaxLengthOf(fieldName string, fieldValue string, max int) {
-	// fieldValue must be less than maximum
     cond := len(fieldValue) < max
-	v.Validate(cond, "%s cannot be greater than %d characters", fieldName, max)
+    v.Validate(cond, "%s cannot be greater than %d characters", fieldName, max)
 }
 
 // ValidateMinLengthOf : validates minimum character length of struct string field
 func (v *Validator) ValidateMinLengthOf(fieldName string, fieldValue string, min int) {
-	// fieldValue must be greater than minimum
     cond := len(fieldValue) > min
-	v.Validate(cond, "%s must be at least %d characters", fieldName, min)
+    v.Validate(cond, "%s must be at least %d characters", fieldName, min)
 }
 ```
 
 **Validating User Input**
 
-Now that we finished the validator package, we can use it in http handlers to validate user input. We can create a validate method on our model/database struct:
+Now that we finished the validator package, we can use it in http handlers to validate user input. We can create a validate method on a User model:
 
 ```go
 package users
 
-import (
-  ...
-  "github.com/username/appname/validator"
-  ...
-)
+import "github.com/ibraheemdev/myapp/validator"
+
 type User struct {
     Email string `json:"email"`
     Name  string `json:"name"`
@@ -139,42 +128,35 @@ func validate(u *User) []error {
 }
 ```
 
-We can also add a custom email regex validation using our Validate method:
+We can also add a simple email regex validator:
 
 ```go
 func validate(u *User) []error {
   ...
-  emailRegex := "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-  match, _ := regexp.MatchString(emailRegex, u.Email)
-  // email must match regex
+  match, _ := regexp.MatchString("/^\S+@\S+\.\S+$/", u.Email)
   v.Validate(match, "Email is not in valid format")
-  ...
 }
 ```
 
-Now, in our handler, we simply have to call the validate method whenever we decode user input:
+Now, in our handler, we simply have to call `Validate` whenever we decode user input:
 
 ```go
 // POST "/users"
 func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-  	user := new(User)
+    user := new(User)
     json.NewDecoder(r.Body).Decode(&user)
     errs := validate(user)
     if errs != nil {
-      w.WriteHeader(http.StatusUnprocessableEntity)
-      json.NewEncoder(w).Encode(Stringify(errs))
-      return
+      // the user is invalid
     }
 }
 ```
 
-If the slice of errors returned by the call to validate is not nil, meaning that the user provided invalid input, we can return an array of error messages along with a 422 status code. We can define the `Stringify` method in our validator module:
+If the slice of errors returned by the call to validate is not `nil`, then we know that the user provided invalid input. To notify the user that the validation failed, we can define a `Stringify` method. `Stringify` will convert the `Validator` errors into an array of error messages:
 
 ```go
 package validator
 
-...
-  
 func Stringify(errs []error) []string {
   strErrors := make([]string, len(errs))
   for i, err := range errs {
@@ -184,4 +166,18 @@ func Stringify(errs []error) []string {
 }
 ```
 
-That's all for struct validations! The final code is available [on github](https://gist.github.com/ibraheemdev/0f583cebf34f06c882085282d3aabf6b)
+Now we can send back the stringified errors along with a 422 status code back to the client:
+```go
+// POST "/users"
+func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+    user := new(User)
+    json.NewDecoder(r.Body).Decode(&user)
+    errs := validate(user)
+    if errs != nil {
+      w.WriteHeader(http.StatusUnprocessableEntity)
+      json.NewEncoder(w).Encode(Stringify(errs))
+      return
+    }
+}
+```
+That's all for struct validations! The final code is available [on github](https://gist.github.com/ibraheemdev/0f583cebf34f06c882085282d3aabf6b).
