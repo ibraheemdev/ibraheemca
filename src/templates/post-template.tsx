@@ -18,7 +18,7 @@ const PostTemplate = ({ data }: PostTemplateProps) => {
 
   return (
     <Layout
-      title={postTitle)
+      title={`${pageTitle} | ${siteTitle}`}
       description={metaDescription}
       socialImage={socialImage}
     >
