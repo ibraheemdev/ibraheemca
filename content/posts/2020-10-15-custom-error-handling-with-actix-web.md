@@ -193,7 +193,7 @@ async fn hello() -> Result<HttpResponse, Error> {
 }
 ```
 
-The aboce handler returns following json response:
+The above handler returns following json response:
 
 ```rust
 [404] { "error": "Invalid Request" }
