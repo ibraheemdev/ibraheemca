@@ -20,14 +20,6 @@ I am also open for freelance work. Want to talk about a project you think I can 
 | <img align="left" style="margin-right:10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/144px-Rust_programming_language_black_logo.svg.png" width=55> | <img align="left" style="margin-right:10px;" src="https://avatars.githubusercontent.com/u/4223" width=55> | <img align="left" style="margin-right:10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" width=55> | <img align="left" style="margin-right:10px;" src="https://cdn.auth0.com/blog/react-js/react.png" width=55> | <img align="left" style="margin-right:10px;" src="https://seeklogo.com/images/R/redux-logo-9CA6836C12-seeklogo.com.png" width=55> | <img align="left" style="margin-right:10px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png" width=55> | <img align="left" style="margin-right:10px;" src="https://cdn.jsdelivr.net/npm/programming-languages-logos/src/go/go.png" width=55> | <img align="left" style="margin-right:10px;" src="https://infinapps.com/wp-content/uploads/2018/10/mongodb-logo.png" width=55> |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 
-### 📖 &nbsp; Latest Blog Posts
-
-- [The Strictest Rust Workflow](https://ibraheem.ca/posts/strictest-cargo-workflow)
-- [Secure Error Handling With Actix-Web](https://ibraheem.ca/posts/actix-web-secure-error-handling)
-- [Rust Global Configuration Files with Multiple Environments](https://ibraheem.ca/posts/rust-global-config-files)
-- [Twenty Minutes to Learn Go](https://ibraheem.ca/posts/go-in-twenty)
-- [Why Developers Love Rust](https://ibraheem.ca/posts/why-devs-love-rust)
-
 ### 📫 &nbsp; Contact
 
 <div>
@@ -55,7 +47,7 @@ I am also open for freelance work. Want to talk about a project you think I can 
       alt=""
     />
   </a>
-  <a href="https://discord.com/channels/@me/766409874497339444" rel="nofollow">
+  <a href="https://discordapp.com/users/755965137013309563" rel="nofollow">
     <img
       align="left"
       style="margin-right: 5px; margin-bottom: 5px;"
