@@ -285,6 +285,6 @@ impl<T> Cell<T> {
 }
 ```
 
-Hopefully by now you have an understanding of what `Cell` is, how it works internally, and how the interior mutability it provides can be useful in Rust programs. In [the next post](todo.com), we will discuss another type in the `cell` module: `RefCell`.
+Hopefully by now you have an understanding of what `Cell` is, how it works internally, and how the interior mutability it provides can be useful in Rust programs. In [the next post](/pages/todo), we will discuss another type in the `cell` module: `RefCell`.
 
 [The final code for our implementation of `Cell` is available on github](https://gist.github.com/ibraheemdev/8dc7c18063516bde6f478a925cc451b8)
