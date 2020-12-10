@@ -207,7 +207,7 @@ error[E0277]: `UnsafeCell<i32>` cannot be shared between threads safely
     = note: required because it appears within the type `Cell<i32>`
 ```
 
-Now that we know that our `set` method is safe, we can write the `get` method:
+Now that we know our `set` method is safe, we can write the `get` method:
 
 ```rust
 pub fn get(&self) -> T
