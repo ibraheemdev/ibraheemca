@@ -12,30 +12,27 @@ tags:
   - React.js
   - Redux
 ---
-*Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate) and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017.*
+*Much of this post was based on [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc), a talk by David Khourshid, the creator of [xstate](https://github.com/davidkpiano/xstate), and [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg) by Jeremy Fairbank at elm-conf 2017.*
 
 **The Problem**
 
-When developing a react + redux application, you often have to load data from a remote source, usually a REST API. Let's say you have a todo list application. When a user clicks 'add todo', you dispatch the corresponding `ADD_TODO` action. If the response is OK, you dispatch the success action, and if the request fails, you dispatch the failure action:
+When developing a react + redux application, you often have to load data from a remote source such a REST API. Let's say you have a todo list application. When a user clicks 'add todo', you dispatch the corresponding `ADD_TODO` action. If the request is successful, you dispatch the success action. If the request fails, you dispatch the failure action:
 
 ```javascript
 const handleClick = () => {
-  // request started
   dispatch({ type: ADD_TODO });
   axios
     .post("api.myapp.com/todos", { title: state.newTodoTitle })
     .then((res) => {
-      // successful request
       dispatch({ type: ADD_TODO_SUCCESS, payload: res.data.todo });
     })
     .catch((res) => {
-      // request failed
       dispatch({ type: ADD_TODO_FAILURE, payload: res.data.errors });
     });
 };
 ```
 
-Now, we have to implement the reducer that will handle the dispatched actions.
+You also have a reducer that handles the dispatched actions.
 
 ```javascript
 const TodosReducer = (state = {}, action) => {
@@ -62,7 +59,7 @@ const TodosReducer = (state = {}, action) => {
 };
 ```
 
-Simple, right? But wait, we want to display a spinner if while the request is taking place. We also need a way to tell the view that the request was successful or failed, so that is can display the correct message to the user. This seems like a good candidate for boolean flags like `isLoading` and `isSuccessful`.
+Simple, right? But what happens when your simple application grows and becomes more complex? For example, you might want to display a spinner while the request is taking place. You also need a way to tell the view that the request was successful or failed, so that is can display the correct message to the user. You might start with boolean flags for each of these potential states such as `isLoading` and `isSuccessful`:
 
 ```javascript
 const TodosReducer = (state = {}, action) => {
@@ -98,7 +95,7 @@ const TodosReducer = (state = {}, action) => {
 };
 ```
 
-The above code makes sense. If the request was successful, then we should update `isSuccessful` to be true. If it is loading, then `isLoading` should be true, and so on. Now, let's try using the todo state in our view.
+The above code makes sense. If the request was successful, then `isSuccessful` is set true. While the request is taking place, `isLoading` is set to true, and so on. Now let's try using the state in our react component:
 
 ```javascript
 return (
@@ -115,7 +112,7 @@ return (
 )
 ```
 
-Things just got a whole lot more complicated... The view code is messy and unclear. No one wants a string of if statements in their render function. And what if a user does something unexpected, and the state ends up looking like this:
+Things just got a whole lot more complicated... The view code is messy and unclear. No one wants a string of `if` statements in their render function. This complexity also makes it really hard to identify and handle all the potential edge cases. What if a user does something unexpected, and the state ends up looking like this?
 
 ```javascript
 return {
@@ -129,7 +126,7 @@ return {
 
 How can a request be loading, have errors, and be successful at the same time???
 
-Furthermore, most applications aren't that simple. What if we want to have other features, like disabling actions after a timeout?
+Furthermore, most applications aren't that simple. What if we want to have other features, like cancelling requests after a timeout?
 
 ```ruby
 if isTimedOut
@@ -152,29 +149,31 @@ else ifTimeout < 3000
 
 In computer science, there is a computational model known as a "finite state machine". It is an abstract machine, whether a software system or computer hardware. There are two types of state machines, deterministic: and non-deterministic. The former, the one we will be working with, has the following constraints:
 
-1. Has a finite number of states (`idle`, `loading`, `successful`, `failure`, etc.)
-2. Has a finite number of actions (`ADD_TODO`, `DELETE_TODO`, etc.)
-3. Has an initial state (`idle`) and a final state (not applicable to our app)
-4. Transitions between states in response to an action: <br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
+1. Has a finite number of states (idle, loading, successful, failure)
+2. Has a finite number of actions (ADD_TODO, DELETE_TODO, etc.)
+3. Has an initial state (idle) and a final state (not applicable)
+4. Transitions between states in response to an action: <br/>(loading + ADD_TODO_SUCCESS = successful). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
 5. Can and will only be in **one** of its finite number of states at any given time.
 
-For more on finite state machines, see [this article](https://brilliant.org/wiki/finite-state-machines/)
+The fifth point is crucial. Implementing a finite state machine means that your application can and will *only* be in one potential state at a time. This is quite different from what we had before, where any number of boolean flags could be true. With a finite state machine, you do not have to worry about edge cases, because it **makes impossible states impossible**.
 
 **Modelling the Finite State Machine**
 
-To model your applications FSM, you can simple fill out the 5 constraints of a deterministic state machines.
+To model a finite state machine you can simple fill out the 5 constraints listed above.
 
-Our application has 4 possible states, the initial one being `IDLE`.
+1. Our application has 4 possible states.
 
 ![the 4 possible states of our application: (idle, loading, successful, failure)](/media/group-6.png)
 
-Our app also has 3 actions:
+2. Our app has 3 actions:
 
 * `ADD_TODO`
 * `ADD_TODO_SUCCESS`
 * `ADD_TODO_FAILURE`
 
-Now we have to determine all the transitions that our app can go through. We can do this using a flow chart:
+3. The application starts in the idle state.
+
+4. Now we have to determine all the transitions that our app can go through. A transition is a response to an action. We can model these responses and state changes using a flow chart:
 
 ![The application transitions](/media/group-10.png)
 
@@ -182,7 +181,7 @@ As you can see, the todo-list app is quite simple. It starts at the `IDLE` state
 
 **Implementing the Finite State Machine**
 
-Now that our state machine is modelled, we can actually implement it in our application. The entire application state can be represented through one frozen (non-editable) object:
+Now that our state machine is modelled, we can actually implement it in our application. The entire application state can be represented through one object:
 
 ```javascript
 const stateMachine = Object.freeze({
@@ -204,31 +203,21 @@ const stateMachine = Object.freeze({
 
 As you can see, the `stateMachine` is just an object representation of our flow chart. Now, we can create a transition function. The transition function will implement the fourth constraint of deterministic FSM's:
 
-> Transitions between states in response to an action: <br/>(`loading` + `ADD_TODO_SUCCESS` = `successful`). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state
-
-The function looks like this:
+> Transitions between states in response to an action: <br/>(loading + ADD_TODO_SUCCESS = successful). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state. The transition function is very simple:
 
 ```javascript
 const transition = (currentState, action) => {
   return stateMachine[currentState][action];
 };
 
-// The current state of the application is 'idle'
-// The user clicks 'Add Todo', dispatching the ADD_TODO action
-// If we look at the stateMachine object, we can see that the
-// corresponding state is 'loading'
-
-transition("idle", ADD_TODO);
-// => 'loading'
-
-// And sure enough, our function works!
+transition("idle", ADD_TODO) // => 'loading'
 ```
 
 Now for the coolest part. If you haven't already noticed, the transition function *is* a reducer!
 
 > The reducer is a pure function that takes the previous state and an action, and returns the next state. - [redux.js.org](https://redux.js.org/basics/reducers)
 
-And that is exactly what our function does. With a few modifications, we can convert it into a redux style reducer that ignores actions that we can't handle, such as the redux init:
+And that is exactly what our function does. With a few modifications, we can convert it into a redux style reducer:
 
 ```javascript
 const TransitionReducer = (state = { status: "idle" }, action) => {
@@ -238,7 +227,7 @@ const TransitionReducer = (state = { status: "idle" }, action) => {
 };
 ```
 
-That's it! in 5 lines of code, we can intercept all actions, and calculate the application state based on the current state, and the action type! Our todos reducer and view now look much cleaner:
+That's it! in 5 lines of code, we can intercept all actions and calculate the new application state without having to worry about any edge cases! Our todos reducer now looks much simpler:
 
 ```javascript
 // reducer
@@ -259,6 +248,8 @@ const TodosReducer = (state = {}, action) => {
 };
 ```
 
+And so does our component:
+
 ```javascript
 // view
 return (
@@ -271,6 +262,6 @@ return (
 
 **Takeaways:**
 
-The biggest gain from this pattern, is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers, reducers that handle one process and one process only. Those two combined give simplicity to the entire application: reducers, views, and actions.
+The biggest gain from this pattern is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers; reducers that handle one process and one process only. Those two combined give simplicity to the entire application: reducers, views, and actions.
 
-*shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)*
+*Shrug emoji courtesy of [Twemoji](https://twemoji.twitter.com/)*
