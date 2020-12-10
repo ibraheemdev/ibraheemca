@@ -148,4 +148,4 @@ The `symbolic-alignment-check` flag makes the alignment check more strict, and `
 
 That's all for our workflow. As you can tell, Rust's tooling is amazing! There are many official cargo components that you can use to make development easier. 
 
-The final github workflow is available [here](http://todo.io). If I missed any configuration options or tooling, [let me know](javascript:document.body.scrollIntoView(false)).
+The final github workflow is available [here](/pages/todo). If I missed any configuration options or tooling, [let me know](javascript:document.body.scrollIntoView(false)).
