@@ -23,7 +23,7 @@ Today we are going to be talking about smart pointers and interior mutability, s
 
 ### Cell
 
-The Rust standard library has a module called [`cell`](https://doc.rust-lang.org/std/cell/index.html) which contains "shareable mutable containers". You probably already know that the Rust ownership model has the concept of shared references (`&T`) and exclusive (mutable) references. Having an exclusive reference means that the borrow checker *guarantees* that you are the exclusive owner of the pointer, which allows you to mutate the value behind it. A *shareable mutable container* sounds pretty weird at first, because you should not be allowed to mutate a value if someone else has access to it, right? However, the `cell` module provides primitives that allow shared mutability in a controlled manner under specific circumstances. This is often referred to as "interior mutability", because it allows mutation inside an immutable reference. The `cell` module contains a couple of different interior mutability primitives. In this post, we will look at `Cell`.
+The Rust standard library has a module called [`cell`](https://doc.rust-lang.org/std/cell/index.html) which contains "shareable mutable containers". You probably already know that the Rust ownership model has the concept of shared references (`&T`) and exclusive (mutable) references (`&mut T`). Having an exclusive reference means that the borrow checker *guarantees* that you are the exclusive owner of the pointer, which allows you to mutate the value behind it. A *shareable mutable container* sounds pretty weird at first, because you should not be allowed to mutate a value if someone else has mutable access to it, right? However, the `cell` module provides primitives that allow shared mutability in a controlled manner under specific circumstances. This is often referred to as "interior mutability", because it allows mutation from an immutable reference. The `cell` module contains a couple of different interior mutability primitives. In this post, we will look at `Cell`.
 
 Let's start by looking at the basic API of `Cell`. You can create a new `Cell` with the `new` method:
 
@@ -52,7 +52,7 @@ let c = Cell::new(5);
 let five = c.get();
 ```
 
-Notice that the `get` method requires `T` to be `Copy`. This is because instead of returning a reference to the inner value (`&T`), `get` returns a copy of it. If you look through all the methods on `Cell`, you would see that there is no (safe) way to get a reference to it's inner value. You can replace it, set it, or swap it, but you can never get a reference to it. This concept is what allows `Cell` to provide interior mutability, because it guarantees that nobody else has a reference to `Cell`:
+Notice that the `get` method requires `T` to be `Copy`. This is because instead of returning a reference to the inner value, `get` returns a copy of it. If you look through all the methods on `Cell`, you would see that there is no (safe) way to get a reference to it's inner value. You can replace it, set it, or swap it, but you can never get a reference to it. This concept is what allows `Cell` to provide interior mutability, because it guarantees that nobody else has a reference to `Cell`:
 
 > If we know that no one else has a pointer to the value that we are storing inside of `Cell`, then changing that value is fine.
 
@@ -156,7 +156,7 @@ pub fn set(&self, value: T) {
 }
 ```
 
-Even though the compiler accepts our code, how do we know that it is safe? Right now, the code is simply *wrong*. Let's create a test case to illustrate the problems with our code:
+Even though the compiler accepts our code, how do *we* know that it is safe? Right now, the code is simply **wrong**. Let's create a test case to illustrate the problems with our code:
 
 ```rust
 #[cfg(test)]
@@ -181,7 +181,7 @@ mod test {
 }
 ```
 
-Right now, we have not written anything to prevent the above code from being written. Two threads could potentially try to modify the same memory at the same time. This could result in data races or lost memory. We need some way to tell the `Cell` is not safe to be shared between threads. We can do this through negative trait bounds.
+Until now we have not written anything to prevent the above code from being written. Two threads could potentially try to modify the same memory at the same time. This could result in data races or lost memory. We need some way to tell the `Cell` is not safe to be shared between threads. We can do this through negative trait bounds.
 
 ```rust
 impl<T> !Sync for Cell<T> {}
