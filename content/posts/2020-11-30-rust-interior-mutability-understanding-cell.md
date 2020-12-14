@@ -69,7 +69,66 @@ This means that references to a `Cell` cannot be shared between threads. If two 
 * No one has a shared reference to `Cell`'s inner value
 * `Cell` cannot be shared between threads
 
-So why is `Cell` useful? `Cell` provides the ability to have multiple mutable (interior) references to a single value. Imagine a graph where multiple nodes have access to a single shared value. Your program is single-threaded, so you know that only one node will be mutating the value at any point in time. Using `Cell` would allow multiple nodes to mutate that same value in `safe` Rust. 
+### Why is `Cell` useful? 
+
+So why is `Cell` useful? `Cell` provides the ability to have multiple mutable (interior) references to a single value. Imagine a graph where multiple nodes have access to a single shared value: 
+```rust
+struct Graph {
+    total_count: u8,
+    nodes: Vec<Node>,
+}
+
+struct Node {
+    count: u8,
+}
+```
+
+You now want to traverse the graph and update that value based on the current node:
+```rust
+impl Graph {
+    fn traverse(&mut self) {
+        for node in self.nodes.iter() {
+            self.update_count(&node);
+        }
+    }
+
+    fn update_count(&mut self, node: &Node) {
+        self.total_count += node.count;
+    }
+}
+```
+
+Normally, this poses a problem, because we are trying to modify `self` when someone else already has access to it:
+```rust
+error[E0502]: cannot borrow `*self` as mutable because it is also borrowed as immutable
+  --> src/lib.rs:13:13
+   |
+12 |         for node in self.nodes.iter() {
+   |                     -----------------
+   |                     |
+   |                     immutable borrow occurs here
+   |                     immutable borrow later used here
+13 |             self.update_count(&node);
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
+```
+
+In this case, we can wrap the element in a `Cell`. Now we can modify the value through a shared reference, meaning that we no longer have to mutable borrow `self`:
+```rust
+struct Graph {
+    total_count: Cell<u8>,
+    nodes: Vec<Node>,
+}
+
+impl Graph {
+    fn update_count(&self, node: &Node) {
+        self.total_count.set(self.total_count.get() + node.count);
+    }
+}
+```
+
+Without `Cell` the borrow checker was complaining because we were trying to modify something that someone else had access to. However, `Cell` guarantees that no-one else has a pointer  to the value, so our code now compiles. 
+
+### Implementing `Cell`
 
 Now that we understand what `Cell` is, let's try implementing it ourselves. We can start with a basic API for the `Cell` struct:
 
