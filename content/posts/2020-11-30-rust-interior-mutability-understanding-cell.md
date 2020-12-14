@@ -103,13 +103,13 @@ However, this poses a problem, because we are trying to modify `self` while alre
 error[E0502]: cannot borrow `*self` as mutable because it is also borrowed as immutable
   --> src/lib.rs:13:13
    |
-12 |         for node in self.nodes.iter() {
-   |                     -----------------
-   |                     |
-   |                     immutable borrow occurs here
-   |                     immutable borrow later used here
-13 |             self.update_count(&node);
-   |             ^^^^^^^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
+12 |     for node in self.nodes.iter() {
+   |                 -----------------
+   |                 |
+   |                 immutable borrow occurs here
+   |                 immutable borrow later used here
+13 |         self.update_count(&node);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
 ```
 
 In this case, we can wrap the element in a `Cell`. Now we can modify the value through a shared reference, meaning that we no longer have to mutable borrow `self`:
