@@ -69,64 +69,82 @@ This means that references to a `Cell` cannot be shared between threads. If two 
 * No one has a shared reference to `Cell`'s inner value
 * `Cell` cannot be shared between threads
 
-### Why is `Cell` useful? 
+### Why is Cell useful? 
 
-So why is `Cell` useful? `Cell` provides the ability to have multiple mutable references to a single value. For example, we might have a graph containing a value and a vector of nodes:
+So why is `Cell` useful? `Cell` provides the ability to have multiple mutable references to a single value. For example, we might have a graph containing a `total_count` and a vector of nodes:
 ```rust
 struct Graph {
-    total_value: u8,
+    total_count: u8,
     nodes: Vec<Node>,
 }
 
 struct Node {
-    value: u8,
+    count: u8,
 }
 ```
 
-You now want to traverse the graph and update the graph based on the current node's value:
+You now want to traverse the graph updating every node's count and the graph's total count:
 ```rust
+impl Node {
+    fn update_count(&mut self) {
+        self.count += 1;
+    }   
+}
+
 impl Graph {
     fn traverse(&mut self) {
-        for node in self.nodes.iter() {
-            self.update_count(&node);
+        for (i, node) in self.nodes.iter_mut().enumerate() {
+            node.update_count();
+            self.update_count(i);
         }
     }
 
-    fn update_count(&mut self, node: &Node) {
-        self.total_value += node.value;
+    fn update_count(&mut self, i: usize) {
+        self.total_count += self.nodes[i].count;
     }
 }
 ```
 
-However, this poses a problem, because we are trying to modify `self` while already having a shared reference to it:
+However, this poses a problem, because we are trying to borrow `self` as mutable multiple times:
 ```rust
-error[E0502]: cannot borrow `*self` as mutable because it is also borrowed as immutable
-  --> src/lib.rs:13:13
+error[E0499]: cannot borrow `*self` as mutable more than once at a time
+  --> src/lib.rs:20:13
    |
-12 |     for node in self.nodes.iter() {
-   |                 -----------------
-   |                 |
-   |                 immutable borrow occurs here
-   |                 immutable borrow later used here
-13 |         self.update_count(&node);
-   |         ^^^^^^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
+18 |     for (i, node) in self.nodes.iter_mut().enumerate() {
+   |                      ---------------------------------
+   |                      |
+   |                      first mutable borrow occurs here
+   |                      first borrow later used here
+19 |         node.update_count();
+20 |         self.update_count(i);
+   |         ^^^^ second mutable borrow occurs here
 ```
 
-In this case, we can wrap the element in a `Cell`. Now we can modify the value through a shared reference, meaning that we no longer have to mutable borrow `self`:
+However, if we wrap the value in a `Cell`. Now we can modify the value through shared references:
 ```rust
-struct Graph {
-    total_value: Cell<u8>,
-    nodes: Vec<Node>,
+impl Node {
+    fn update_count(&self) {
+        let next = self.value.get() + 1;
+        self.value.set(next);
+    }   
 }
 
 impl Graph {
-    fn update_count(&self, node: &Node) {
-        self.total_value.set(self.total_value.get() + node.value);
+    fn traverse(&mut self) {
+        for (i, node) in self.nodes.iter().enumerate() {
+            node.update_count();
+            self.update_count(i);
+        }
+    }
+
+    fn update_count(&self, i: usize) {
+        let next = self.total_value.get() + self.nodes[i].value.get();
+        self.total_value.set(next);
     }
 }
 ```
 
-Because `Cell` guarantees that no-one else has a pointer to the value, we can mutate the graph through a shared reference and our code now compiles. 
+Because `Cell` guarantees that no-one else has a pointer to the value, we can mutate the values through shared references and our code now compiles. 
 
 ### Implementing `Cell`
 
