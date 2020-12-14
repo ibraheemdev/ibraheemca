@@ -120,7 +120,7 @@ error[E0499]: cannot borrow `*self` as mutable more than once at a time
    |         ^^^^ second mutable borrow occurs here
 ```
 
-However, if we wrap the value in a `Cell`. Now we can modify the value through shared references:
+This is a perfect use case for `Cell`. If we wrap the value in a `Cell`, then we can modify the values through shared references:
 ```rust
 impl Node {
     fn update_count(&self) {
