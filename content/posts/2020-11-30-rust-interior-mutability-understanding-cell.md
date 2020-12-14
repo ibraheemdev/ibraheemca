@@ -71,19 +71,19 @@ This means that references to a `Cell` cannot be shared between threads. If two 
 
 ### Why is `Cell` useful? 
 
-So why is `Cell` useful? `Cell` provides the ability to have multiple mutable (interior) references to a single value. Imagine a graph where multiple nodes have access to a single shared value: 
+So why is `Cell` useful? `Cell` provides the ability to have multiple mutable references to a single value. For example, we might have a graph containing a value and a vector of nodes:
 ```rust
 struct Graph {
-    total_count: u8,
+    total_value: u8,
     nodes: Vec<Node>,
 }
 
 struct Node {
-    count: u8,
+    value: u8,
 }
 ```
 
-You now want to traverse the graph and update that value based on the current node:
+You now want to traverse the graph and update the graph based on the current node's value:
 ```rust
 impl Graph {
     fn traverse(&mut self) {
@@ -93,12 +93,12 @@ impl Graph {
     }
 
     fn update_count(&mut self, node: &Node) {
-        self.total_count += node.count;
+        self.total_value += node.value;
     }
 }
 ```
 
-Normally, this poses a problem, because we are trying to modify `self` when someone else already has access to it:
+However, this poses a problem, because we are trying to modify `self` while already having a shared reference to it:
 ```rust
 error[E0502]: cannot borrow `*self` as mutable because it is also borrowed as immutable
   --> src/lib.rs:13:13
@@ -115,18 +115,18 @@ error[E0502]: cannot borrow `*self` as mutable because it is also borrowed as im
 In this case, we can wrap the element in a `Cell`. Now we can modify the value through a shared reference, meaning that we no longer have to mutable borrow `self`:
 ```rust
 struct Graph {
-    total_count: Cell<u8>,
+    total_value: Cell<u8>,
     nodes: Vec<Node>,
 }
 
 impl Graph {
     fn update_count(&self, node: &Node) {
-        self.total_count.set(self.total_count.get() + node.count);
+        self.total_value.set(self.total_value.get() + node.value);
     }
 }
 ```
 
-Without `Cell` the borrow checker was complaining because we were trying to modify something that someone else had access to. However, `Cell` guarantees that no-one else has a pointer  to the value, so our code now compiles. 
+Because `Cell` guarantees that no-one else has a pointer to the value, we can mutate the graph through a shared reference and our code now compiles. 
 
 ### Implementing `Cell`
 
