@@ -86,21 +86,21 @@ struct Node {
 You now want to traverse the graph updating every node's count and the graph's total count:
 ```rust
 impl Node {
-    fn update_count(&mut self) {
+    fn update(&mut self) {
         self.count += 1;
     }   
 }
 
 impl Graph {
     fn traverse(&mut self) {
-        for (i, node) in self.nodes.iter_mut().enumerate() {
-            node.update_count();
-            self.update_count(i);
+        for node in self.nodes.iter_mut() {
+            node.update();
+            self.update(node.count);
         }
     }
 
-    fn update_count(&mut self, i: usize) {
-        self.total_count += self.nodes[i].count;
+    fn update(&mut self, node_count: u8) {
+        self.total_count += node_count;
     }
 }
 ```
@@ -110,36 +110,43 @@ However, this poses a problem, because we are trying to borrow `self` as mutable
 error[E0499]: cannot borrow `*self` as mutable more than once at a time
   --> src/lib.rs:20:13
    |
-18 |     for (i, node) in self.nodes.iter_mut().enumerate() {
-   |                      ---------------------------------
+18 |     for node in self.nodes.iter_mut() {
+   |                      ----------------
    |                      |
    |                      first mutable borrow occurs here
    |                      first borrow later used here
 19 |         node.update_count();
-20 |         self.update_count(i);
+20 |         self.update_count(node.count);
    |         ^^^^ second mutable borrow occurs here
 ```
 
-This is a perfect use case for `Cell`. If we wrap the value in a `Cell`, then we can modify the values through shared references:
+This is a perfect use case for `Cell`. If we wrap the value in a `Cell`, then we can modify the values entirely through shared references:
 ```rust
+struct Graph {
+    count: Cell<u8>,
+    nodes: Vec<Node>,
+}
+
+struct Node {
+    count: Cell<u8>,
+}
+
 impl Node {
-    fn update_count(&self) {
-        let next = self.value.get() + 1;
-        self.value.set(next);
+    fn update(&self) {
+        self.count.set(self.count.get() + 1);
     }   
 }
 
 impl Graph {
-    fn traverse(&mut self) {
-        for (i, node) in self.nodes.iter().enumerate() {
-            node.update_count();
-            self.update_count(i);
+    fn traverse(&self) {
+        for node in self.nodes.iter() {
+            node.update();
+            self.update(node.count.get());
         }
     }
 
-    fn update_count(&self, i: usize) {
-        let next = self.total_value.get() + self.nodes[i].value.get();
-        self.total_value.set(next);
+    fn update(&self, node_count: u8) {
+        self.count.set(self.count.get() + node_count);
     }
 }
 ```
