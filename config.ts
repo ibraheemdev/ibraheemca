@@ -2,9 +2,9 @@ module.exports = {
   url: "https://ibraheem.ca",
   pathPrefix: "/",
   title: "Ibraheem Ahmed",
-  subtitle: "Lover of all things software",
+  subtitle: "Ibraheem Ahmed | Software Developer",
   copyright:
-    '<p>This blog is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemdev">github!</a></p>',
+    '<p>This site is open source. Check it out on <a href="https://github.com/ibraheemdev/ibraheemdev">github!</a></p>',
   disqusShortname: "ibraheem-3",
   postsPerPage: 4,
   googleAnalyticsId: "UA-170786189-1",
