@@ -290,7 +290,6 @@ for {
 And `continue` to skip to the next iteration
 ```go
 for i := 0; i < 5; i++ {
-  // skip number 2
   if i == 2 {
     continue
   }
@@ -305,7 +304,6 @@ for i := 0; i < 5; i++ {
 Go's `if` statements have a similar syntax to its loops:
 
 ```go
-// this prints "true"
 if 1 == 1 {
   println("true")
 }
