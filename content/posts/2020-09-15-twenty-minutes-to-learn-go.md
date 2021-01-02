@@ -92,8 +92,6 @@ func main() {
 
 A variable defined outside of any function is considered "global". If capitalized, it can be accessed by other packages:
 ```go
-package mypackage
-
 var Global string = "I am a global variable!"
 ```
 
@@ -161,7 +159,7 @@ Note that this must be done explicitly. Unlike other languages, you cannot pass 
 Unchanging values can be declared with the `const` keyword. Constants can be characters, strings, booleans, or numeric values:
 
 ```go
-const Pi = 3.14
+const pi = 3.14
 ```
 
 You can group the declaration of multiple constants or variables:
@@ -364,7 +362,7 @@ default:
 }
 ```
 
-You can use `fallthrough` to fall through to the case below the current case:
+You can use `fallthrough` to *fall through* to the case below the current case:
 ```go
 switch 1 {
 case 1:
@@ -398,12 +396,12 @@ print(3)
 // => 1 3
 ```
 
-Labels have a very specific use case. They can make code less readable and should be avoided most of the time.
+Labels have a very specific use case. They can often make code less readable and are avoided by many Go programmers.
 
 
 #### **Arrays**
 
-In Go, arrays have a fixed length:
+Arrays have a fixed length:
 
 ```go
 var a [2]string // an array of 10 integers
@@ -457,6 +455,7 @@ You can omit the start or end index when slicing an array, so for this array:
 ```go
 var a [10]int
 ```
+
 These expressions are equivalent:
 
 ```go
@@ -486,7 +485,7 @@ nums[20] = 9
 // with length 6
 ```
 
-However, Go has built-in functions to make slices feel like arrays, such as the `append` function, which can be used to add items to the end of a slice:
+However, Go has built-in functions to make slices feel like arrays such as the `append` function, which can be used to add items to the end of a slice:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 nums = append(nums, 6)
@@ -615,17 +614,10 @@ func variadic(nums ...int) {
 }
 ```
 
-These are called *Variadic Functions*. They can be called just like regular functions:
+These are called *variadic functions*. They can be called just like regular functions, except you can pass in as many arguments as you want:
 
 ```go
 variadic(1, 2, 3) // => [1, 2, 3]
-```
-
-Or you can pass in a slice directly:
-
-```go
-nums := []int{1, 2, 3}
-variadic(nums) // => [1, 2, 3]
 ```
 
 If a function takes two or more arguments of the same type, you can group them together:
@@ -942,21 +934,19 @@ So this works:
 ```go
 // *Number has the isStrictlyNegative method
 // therefore, Number implements the Signed interface
-// and can be passed as type `Signed`
 
 SignedIsNegative(&Number{})
 ```
-
-But `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`, so this doesn't work:
+However, `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`.
+This is because `Number` and `*Number` are *different* types:
 
 ```go
-// `Number` doesn't implement Signed
-// because isStrictlyNegative is defined only on `*Number`
-
 SignedIsNegative(Number{})
+
+// error
 ```
 
-And neither does this:
+This won't work either:
 
 ```go
 // strings do not implement the Signed interface
@@ -980,13 +970,13 @@ func (m MyString) DoSomething() {
 The interface type that specifies zero methods is known as the empty interface:
 
 ```go
-interface{}
+interface{} // literally anything
 ```
 
 An empty interface may hold values of any type. (Every type implements at least zero methods):
 
 ```go
-var x interface{} = Number{} // literally anything
+var x interface{} = Number{}
 ```
 
 But since the empty interface does not have any methods, we cannot call the Number methods on Number.
@@ -1383,6 +1373,9 @@ Here is the output:
 16
 quit
 ```
+
+It works!
+
 
 And with that, we have hit 20 minutes estimated reading time. Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
 
