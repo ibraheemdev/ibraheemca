@@ -500,7 +500,7 @@ nums[20] = 9
 // with length 6
 ```
 
-However, Go has built-in functions to make slices feel like arrays. For examples, `append` can be used to add items to a slice:
+However, Go has built-in functions to make slices feel like arrays. For example, `append` can be used to add items to a slice:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 nums = append(nums, 6)
