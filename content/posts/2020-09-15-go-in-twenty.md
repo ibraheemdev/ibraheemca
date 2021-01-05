@@ -30,7 +30,7 @@ package main
 import "fmt"
 ```
 
-You can use exported names in an imported package by using the package name as a qualifier:
+You can use exported names in an imported package by using the package name as a *qualifier*:
 
 ```go
 import (
@@ -150,9 +150,10 @@ You can convert values between different types:
 ```go
 var f float64 = 1 // +1.000000
 i := int(f)       // 1
+z := uint(f)      // 1
 ```
 
-Note that this must be done explicitly. Unlike other languages, you cannot pass an `int` as a `float` argument and depend on an implicit conversion by the compiler.
+Note that unlike in other languages, conversions between types must be done explicitly.
 
 #### **Constants**
 
@@ -170,6 +171,13 @@ const (
 )
 ```
 
+Constants are *immutable* - they cannot be reassigned to:
+
+```go
+const x = 1
+x = 2 // error: cannot assign to x
+```
+
 #### **Iota**
 
 The `iota` keyword represents successive integer constants:
@@ -179,6 +187,7 @@ const (
   one  = iota
   two  = iota
 )
+
 fmt.Println(zero, one, two) // "0 1 2"
 ```
 
@@ -189,6 +198,7 @@ const (
   one
   two
 )
+
 fmt.Println(zero, one, two) // "0 1 2"
 ```
 
@@ -238,16 +248,16 @@ import _ "log"
 Or to avoid compiler errors during development:
 
 ```go
-var _ = devFunction() // TODO: delete when done
+var _ = devFunction() // TODO: remove in production
 ```
 
 #### **Looping**
 
 Go has only one loop, the `for` loop. It has three components:
 
-* The init statement: executed before the first iteration
-* The condition: evaluated before every iteration
-* The post statement: executed at the end of every iteration
+* init: executed before the first iteration
+* condition: evaluated before every iteration
+* post: executed at the end of every iteration
 
 Here's an example:
 
@@ -256,7 +266,7 @@ sum := 0
 for i := 0; i < 10; i++ {
   sum ++
 }
-// "sum" is now 10
+println(sum) // 10
 ```
 
 The init and post statements are optional:
@@ -360,9 +370,11 @@ default:
 }
 ```
 
-You can use `fallthrough` to *fall through* to the case below the current case:
+You can *fall through* to the case below the current case:
 ```go
-switch 1 {
+x := 1
+
+switch x {
 case 1:
     print("1")
     fallthrough
@@ -373,7 +385,7 @@ case 2:
 // => 1 2
 ```
 
-In a switch statement, only the first matched case is executed.
+In a switch statement, only the first matched case is executed unless you *fall through*.
 
 Go also has *labels* to help manage control flow:
 ```go
@@ -402,7 +414,7 @@ Labels have a very specific use case. They can often make code less readable and
 Arrays have a fixed length:
 
 ```go
-var a [2]string // an array of 10 integers
+var a [2]string // an array of 2 strings
 a[0] = "Hello"
 a[1] = "World"
 println(a) // => ["Hello", "World"]
@@ -414,7 +426,7 @@ You create arrays using *array literals*:
 helloWorld := [2]string{"Hello", "World"}
 ```
 
-You cannot increase an array beyond its capacity. Doing so will panic:
+You cannot increase an array beyond its capacity. Doing so will cause a panic:
 ```go
 helloWorld := [2]string{"Hello", "World"}
 helloWorld[10] = "Space"
@@ -427,22 +439,24 @@ To get around this issue, Go provides slices.
 
 #### **Slices**
 
-Slices are more common than arrays. They do not have a fixed length, and are therefore more flexible:
+Slices are more common than arrays. They are more flexible in that they do not have a fixed length:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 ```
 
-Slices can also be created with the built-in function `make`:
+Slices can also be created with the  `make` function:
 ```go
 make([]string, initialLength)
 
-// initialCapacity can be set for memory optimization
+// initialCapacity can be set to avoid allocations
 make([]string, initialLength, initialCapacity)
 ```
 
 You can also create a slice by *slicing* an existing array:
 ```go
 nums := [6]int{1, 2, 3, 4, 5, 6}
+
+// take elements 1 - 4 from `nums`
 s := nums[1:4]
 
 fmt.Println(s)
@@ -463,18 +477,21 @@ a[:10]
 a[0:10]
 ```
 
-Modifying the elements of a slice will modify its underlying array:
+Modifying the elements of a slice will also modify its underlying array:
 ```go
 nums := [6]int{1, 2, 3, 4, 5, 6}
 
 s := nums[0:4]
+
+// modify s
 s[0] = 999
 
+// which also modifies nums
 fmt.Println(nums)
 // => [999 2 3 4 5 6]
 ```
 
-Slices are just a fancy way to manage an underlying array. You cannot increase a slice beyond its capacity. Doing so will panic, just like with an array:
+Slices are just a fancy way to manage an underlying array. You cannot increase a slice beyond its capacity. Doing so will cause a panic, just like with an array:
 ```go
 nums := []int{1, 2, 3, 4, 5, 6}
 nums[20] = 9
@@ -483,7 +500,7 @@ nums[20] = 9
 // with length 6
 ```
 
-However, Go has built-in functions to make slices feel like arrays such as the `append` function, which can be used to add items to the end of a slice:
+However, Go has built-in functions to make slices feel like arrays. For examples, `append` can be used to add items to a slice:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 nums = append(nums, 6)
@@ -505,58 +522,68 @@ for index, name := range names {
 // 2 jessica
 ```
 
-We can use the blank identifier to omit the index or the value from `range`:
+You can use the blank identifier to omit the index, or the value from `range`:
 
 ```go
-for _, name := range names
-
-// these are the same
-for index, _ := range names
-for index := range names
+for _, name := range names { ... }
+for index, _ := range names { ... }
 ```
 
-Slices are more complicated than they seem. To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
+If you only want the index, you can omit the value entirely:
+
+```go
+names := []string{"john", "joe", "jessica"}
+
+for index := range names {
+    println(index)
+}
+
+// => 0 1 2
+```
+
+To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
 
 #### **Maps**
 
-Maps are like hashes in ruby or dictionaries in python. You create them like this:
+Maps are like hashes in ruby or dictionaries in python. You create them with a *map literal*:
 
 ```go
-var m map[string]string
-m["key"] = "value"
-
-x = m["key"] // => "value"
-```
-
-Or with a *map literal*:
-
-```go
-m := map[int]string{1: "one", 2: "two"}
+mymap := map[int]string{1: "one", 2: "two"}
 ```
 
 Or the `make` function:
 
 ```go
-m := make(map[int]string)
+mymap := make(map[int]string)
 ```
 
-You can delete map keys:
+You can set the value under a particular key:
 
 ```go
-delete(m, key)
+mymap["key"] = "value"
 ```
 
-Check whether a key is present:
+And access it:
 
 ```go
-var m map[string]string
-m["key"] = "value"
-
-x, ok = m["key"] // => "value", true
-x, ok = m["doesnt-exist"] // => nil, false
+val := mymap["key"]
+println(val) // "value"
 ```
 
-And range over their keys and values:
+Or delete it:
+
+```go
+delete(mymap, key)
+```
+
+You can check whether a key is present:
+
+```go
+x, ok = mymap["key"] // => "value", true
+x, ok = mymap["doesnt-exist"] // => nil, false
+```
+
+And iterate over a map's keys and values:
 
 ```go
 var m = map[int]string{1: "one", 2: "two"}
@@ -628,10 +655,11 @@ func multiply(x, y int) int {
 The `defer` statement defers the execution of a function until the surrounding function returns:
 
 ```go
-defer fmt.Print("world")
-fmt.Print("hello ")
+defer fmt.Println("world")
+fmt.Println("hello")
 
-// => "hello world"
+// "hello"
+// "world"
 ```
 
 Defer is often used with an anonymous function:
@@ -644,16 +672,26 @@ defer func() {
 #### **Anonymous Functions**
 
 Go supports anonymous functions. Anonymous functions are useful when you want to define a function inline without having to name it:
+
+```go
+one := func() int { 
+  return 1 
+}
+
+println(one()) // 1
+```
+
+Functions can take functions as arguments
+
 ```go
 func printNumber(getNum func() int) {
   num := getNum()
   println(num)
 }
 
-one := func() int { 
+printNumber(func() int { 
   return 1 
-}
-printNumber(one)
+})
 
 // => 1
 ```
@@ -674,15 +712,15 @@ println(one())
 
 Anonymous functions allow us to dynamically change what a function does at runtime:
 ```go
-DoStuff := func() {
+doStuff := func() {
   fmt.Println("Doing stuff!")
 }
-DoStuff()
+doStuff()
 
-DoStuff = func() {
+doStuff = func() {
   fmt.Println("Doing other stuff.")
 }
-DoStuff()
+doStuff()
 
 // => Doing stuff!
 // => Doing other stuff.
@@ -717,15 +755,17 @@ The `&` operator generates a pointer to its operand:
 
 ```go
 i := 42
-p := &i // point to i
+var p *int = &i // point to i
 ```
 
-The `*` operator denotes the pointer's underlying value:
+The `*` operator lets you access the pointer's underlying value:
 
 ```go
 i := 42
 p := &i     // point to i
-println(*p) // read i through the pointer => 42
+
+println(*p) // read i through the pointer 
+// => 42
 ```
 
 You can use `*` to modify the original value:
@@ -733,31 +773,19 @@ You can use `*` to modify the original value:
 i := 42
 
 p := &i  // point to i 
-*p = 21  // set i through the pointer
-// "i" is now 21 
+*p = 21  // modify i through the pointer
+
+println(i) // 21 
 ```
 
 #### **Custom Types**
 
-You can create a type with the `type TypeName SourceType` syntax:
+You can create a custom type with the `type` keyword:
 ```go
 type UserName string
 ```
 
-This is called a *type definition*. A new type is its own distinct type that is based on the structure of an underlying type.
-
-A type can have any of the following source types:
-```go
-basic types: string, bool, int, ...
-pointers
-structs
-functions
-arrays
-slices
-maps
-channels
-interfaces
-```
+This is called a *type definition*. A new type is its own distinct type that is based on the structure of an underlying type. 
 
 You can define methods on your custom types:
 ```go
@@ -768,9 +796,7 @@ func (m MyString) Print() {
 }
 
 var x MyString = "hello"
-x.Print()
-
-// => "hello"
+x.Print() // => "hello"
 ```
 
 Methods receivers are copied by default, meaning their fields will not be mutated:
@@ -789,11 +815,10 @@ println(x)
 // => "not hello"
 ```
 
-To mutate the original receiver, use a pointer receiver:
+To mutate the receiver, use a pointer:
 
 ```go
 func (m *MyString) BecomeHello() {
-  // m is a pointer to the original `MyString`
   *m = "hello"
 }
 
@@ -804,7 +829,7 @@ println(x)
 // => "hello"
 ```
 
-Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient for large data types.
+Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient when dealing with large amounts of data.
 
 #### **Structs**
 
@@ -819,21 +844,18 @@ type MyStruct struct {
 }
 ```
 
-You can create new structs using *struct literals*:
+You can create a new struct with a *struct literals*:
 
 ```go
 s1 := MyStruct{ x: 1, y: 2 }
 
-// s2 is a pointer to MyStruct
-s2 := &MyStruct{ x: 1, y: 2 } 
-
-// the order does not matter, only the names do
+// a pointer to a struct
+var s2 *MyStruct = &MyStruct{ x: 1, y: 2 } 
 ```
 
-For smaller structs, you can omit the names of the fields
+You can omit the names of the fields and instead rely on the order:
 
 ```go
-// here, the order **does** matter
 s1 := MyStruct{ 1, 2 }
 ```
 
@@ -850,18 +872,18 @@ s1 := MyStruct{}
 s1.x // => 0
 ```
 
-Struct fields can also be accessed and modified through a struct pointer:
+Struct fields can also be accessed and modified through a struct pointer just like a regular variable:
 
 ```go
 s := MyStruct{}
-p := &s
 
-(*p).x = 19 // modify "s" through "p"
+p := &s
+(*p).x = 19 // modify `s` through `p`
 
 println(s.x) // => 19
 ```
 
-Because this is so common, Go allows you to modify the underlying struct of a pointer without explicitly dereferencing:
+Because this is so common, Go allows you to modify the underlying struct of a pointer without a `*`:
 ```go
 p := &s
 
@@ -870,11 +892,10 @@ p := &s
 p.x = 19
 ```
 
-You can declare methods on your own struct types, just like with any other custom type:
+You can declare methods on your own struct types just like with any other custom type:
 
 ```go
 type Number struct {
-  odd bool
   value int
 }
 
@@ -887,7 +908,6 @@ And use them as usual:
 
 ```go
 minusTwo := Number{ 
-  odd: false, 
   value: -2,
 }
 
@@ -905,19 +925,24 @@ type Signed interface {
 }
 ```
 
-Interface is a type, so it can be used as function arguments, struct fields, or in the place of any other type.
-
-An interface value holds a value of a specific underlying concrete type. Calling a method on an interface value executes the method of the same name on its underlying type:
+An interface is a type, so it can be used as a function argument, a struct field, or in the place of any other type:
 
 ```go
-func SignedIsNegative(s Signed) bool {
-  // call isStrictlyNegative() on the 
-  // underlying type of `s`
+type MyStruct struct {
+	signed Signed
+}
+```
+
+An interface value holds a value of the underlying concrete type. Calling a method on an interface value will call the method on its underlying type:
+
+```go
+func SignedIsStrictlyNegative(s Signed) bool {
+  // call the underlying type of `s`
   return s.isStrictlyNegative()
 }
 ```
 
-A struct *implements* an interface if it implements all of its methods:
+A struct *implements* an interface if it has all of its methods:
 
 ```go
 func (n *Number) isStrictlyNegative() bool {
@@ -930,18 +955,17 @@ Now `*Number` implements the `Signed` interface.
 So this works:
 
 ```go
-// *Number has the isStrictlyNegative method
-// therefore, Number implements the Signed interface
-
-SignedIsNegative(&Number{})
+SignedIsStrictlyNegative(&Number{})
 ```
 However, `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`.
 This is because `Number` and `*Number` are *different* types:
 
 ```go
+// this will not work
 SignedIsNegative(Number{})
 
-// error
+// but this will
+SignedIsNegative(&Number{})
 ```
 
 This won't work either:
@@ -949,18 +973,6 @@ This won't work either:
 ```go
 // strings do not implement the Signed interface
 SignedIsNegative("a string")
-```
-
-Note that you cannot define methods on an interface type:
-```go
-type MyString interface{}
-
-func (m MyString) DoSomething() {
-  ...
-}
-
-// error: invalid receiver type MyString 
-// (MyString is an interface type)
 ```
 
 #### **Type Assertions**
@@ -975,6 +987,8 @@ An empty interface may hold values of any type. (Every type implements at least 
 
 ```go
 var x interface{} = Number{}
+var y interface{} = "hello"
+var z interface{} = 1
 ```
 
 But since the empty interface does not have any methods, we cannot call the Number methods on Number.
@@ -982,30 +996,27 @@ But since the empty interface does not have any methods, we cannot call the Numb
 ```go
 var x interface{} = Number{}
 
-// this fails as the compiler does not know the 
-// underlying type of x so it does not know 
-// whether it has the isStrictlyNegative method
 x.isStrictlyNegative()
 ```
 
-Because we know what x really is, we can use a type assertion:
+Because we know what `x` really is, we can use a type assertion:
 
 ```go
 var x interface{} = Number{}
 
-n = x.(Number)
+n := x.(Number)
 
 // now the compiler knows that n is a Number
 // so this is fine
 n.isStrictlyNegative()
 ```
 
-If a type assertion fails (x wasn't really a Number), then it will trigger a panic:
+If a type assertion fails (`x` wasn't really a `Number`), it will trigger a panic:
 
 ```go
 var x interface{} = "not a number"
-n = x.(Number)
 
+n = x.(Number)
 // panic: interface conversion: 
 // interface {} is string, not Number
 ```
@@ -1031,8 +1042,6 @@ case int:
 case string:
   fmt.Println("i is an string")
 default:
-  // %T is a special formatting verb
-  // It prints the underlying type of a value
   fmt.Printf("I don't know about this type %T!", v)
 }
 ```
@@ -1045,14 +1054,19 @@ type H = map[string]interface{}
 
 // `map[string]interface{}` is very common in Go
 // now we can use `H` as a short form
+h := H{"one": 1, "two": 1}
 ```
 
-As opposed to a type definition:
+This is different than a type definition:
 ```go
+// type definition
 type H map[string]interface{}
+
+// type alias
+type H = map[string]interface{}
 ```
 
-An alias declaration doesn't create a new distinct type. It just introduces an alias name - an alternate spelling.
+An alias declaration doesn't create a new type. It just introduces an alias name - an alternate spelling.
 
 #### **Struct Composition**
 
@@ -1070,7 +1084,7 @@ func (a Animal) Talk() {
 }
 ```
 
-And a struct called `Cat` that is composed of `Animal`. All of `Animal`'s fields are promoted to `Cat`:
+And a struct called `Cat` that embeds an `Animal`. All of `Animal`'s fields are promoted to `Cat`:
 ```go
 type Cat struct {
   Animal
@@ -1192,7 +1206,7 @@ println(err.Error()) // => "I am an error"
 Packages often export common error values. You can perform equality checks between errors:
 ```go
 err := makeDatabaseCall()
-if errors.Is(err, mongo.ErrNoDocuments) {
+if errors.Is(err, database.ErrNotFound) {
   return 404
 }
 ```
@@ -1201,17 +1215,15 @@ If code cannot continue because of a certain error, you can stop execution with 
 
 ```go
 if err != nil { 
-  panic(
-    fmt.Errorf("Could not continue due to error: %w", err))
+    panic("OMG!!!")
 }
 
-// panic: Could not continue due to error...
-// goroutine 1 [running]:
-// main.main() /tmp/sandbox091462361/prog.go:5 +0x39
+// panic: OMG!!!
 ```
 
-You can defer a call to `recover` to regain control of a panicking goroutine. `recover` will return the value passed to panic:
+You can call `recover` to regain control of a panic. `recover` will return the value passed to panic:
 ```go
+// if a panic happens, this function will be called
 defer func() {
   if r := recover(); r != nil {
     fmt.Println("Recovered from panic: ", r)
@@ -1226,7 +1238,7 @@ panic("AAAHHH!!!")
 ```
 #### **Goroutines**
 
-Golang is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a goroutine, you simple prefix a function call with the keyword `go`:
+Go is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a goroutine, you simple prefix a function call with the keyword `go`:
 ```go
 go DoSomething()
 ```
@@ -1269,11 +1281,11 @@ Note that data flows in the direction of the arrow.
 
 Here is an example of a simple multiplication function that communicates through channels:
 ```go
-func multiplyByTwo(num int, result chan<- int) {
+func multiplyByTwo(num int, result chan <- int) {
   // calculate result
-  m := num * 2
+  sum := num * 2
   // and send it through the channel
-  result <- m
+  result <- sum
 }
 ```
 
@@ -1291,13 +1303,15 @@ fmt.Println(<-out)
 
 Channels can be created with a limit, once too many values are sent to the channel, the channel will block:
 ```go
-ch := make(chan int, 1)
+limit := 1
+ch := make(chan int, limit)
 
 // this is fine
 ch <- 1
 
 // but now the channel is full
 ch <- 2
+
 // fatal error: all goroutines are asleep - deadlock!
 ```
 
@@ -1311,7 +1325,7 @@ close(channel)
 You can test whether a channel has been closed:
 ```go
 v, ok := <-ch
-// if "ok" is false, then the channel is closed
+// if `ok` is false, then the channel is closed
 ```
 
 To receive all the values from a channel until it is closed, you can use `range`:
@@ -1333,7 +1347,7 @@ func doubler(c, quit chan int) {
       case c <- x:
         x += x
       // ... until a value is sent to "quit"
-      case <-quit:
+      case <- quit:
         println("quit")
         return
     }
@@ -1372,7 +1386,7 @@ Here is the output:
 quit
 ```
 
-It works!
+It works 🎉🎉🎉
 
 
 And with that, we have hit 20 minutes estimated reading time. Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
