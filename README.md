@@ -19,7 +19,7 @@ I am also open for freelance work. Want to talk about a project you think I can 
 - [The Strictest Rust Workflow](https://ibraheem.ca/posts/strictest-cargo-workflow)
 - [Secure Error Handling With Actix-Web](https://ibraheem.ca/posts/actix-web-secure-error-handling)
 - [Rust Global Configuration Files with Multiple Environments](https://ibraheem.ca/posts/rust-global-config-files)
-- [Twenty Minutes to Learn Go](https://ibraheem.ca/posts/go-in-twenty)
+- [Learn Go in Twenty Minutes](https://ibraheem.ca/posts/go-in-twenty)
 <!-- BLOG-POST-LIST:END -->
 
 ### :link: &nbsp; Social Links
