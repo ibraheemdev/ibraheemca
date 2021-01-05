@@ -1,6 +1,6 @@
 ---
 template: post
-title: Twenty Minutes to Learn Go
+title: Learn Go in Twenty Minutes
 slug: go-in-twenty
 socialImage: /media/gopher.jpg
 draft: false
