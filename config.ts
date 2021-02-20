@@ -26,7 +26,7 @@ module.exports = {
     name: "Ibraheem Ahmed",
     photo: "/photo.png",
     bio:
-      '<div>Lover of all things software. <a href="/pages/about">More about me.</a></div>',
+      '<div>Software developer. Open source enthusiast. Freelancer. <a href="/pages/about">More about me.</a></div>',
     contacts: {
       email: "ibrah1440@gmail.com",
       facebook: "",
