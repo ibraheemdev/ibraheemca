@@ -13,7 +13,6 @@ tags:
 ---
 ### Introduction
 
-
 Imagine someone made an api call, logging into their account with a misspelled email address:
 
 ```rust
@@ -181,6 +180,7 @@ impl ResponseError {
       error: ResponseErrorKind::Message(None),
     }
   }
+}
 ```
 
 ### Usage
