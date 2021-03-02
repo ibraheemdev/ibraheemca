@@ -161,12 +161,14 @@ use actix_web::{dev::HttpResponseBuilder, http::StatusCode, HttpResponse};
 impl actix_web::ResponseError for MyError {
   fn error_response(&self) -> HttpResponse {
     match *self {
-      Error::Response(err) => HttpResponseBuilder::new(StatusCode::from_u16(err.code).unwrap())
-        .content_type("application/json")
-        .body(err.to_string()),
-      _ => HttpResponseBuilder::new(StatusCode::INTERNAL_SERVER_ERROR)
-        .content_type("application/json")
-        .body("{{ \"error\": \"An unexpected error occured\" }}"),
+      Error::Response(err) => {
+        HttpResponseBuilder::new(StatusCode::from_u16(err.code).unwrap())
+          .content_type("application/json")
+          .body(err.to_string())
+        }
+        _ => HttpResponseBuilder::new(StatusCode::INTERNAL_SERVER_ERROR)
+          .content_type("application/json")
+          .body("{{ \"error\": \"An unexpected error occured\" }}"),
     }
   }
 }
