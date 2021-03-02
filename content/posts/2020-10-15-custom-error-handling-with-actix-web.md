@@ -105,12 +105,13 @@ pub struct ResponseError {
 impl std::error::Error for ResponseError {}
 ```
 
-`ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, an enum. In this simple example, it contains one variant, which is a optional string message:
+`ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, an enum. In this simple example, it either contains a message, or is empty:
 
 ```rust
 #[derive(Debug, Clone)]
 pub enum ResponseErrorKind {
-  Message(Option<&'static str>),
+  Message(&'static str),
+  Empty
 }
 ```
 
@@ -120,10 +121,8 @@ The `std::fmt::Display` implementation returns a json error response:
 impl fmt::Display for ResponseError {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match &self.error {
-      ResponseErrorKind::Message(m) => match m {
-        Some(m) => write!(f, "{{ \"error\": {} }}", m),
-        None => Ok(()),
-      }
+      ResponseErrorKind::Message(m) => write!(f, "{{ \"error\": {} }}", m),
+      ResponseErrorKind::Empty => Ok(()),
     }
   }
 }
@@ -180,14 +179,14 @@ impl ResponseError {
   pub fn message(code: u16, msg: &'static str) -> Self {
     ResponseError {
       code,
-      error: ResponseErrorKind::Message(Some(msg)),
+      error: ResponseErrorKind::Message(msg),
     }
   }
 
   pub fn code(code: u16) -> Self {
     ResponseError {
       code,
-      error: ResponseErrorKind::Message(None),
+      error: ResponseErrorKind::Empty,
     }
   }
 }
@@ -209,7 +208,7 @@ The above handler returns following json response:
 [404] { "error": "Invalid Request" }
 ```
 
-When making a sensitive database call, you can still use the `?` operator for cleaner error handling:
+When making a sensitive database call, you can still use the `?` operator for clean error handling:
 
 ```rust
 async fn login() -> Result<HttpResponse, Error> {
@@ -223,7 +222,7 @@ And no sensitive information will be leaked:
 [500] { "error": "An unexpected error occured" }
 ```
 
-If you want to add some additional context to an error, you can simply map it to a `ResponseError`:
+If you want to add additional context to an error, you can simply map it to a `ResponseError`:
 
 ```rust
 async fn login() -> Result<HttpResponse, Error> {
