@@ -30,11 +30,11 @@ Imagine if they got this response:
 } "}
 ```
 
-Although you might not think about it often, it is very possible for your application to leak sensitive data through error messages, In this post, I will walk you through how I handle error messages in my Rust (actix-web) web applications.
+Although you might not think about it often, it is very possible for your application to leak sensitive data through error messages, In this post, I will walk you through how I handle returning *secure* error messages in my actix-web applications.
 
 ### Custom Error Type
 
-In my Rust applications, I generally like to have a single error type for each domain that encompasses all the possible errors that can occur:
+I generally like to have a single error enum that encompasses all the possible errors that can occur in my app:
 
 ```rust
 #[derive(Debug)]
@@ -48,10 +48,18 @@ pub enum MyError {
 I implement for the standard `Error` trait for my error type:
 
 ```rust
-impl std::error::Error for Error {}
+impl std::error::Error for MyError {
+  fn source(&self) -> Option<&(dyn Error + 'static)> {
+    match self {
+      MyError::Response(e) => Some(e),
+      MyError::Io(e) => Some(e),
+      MyError::Db(e) => Some(e),
+    }
+  }
+}
 ```
 
-I also `fmt::Display` by simple calling `fmt()` on the respective enum variant:
+I also `fmt::Display` by simply calling `fmt()` on the respective enum variant:
 
 ```rust
 impl fmt::Display for MyError {
@@ -65,7 +73,7 @@ impl fmt::Display for MyError {
 }
 ```
 
-I then implement the `Into` conversion for each variant. This will allow the use of the `?` operator in functions that return `Result`:
+I then implement the `Into` conversion for each variant. This will allow the use of the `?` operator to propogate errors in functions that return `Result`:
 
 ```rust
 impl From<db::error::Error> for MyError {
@@ -74,7 +82,7 @@ impl From<db::error::Error> for MyError {
   }
 }
 
-impl From<std::io::Error> for Error {
+impl From<std::io::Error> for MyError {
   fn from(err: std::io::Error) -> MyError {
     MyError::Io(err)
   }
@@ -85,7 +93,7 @@ While there is a decent amount of boilerplate involved in this, I don't see the 
 
 ### Response Error
 
-All of `MyError`'s variants are only used for internal logging. For actual error responses, only the `Response` variant is used. `Response` holds a custom `ResponseError` type:
+All of `MyError`'s variants are only used for internal logging, except the `Response` variant. `Response` holds a custom `ResponseError` type that is used to return errors to the client:
 
 ```rust
 #[derive(Debug)]
@@ -93,9 +101,11 @@ pub struct ResponseError {
   pub code: u16,
   pub error: ResponseErrorKind,
 }
+
+impl std::error::Error for ResponseError {}
 ```
 
-`ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, which is also an enum. In this simple example, it contains one variant, which is a optional string message:
+`ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, an enum. In this simple example, it contains one variant, which is a optional string message:
 
 ```rust
 #[derive(Debug, Clone)]
@@ -111,7 +121,7 @@ impl fmt::Display for ResponseError {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match &self.error {
       ResponseErrorKind::Message(m) => match m {
-        Some(m) => format!("{{ \"error\": {} }}", m).fmt(f),
+        Some(m) => write!(f, "{{ \"error\": {} }}", m),
         None => Ok(()),
       }
     }
