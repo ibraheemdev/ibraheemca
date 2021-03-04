@@ -18,7 +18,7 @@ I am also open for freelance work. Want to talk about a project you think I can 
 - [Interior Mutability in Rust: Understanding The Cell Type](https://ibraheem.ca/posts/rust-interior-mutability-understanding-cell)
 - [The Strictest Rust Workflow](https://ibraheem.ca/posts/strictest-cargo-workflow)
 - [Secure Error Handling With Actix-Web](https://ibraheem.ca/posts/actix-web-secure-error-handling)
-- [Rust Global Configuration Files with Multiple Environments](https://ibraheem.ca/posts/rust-global-config-files)
+- [Application Configuration in Rust](https://ibraheem.ca/posts/rust-global-config-files)
 - [Learn Go in Twenty Minutes](https://ibraheem.ca/posts/go-in-twenty)
 <!-- BLOG-POST-LIST:END -->
 
