@@ -71,9 +71,10 @@ This means that references to a `Cell` cannot be shared between threads. If two 
 * No one has a shared reference to `Cell`'s inner value
 * `Cell` cannot be shared between threads
 
-### Why is Cell useful? 
+### Why is Cell useful?
 
 So why is `Cell` useful? Let's start with an example. We might have a graph holding a vector of nodes which each contain an individual count. The graph also holds an aggregation of all it's nodes counts:
+
 ```rust
 struct Graph {
     total_count: u8,
@@ -86,6 +87,7 @@ struct Node {
 ```
 
 We now want to traverse the graph updating every individual node's count as well as the graph's total count:
+
 ```rust
 impl Node {
     fn update(&mut self) {
@@ -108,6 +110,7 @@ impl Graph {
 ```
 
 However, this poses a problem, because we are trying to borrow `self` as mutable multiple times:
+
 ```rust
 error[E0499]: cannot borrow `*self` as mutable more than once at a time
   --> src/lib.rs:20:13
@@ -123,6 +126,7 @@ error[E0499]: cannot borrow `*self` as mutable more than once at a time
 ```
 
 This is a perfect use case for `Cell`. If we wrap the value in a `Cell`, then we can modify the values entirely through shared references:
+
 ```rust
 struct Graph {
     total_count: Cell<u8>,
@@ -154,8 +158,6 @@ impl Graph {
 ```
 
 Because `Cell` guarantees that no one else has a pointer to the value, we can mutate the values through shared references and our code now compiles. 
-
-`Cell` is  useful in many other circumstances as well. Hopefully after you understand the functionality that `Cell` provides you will be able to identify suitable use cases within your codebase. 
 
 ### Implementing `Cell`
 
