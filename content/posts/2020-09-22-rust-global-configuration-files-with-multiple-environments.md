@@ -1,6 +1,6 @@
 ---
 template: post
-title: Rust Global Configuration Files with Multiple Environments
+title: Application Configuration in Rust
 slug: rust-global-config-files
 socialImage: /media/rust-logo.png
 draft: false
