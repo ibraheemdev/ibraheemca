@@ -1,6 +1,6 @@
 ---
 template: post
-title: Golang Global Configuration Files with Multiple Environments
+title: Golang Global Application Config
 slug: go-global-config-files
 socialImage: /media/gopher.jpg
 draft: false
