@@ -25,6 +25,7 @@ Rust focuses on speed and safety. It balances speed and safety through many ‘z
 To track the ownership of each value: a value can only be used at most once, after which the compiler refuses to use it again.
 
 For example, the following code:
+
 ```rust
 fn main() {
     let original = String::from("hello");
@@ -38,6 +39,7 @@ fn takes_ownership(other: String) {
 ```
 
 Yields an error:
+
 ```rust
 error[E0382]: borrow of moved value: `original`
  --> src/main.rs:4:20
@@ -52,6 +54,7 @@ In the above code, the ownership of `original` was moved to the `take_ownership`
 Rust's ownership model guarantees, at compile time, that your application will be safe from dereferencing null or dangling pointers This prevents the dreaded double-free regularly encountered in C or C++, along with many other memory related issues.
 
 In Rust, functions can *borrow* ownership of a value. Rust tracks borrowed ownership with the borrow checker. We can modify the example above to borrow `original`, instead of taking ownership:
+
 ```rust
 fn main() {
     let original = String::from("hello");
@@ -66,13 +69,14 @@ fn borrow_ownership(other: &String) {
 
 Now the code compiles, because the ownership of `original` stays in the main function. Instead of owning the resource, the function borrows ownership. We call the &T type a ‘reference’. A binding that borrows something does not deallocate the resource when it goes out of scope. This means that after the borrow, we can use our original bindings again.
 
-Rust memory safety comes at the cost of complexity. New developers often complain that getting a program to compile can be quite difficult. It’s pretty common for newcomers to the Rust community to get stuck "fighting the borrow checker". As [Rust learner](https://news.ycombinator.com/item?id=23437202#unv_23437831) explained:
+Rust memory safety comes at the cost of complexity. New developers often complain that getting a program to compile can be quite difficult. It’s pretty common for newcomers to the Rust community to get stuck "fighting the borrow checker". As [one Rust learner](https://news.ycombinator.com/item?id=23437202#unv_23437831) explained:
 
 > "It's hard but I love it. Dealing with the compiler felt like being the novice in an old kung fu movie who spends day after day being tortured by his new master (rustc) for no apparent reason until one day it clicks and he realizes that he knows kung fu."
 
 Fighting the borrow checker can be frustrating, but trust me, it's worth it. Rust is often compared to Haskell and Scala in the sense that if your code compiles, you can sleep at night without having to worry about runtime errors. This is even more true after looking at the memory safety Rust enforces through its ownership model.
 
 Rust also has a second language hidden inside it that doesn’t enforce memory safety guarantees: it’s called *unsafe Rust*. Wrapping code with the `unsafe` block effectively tells the compiler to shut up, because you know what you are doing. Doing so gives you *unsafe superpowers*. For example, you can dereference a raw pointer:
+
 ```go
 let mut num = 5;
 
@@ -130,12 +134,14 @@ Most languages have a concept of null. Any value can either be what you expect, 
 > I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn't resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years
 
 In Rust, dereferencing of raw pointers is an `unsafe` operation. So if you try using a value that has been assigned to `null`: 
+
 ```rust
 let p: *const i32 = std::ptr::null();
 println!("{}", *p);
 ```
 
 Your code will not compile: 
+
 ```rust
 error[E0133]: dereference of raw pointer is unsafe and requires unsafe function or block
  --> src/main.rs
@@ -149,6 +155,7 @@ error[E0133]: dereference of raw pointer is unsafe and requires unsafe function 
 Again, Rust is taking steps to prevent *undefined behavior*. This is a sigh of relief, as you will no longer be encountering a `NullPointerException`, or `foo is undefined` errors as you might be used to from other languages.
 
 Instead of using `null`, Rust expresses optional values with an type called `Option`: 
+
 ```rust
 pub enum Option<T> {
     None,
@@ -157,6 +164,7 @@ pub enum Option<T> {
 ```
 
 An `Option` is either something, or nothing. This union is expressed succinctly with Rust enum's, which can hold values. You can pattern match on an option enum to access the underlying value:
+
 ```rust
 match x {
   None => handle_none(),
@@ -192,17 +200,23 @@ In Rust, the code above would never make it to production, and clients would nev
 Rust does its best to get out of the developer's way when it comes to static typing. Rust has a very smart type inference engine. It looks not only at the type of the value expression during its initialization but also at how the variable is used afterwards to infer its type. However, Rust's use of type inference does not decrease its ability to provide detailed error messages at compile time. Let's see how that type inference works. 
 
 We can start by initializing a integer:
+
 ```rust
 let elem: u8 = 5;
 ```
+
 Because of the annotation, the compiler knows that elem is of type u8. Now we can create a mutable vector (a growable array):
+
 ```rust
 let mut vec = Vec::new();
 ```
+
 At this point the compiler doesn't know the exact type of the vector. It just knows that it's a vector of something (`Vec<_>`). But once we insert the element into the vector
+
 ```rust
 vec.push(elem);
 ```
+
 Aha! Now the compiler knows that `vec` is a vector of u8's (`Vec<u8>`)
 
 No type annotation of variables was needed, the compiler is happy and so is the programmer!
@@ -252,6 +266,7 @@ for (int i = 0; i < 10; ++i)
 ```
 
 And the equivalent code in Rust, using an [iterator](https://doc.rust-lang.org/std/iter/trait.Iterator.html):
+
 ```rust
 let squares: Vec<_> = (0..10).map(|i| i * i).collect();
 ```
@@ -268,7 +283,7 @@ Rust also provides [cargo](https://doc.rust-lang.org/cargo/), a tool for managin
 
 Unlike many languages, there is an official tool for formatting Rust code in [rustfmt](https://github.com/rust-lang/rustfmt), as well as [clippy](https://github.com/rust-lang/rust-clippy), the linter that helps catch common mistakes and improve your code.
 
-Rust has an extremely friendly and welcoming community. This is a breath of fresh air coming from other languages, such as [insert unfriendly community here]. You can reach out through the [discord chat](https://discord.com/invite/rust-lang), [forum](https://users.rust-lang.org/), [subreddit](https://www.reddit.com/r/rust/), [stackoverflow tag](https://stackoverflow.com/questions/tagged/rust), [slack channel](https://rust-slack.herokuapp.com/), or [gitter](https://gitter.im/rust-lang/rust).
+Rust has an extremely friendly and welcoming community. This is a breath of fresh air coming from other languages, such as \[insert unfriendly community here]. You can reach out through the [discord chat](https://discord.com/invite/rust-lang), [forum](https://users.rust-lang.org/), [subreddit](https://www.reddit.com/r/rust/), [stackoverflow tag](https://stackoverflow.com/questions/tagged/rust), [slack channel](https://rust-slack.herokuapp.com/), or [gitter](https://gitter.im/rust-lang/rust).
 
 There are a ton of opensource projects created by the community. From web frameworks such as [actix web](https://github.com/actix/actix-web), [yew](https://github.com/yewstack/yew), and [rocket](https://github.com/SergioBenitez/Rocket), to Rust based text editors like [remacs](https://github.com/remacs/remacs) and [xi editor](https://github.com/xi-editor/xi-editor). Even [the language itself](https://github.com/rust-lang/rust) is opensource, and has 50,000 stars and over 3,000 contributors.
 
