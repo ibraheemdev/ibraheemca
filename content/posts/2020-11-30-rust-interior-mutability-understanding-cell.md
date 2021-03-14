@@ -1,6 +1,6 @@
 ---
 template: post
-title: "Interior Mutability in Rust: Understanding The Cell Type"
+title: "Interior Mutability in Rust: The Cell Type"
 slug: rust-interior-mutability-understanding-cell
 socialImage: /media/rust-logo.png
 draft: false
