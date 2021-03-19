@@ -1,4 +1,4 @@
-## Hey :wave: there 
+## Hey :wave: 
 
 I'm Ibraheem. Here's a little bit about me:
 
