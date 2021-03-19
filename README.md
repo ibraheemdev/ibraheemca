@@ -1,6 +1,4 @@
-## Hey :wave: 
-
-I'm Ibraheem. Here's a little bit about me:
+Hey, I'm Ibraheem. Here's a little bit about me:
 
 I enjoy programming in a variety of languages, most notably Go and Ruby on Rails. I am very active in the Rust community, a language which I work with in my spare time. I also work with frontend technologies like React, Redux, and Typescript.
 
