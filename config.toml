@@ -1,0 +1,10 @@
+base_url = "https://ibraheem.ca"
+compile_sass = true
+build_search_index = false
+generate_feed = true
+feed_filename = "rss.xml"
+
+[markdown]
+highlight_code = true
+highlight_theme = "dracula"
+render_emoji = true

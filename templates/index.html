@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "footer.html" as footer %}
+
+{% block content %}
+<main>
+    <section>
+        <h1 style="display: none;">Ibraheem Ahmed</h1>
+        <section class="content">
+            {{ section.content | safe }}
+        </section>
+        </ul>
+    </section>
+    {{ footer::footer() }}
+</main>
+{% endblock %}

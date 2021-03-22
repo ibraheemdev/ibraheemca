@@ -1,0 +1,20 @@
+{% extends "base.html" %} 
+{% import "footer.html" as footer %}
+
+{% block content %}
+<main>
+    <article>
+        <a class="go-home" href="/writings"> Go Back </a>
+        <div class="frontmatter">
+            <h1 class="title">{{ page.title }}</h1>
+            <section class="meta">
+                <time datetime="{{ page.date }}"> {{ page.date | date(format = "%B %d, %Y") }} </time>
+            </section>
+        </div>
+        <section>
+            {{ page.content | safe }}
+        </section>
+    </article>
+    {{ footer::footer() }}
+</main>
+{% endblock %}

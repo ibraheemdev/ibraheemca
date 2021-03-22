@@ -1,0 +1,509 @@
+@import "normalize";
+
+// ===========================================
+// VARIABLES
+// ===========================================
+
+$unit: 1rem;
+$mobile: 900px;
+
+$font-size: $unit * 2;
+$font-size-small: $font-size * 0.8;
+
+$line-height: $font-size * 1.7;
+$line-height-small: $font-size * 1.3;
+
+$color-text: #0c0c0c;
+$color-accent: #41139f;
+$color-border-gray: #e6e6e6;
+$color-border-light: rgba(200, 185, 237, 0.5);
+
+$button-height: $unit * 3.488;
+$button-border-radius: $unit * 2;
+$button-font-size: $unit * 1.4;
+
+$color-bg: #fbf9ff;
+$color-bg-transparent: rgba(200, 185, 237, 0.1);
+
+$button-box-shadow: 3px 3px 2px $color-border-light;
+
+$font-family: -apple-system, osx-system, "Segoe UI", "Roboto",
+  "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-mono: "SF Mono", "Andale Mono", Menlo, Consolas,
+  "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, monospace;
+
+@mixin font-size-small() {
+  font-size: $font-size-small;
+  line-height: $line-height-small;
+}
+
+// ===========================================
+// LAYOUT
+// ===========================================
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+body {
+  background-color: $color-bg;
+  color: $color-text;
+  font-family: $font-family;
+  font-size: $font-size;
+  line-height: $line-height;
+  max-width: 144rem;
+  margin: 0 auto 0 auto;
+  position: relative;
+  min-height: 100%;
+}
+
+main {
+  margin: 12rem auto 12rem auto;
+  max-width: $unit * 70;
+
+  @media (max-width: $mobile) {
+    margin-top: $unit * 6;
+    margin-bottom: $unit * 3;
+    margin-right: $unit * 3;
+    margin-left: $unit * 3;
+  }
+}
+
+article {
+  @media (max-width: $mobile) {
+    padding: $line-height * 0.5 0 $line-height * 2;
+  }
+}
+
+p {
+  margin: $unit 0;
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none;
+}
+
+.float-right {
+  float: right;
+}
+
+.float-left {
+  float: left;
+}
+
+// ===========================================
+// FONT STYLES
+// ===========================================
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $color-accent;
+  font-family: $font-family;
+  font-weight: 700;
+  margin: $line-height 0 $line-height * 0.5;
+}
+
+h1 {
+  font-size: $unit * 2.5;
+  line-height: $line-height;
+  padding-bottom: $line-height * 0.5;
+}
+
+h2 {
+  font-size: $unit * 2.1;
+  line-height: $line-height;
+}
+
+h3 {
+  font-size: $unit * 1.8;
+}
+
+h4 {
+  font-size: $unit * 1.5;
+}
+
+h5 {
+  @include font-size-small();
+}
+
+h6 {
+  font-size: $unit * 1.25;
+}
+
+strong {
+  font-weight: bold;
+}
+
+small {
+  display: block;
+  @include font-size-small();
+}
+
+blockquote {
+  background-color: $color-bg-transparent;
+  border-left: 3px solid $color-accent;
+
+  line-height: $line-height-small;
+  font-family: $font-family;
+  font-size: $font-size * 0.8;
+
+  margin: 10px 0px 10px 50px;
+  padding-left: 15px;
+
+  & *:last-child {
+    margin: 0;
+  }
+}
+
+// ===========================================
+// CODE BLOCKS
+// ===========================================
+
+code,
+pre {
+  background: $color-bg-transparent;
+  color: $color-accent;
+
+  font-family: $font-family-mono;
+  @include font-size-small();
+
+  white-space: nowrap;
+}
+
+code {
+  padding: $unit * 0.5 $unit * 0.5;
+}
+
+pre {
+  background: $color-bg-transparent;
+  overflow-x: scroll;
+  padding: $unit * 1.5 $unit * 1.5;
+
+  & > code {
+    color: $color-text;
+    background: transparent;
+    display: block;
+    white-space: pre;
+  }
+}
+
+// ===========================================
+// NAVIGATION
+// ===========================================
+
+footer {
+  font-size: $font-size-small;
+  line-height: $line-height-small;
+  margin: $unit * 6 0;
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  ul li {
+    display: inline;
+  }
+}
+
+button {
+  color: #fff;
+  background-color: $color-accent;
+
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  box-shadow: $button-box-shadow;
+  cursor: pointer;
+  display: block;
+
+  font-size: $unit * 1.75;
+  font-weight: normal;
+  text-align: center;
+  text-decoration: none;
+  text-transform: lowercase;
+  white-space: nowrap;
+  letter-spacing: $unit * 0.1;
+
+  height: $line-height * 1.25;
+  margin: $line-height * 0.5 0;
+  padding: 0 $unit * 2;
+
+  &:hover,
+  &:focus {
+    transition: 0.6s;
+    opacity: 0.8;
+    outline: 0;
+  }
+}
+
+.link,
+a {
+  color: $color-accent;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+
+    code {
+      text-decoration: underline;
+    }
+  }
+}
+
+// ===========================================
+// LIST STYLES
+// ===========================================
+
+ol,
+ul {
+  margin-top: 0;
+  padding-left: $unit * 2;
+
+  li {
+    list-style-position: outside;
+    position: relative;
+  }
+
+  ul,
+  ol {
+    @include font-size-small();
+    margin: $unit 0 $unit $unit * 2;
+  }
+}
+
+ol {
+  padding-left: $unit * 2.5;
+}
+
+ul {
+  li {
+    list-style-type: square;
+  }
+}
+
+dl {
+  list-style: none;
+}
+
+ul {
+  list-style: circle inside;
+}
+
+ol {
+  list-style: decimal inside;
+}
+
+ul.links {
+  margin-top: 0;
+  list-style: none;
+  padding-left: 0;
+
+  @media (max-width: $mobile) {
+    padding: $unit * 4 0;
+  }
+
+  li {
+    display: inline;
+    margin-left: 0;
+
+    &:after {
+      content: "/";
+      font-size: $unit * 1.25;
+      padding-right: $unit * 0.25;
+    }
+
+    &:last-child:after {
+      content: "";
+    }
+  }
+}
+
+pre,
+blockquote,
+dl,
+figure,
+table,
+ul,
+ol {
+  margin: $unit * 1.75 0;
+}
+
+dt,
+dd,
+li {
+  margin-bottom: $unit;
+}
+
+// ===========================================
+// WRITINGS LIST
+// ===========================================
+
+.writing-list article ul {
+  padding-left: 0;
+
+  li {
+    display: block;
+    margin: $line-height 0;
+
+    text-indent: 0;
+
+    a {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.writing-list .posts.older {
+  h2 {
+    color: $color-text;
+
+    &::first-child {
+      margin-top: 0;
+    }
+  }
+
+  li {
+    margin: $line-height 0;
+
+    a {
+      padding-right: $unit * 0.5;
+    }
+
+    a,
+    small {
+      display: block;
+      width: auto;
+    }
+  }
+
+  summary {
+    font-size: $font-size-small;
+    display: inline;
+    padding: $unit $unit * 2;
+    border: $color-border-light solid 1px;
+
+    &:focus {
+      outline: $color-accent solid 1px;
+    }
+  }
+}
+
+// ===========================================
+// WRITINGS LIST - VIEW OLDER POSTS
+// ===========================================
+
+::-webkit-details-marker {
+  display: none;
+}
+
+details > summary:first-of-type {
+  list-style-type: none;
+}
+
+details[open] summary ~ * {
+  animation: sweep 100ms ease-in-out;
+}
+
+details summary {
+  small {
+    display: inline-block;
+  }
+
+  &:after {
+    content: "→";
+    display: inline-block;
+  }
+}
+
+details[open] summary {
+  &:after {
+    transform: rotate(90deg);
+    transition: 100ms ease-in-out;
+  }
+}
+
+@keyframes sweep {
+  0% {
+    opacity: 0;
+    margin-top: -#{$unit * 2};
+  }
+  100% {
+    opacity: 1;
+    margin-bottom: 0;
+  }
+}
+
+// ===========================================
+// POST
+// ===========================================
+
+.frontmatter {
+  display: block;
+  padding: 0;
+  margin: 0 0 $unit * 3;
+
+  @media (max-width: $mobile) {
+    margin: 0;
+  }
+}
+
+.frontmatter h1 {
+  margin: 0 0 0 0;
+  @media (max-width: $mobile) {
+    margin-top: $unit;
+  }
+}
+
+.frontmatter h1 {
+  @media (max-width: $mobile) {
+    display: block;
+  }
+}
+
+.go-home {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+
+  display: block;
+  max-width: 160px;
+  height: $button-height;
+  padding: 0 1.5rem;
+  line-height: $button-height;
+  text-align: center;
+  color: $color-text;
+  border: 1px solid $color-border-gray;
+  border-radius: $button-border-radius;
+  font-size: $button-font-size;
+  font-weight: normal;
+  margin: 0;
+
+  &:hover,
+  &:focus {
+    color: $color-accent;
+  }
+}
+
+.meta {
+  @include font-size-small();
+}

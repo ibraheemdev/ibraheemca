@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% import "footer.html" as footer %}
+
+{% block content %}
+<main class="writing-list">
+    <article class="page">
+        <div class="frontmatter">
+            <h1 class="title"> Writings </h1>
+        </div>
+        <ul>
+            {% for page in section.pages | slice(end=7) %}
+                <li>
+                    <strong> 
+                        <a href="{{ page.permalink | safe }}">
+                            {{ page.title }}
+                        </a> 
+                    </strong> 
+                    <small>
+                        <span class="post-date">{{ page.date | date(format = "%B %d, %Y") }}</span>
+                    </small>
+                </li>
+            {% endfor %}
+        </ul>
+        <section class="posts older">
+            <details>
+                <summary class="link">
+                    <small>View older posts</small>
+                </summary>
+                {% for year, posts in section.pages | slice(start=7) | group_by(attribute = "year") %}
+                    <h2 id="year-{{ year }}">{{ year }}</h2>
+                    <ul>    
+                        {% for post in posts %}
+                            <li>
+                                <strong>
+                                    <a href="{{ post.permalink }}">
+                                        {{ post.title }}
+                                    </a> 
+                                </strong> 
+                                <small>
+                                    <span>{{ post.date | date(format = "%B %d, %Y") }}</span>
+                                </small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </details>
+        </section>
+    </article>
+    {{ footer::footer() }}
+</main>
+{% endblock content %}

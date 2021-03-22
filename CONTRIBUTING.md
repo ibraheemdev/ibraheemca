@@ -1,1 +1,0 @@
-If you have something meaningful you want to add to this project, [open an issue](https://github.com/ibraheemdev/ibraheemca/issues/new), or [create a pull request](https://github.com/ibraheemdev/ibraheemca/compare). Don't hesitate to reach out if you have an idea but need help accomplishing it. Thanks!
