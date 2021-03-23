@@ -48,7 +48,6 @@ body {
 
 html {
   box-sizing: border-box;
-  font-size: 10px;
 }
 
 body {
@@ -57,21 +56,21 @@ body {
   font-family: $font-family;
   font-size: $font-size;
   line-height: $line-height;
-  max-width: 144rem;
   margin: 0 auto 0 auto;
   position: relative;
   min-height: 100%;
 }
 
+body {
+  max-width: 1440px;
+}
+
 main {
-  margin: 12rem auto 12rem auto;
-  max-width: $unit * 70;
+  margin: 10vw auto 10vw 10vw;
+  max-width: $unit*70;
 
   @media (max-width: $mobile) {
-    margin-top: $unit * 6;
-    margin-bottom: $unit * 3;
-    margin-right: $unit * 3;
-    margin-left: $unit * 3;
+    margin: $unit*3;
   }
 }
 
@@ -106,6 +105,36 @@ p {
 // ===========================================
 // FONT STYLES
 // ===========================================
+
+@media (min-width: 858px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 780px) {
+    html {
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 702px) {
+    html {
+        font-size: 10px;
+    }
+}
+
+@media (min-width: 724px) {
+    html {
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 623px) {
+    html {
+        font-size: 8px;
+    }
+}
 
 h1,
 h2,
