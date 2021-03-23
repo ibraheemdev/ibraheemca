@@ -59,9 +59,6 @@ body {
   margin: 0 auto 0 auto;
   position: relative;
   min-height: 100%;
-}
-
-body {
   max-width: 1440px;
 }
 
@@ -506,30 +503,6 @@ details[open] summary {
 .frontmatter h1 {
   @media (max-width: $mobile) {
     display: block;
-  }
-}
-
-.go-home {
-  position: fixed;
-  top: 30px;
-  left: 30px;
-
-  display: block;
-  max-width: 160px;
-  height: $button-height;
-  padding: 0 1.5rem;
-  line-height: $button-height;
-  text-align: center;
-  color: $color-text;
-  border: 1px solid $color-border-gray;
-  border-radius: $button-border-radius;
-  font-size: $button-font-size;
-  font-weight: normal;
-  margin: 0;
-
-  &:hover,
-  &:focus {
-    color: $color-accent;
   }
 }
 
