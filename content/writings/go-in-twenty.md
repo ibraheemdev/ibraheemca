@@ -15,11 +15,11 @@ extra:
 ---
 A lot of thanks goes to [Amos](https://fasterthanli.me/about) for inspiring this article with [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust). I thought I'd try it out, but instead of Rust, this article will try to explain Go in twenty minutes.
 
-Instead of focusing on one or two concepts, I'll try to go through as many Go snippets as I can, and explain what the keywords and symbols they contain mean. This article can be used as a cheat sheet for developers familiar with Go, or a tutorial for developers new to Go, but familiar with other languages.
+Instead of focusing on one or two concepts, or spending half of this article trying to convince you why Go is awesome, I'll try to go through as many Go snippets I can and explain what the keywords and symbols they contain mean. This article can be used as a cheat sheet for developers familiar with Go, or a tutorial for developers new to Go, but familiar with other languages.
 
 Ready? Go!
 
-#### **Packages**
+### Packages
 
 Every Go program is made up of packages,
 
@@ -76,7 +76,7 @@ func init() {
 }
 ```
 
-#### **Scope**
+### Scope
 
 A pair of brackets declares a block, which has its own scope:
 
@@ -98,7 +98,7 @@ A variable defined outside of any function is considered "global". If capitalize
 var Global string = "I am a global variable!"
 ```
 
-#### **Variables**
+### Variables
 
 `var` declares a variable of a given type:
 
@@ -146,7 +146,7 @@ println(y) // => ""
 println(z) // => nil
 ```
 
-#### **Type Conversions**
+### Type Conversions
 
 You can convert values between different types:
 
@@ -158,7 +158,7 @@ z := uint(f)      // 1
 
 Note that unlike in other languages, conversions between types must be done explicitly.
 
-#### **Constants**
+### Constants
 
 Unchanging values can be declared with the `const` keyword. Constants can be characters, strings, booleans, or numeric values:
 
@@ -181,7 +181,7 @@ const x = 1
 x = 2 // error: cannot assign to x
 ```
 
-#### **Iota**
+### Iota
 
 The `iota` keyword represents successive integer constants:
 ```go
@@ -229,7 +229,7 @@ fmt.Println(zero, two, three) // "0 2 3"
 
 Iota's are most commonly used to represent enums, which Go does not support natively.
 
-#### **The Blank Identifier**
+### The Blank Identifier
 
 The blank identifier `_` is an anonymous placeholder. It basically means to throw away something:
 
@@ -254,7 +254,7 @@ Or to avoid compiler errors during development:
 var _ = devFunction() // TODO: remove in production
 ```
 
-#### **Looping**
+### Looping
 
 Go has only one loop, the `for` loop. It has three components:
 
@@ -312,7 +312,7 @@ for i := 0; i < 5; i++ {
 // => 0 1 3 4
 ```
 
-#### **Control Flow**
+### Control Flow
 
 Go's `if` statements have a similar syntax to its loops:
 
@@ -412,7 +412,7 @@ print(3)
 Labels have a very specific use case. They can often make code less readable and are avoided by many Go programmers.
 
 
-#### **Arrays**
+### Arrays
 
 Arrays have a fixed length:
 
@@ -440,9 +440,9 @@ helloWorld[10] = "Space"
 
 To get around this issue, Go provides slices.
 
-#### **Slices**
+### Slices
 
-Slices are more common than arrays. They are more flexible in that they do not have a fixed length:
+Slices are more commonly used than arrays. They are more flexible in that they do not have a fixed length:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 ```
@@ -546,7 +546,7 @@ for index := range names {
 
 To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
 
-#### **Maps**
+### Maps
 
 Maps are like hashes in ruby or dictionaries in python. You create them with a *map literal*:
 
@@ -598,7 +598,7 @@ for key, value := range names {
 // 2 "two"
 ```
 
-#### **Functions**
+### Functions
 
 `func` declares a function.
 
@@ -672,7 +672,7 @@ defer func() {
 }()
 ```
 
-#### **Anonymous Functions**
+### Anonymous Functions*
 
 Go supports anonymous functions. Anonymous functions are useful when you want to define a function inline without having to name it:
 
@@ -745,9 +745,9 @@ println(counter())
 
 Note how `counter` has access to `n`, even though it was never passed as a parameter.
 
-#### **Pointers**
+### Pointers
 
-Go has pointers. A pointer holds the memory address of a value.
+A pointer holds the memory address of a value.
 
 ```go
 // "p" is a pointer to an integer
@@ -781,19 +781,20 @@ p := &i  // point to i
 println(i) // 21 
 ```
 
-#### **Custom Types**
+### Custom Types and Methods
 
 You can create a custom type with the `type` keyword:
 ```go
 type UserName string
 ```
 
-This is called a *type definition*. A new type is its own distinct type that is based on the structure of an underlying type. 
+This is called a *type definition*. It defines a new, distinct type that is based on the structure of an underlying type. 
 
-You can define methods on your custom types:
+You can define *methods* on your custom types. Methods are different than functions in that they take a *reciever* and are called on an instance of a specific type. The reciever is specified *before* the method name, and the arguments are specified *after*:
 ```go
 type MyString string
 
+// A method called `Print` with a reciever of type `MyString`
 func (m MyString) Print() {
   println(m)
 }
@@ -834,7 +835,7 @@ println(x)
 
 Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient when dealing with large amounts of data.
 
-#### **Structs**
+### Structs
 
 Structs are a built-in Go type. You can declare one with the `struct` keyword. They can have any number of fields a specified type:
 
@@ -918,7 +919,7 @@ minusTwo.isStrictlyPositive()
 // => false
 ```
 
-#### **Interfaces**
+### Interfaces
 
 Interfaces are something multiple types have in common. They can contain any number of methods in their method set:
 
@@ -932,7 +933,7 @@ An interface is a type, so it can be used as a function argument, a struct field
 
 ```go
 type MyStruct struct {
-	signed Signed
+  signed Signed
 }
 ```
 
@@ -940,7 +941,7 @@ An interface value holds a value of the underlying concrete type. Calling a meth
 
 ```go
 func SignedIsStrictlyNegative(s Signed) bool {
-  // call the underlying type of `s`
+  // call a method on the underlying type of `s`
   return s.isStrictlyNegative()
 }
 ```
@@ -964,21 +965,21 @@ However, `Number` doesn't implement `Signed` because `isStrictlyNegative` is def
 This is because `Number` and `*Number` are *different* types:
 
 ```go
-// this will not work
+// this will not compile
 SignedIsNegative(Number{})
 
 // but this will
 SignedIsNegative(&Number{})
 ```
 
-This won't work either:
+This won't compile either:
 
 ```go
 // strings do not implement the Signed interface
 SignedIsNegative("a string")
 ```
 
-#### **Type Assertions**
+### `interface{}`
 
 The interface type that specifies zero methods is known as the empty interface:
 
@@ -1014,7 +1015,7 @@ n := x.(Number)
 n.isStrictlyNegative()
 ```
 
-If a type assertion fails (`x` wasn't really a `Number`), it will trigger a panic:
+If a type assertion fails (`x` doesn't really implement `Number`), it will trigger a panic:
 
 ```go
 var x interface{} = "not a number"
@@ -1049,7 +1050,7 @@ default:
 }
 ```
 
-#### **Type Aliases**
+### Type Aliases
 
 You can create an alias to another type:
 ```go
@@ -1071,7 +1072,7 @@ type H = map[string]interface{}
 
 An alias declaration doesn't create a new type. It just introduces an alias name - an alternate spelling.
 
-#### **Struct Composition**
+### Struct Composition
 
 Structs can be composed of one another through anonymous fields.
 
@@ -1117,7 +1118,7 @@ cat.Talk()
 
 To imitate a call to `super` as found in other languages, you can call the method through the embedded type directly:
 ```go
-cat.Animal.Talk() // still prints "meow"
+cat.Animal.Talk() // prints only one "meow"
 ```
 
 
@@ -1155,7 +1156,7 @@ type MyStruct struct {
 }
 ```
 
-#### **Interface Composition**
+### Interface Composition
 
 Interfaces can also be composed of each other:
 ```go
@@ -1179,7 +1180,7 @@ type Cat interface {
 }
 ```
 
-#### **Error Handling**
+### Error Handling
 
 Functions that can fail typically return an `error`, along with their regular return value:
 
@@ -1226,7 +1227,7 @@ if err != nil {
 
 You can call `recover` to regain control of a panic. `recover` will return the value passed to panic:
 ```go
-// if a panic happens, this function will be called
+// if a panic occurs, this function will be called
 defer func() {
   if r := recover(); r != nil {
     fmt.Println("Recovered from panic: ", r)
@@ -1239,14 +1240,14 @@ panic("AAAHHH!!!")
 // => Panicking
 // => Recovered from panic:  AAAHHH!!!
 ```
-#### **Goroutines**
+### Goroutines
 
 Go is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a goroutine, you simple prefix a function call with the keyword `go`:
 ```go
 go DoSomething()
 ```
 
-Goroutines are executed `concurrently`. For example, this code will take two seconds to complete:
+Goroutines are executed concurrently, not sequentially. For example, this code will take two seconds to complete:
 ```go
 time.Sleep(time.Second * 1)
 time.Sleep(time.Second * 1)
@@ -1268,7 +1269,8 @@ go func() {
   println("hello")
 }()
 ```
-#### **Channels**
+
+### Channels
 
 Goroutines communicate through *channels*. You can send values to a channel:
 ```go
@@ -1300,7 +1302,7 @@ go multiplyByTwo(n, result)
 
 The result channel now contains the number calculated by `multiplyByTwo`:
 ```go
-fmt.Println(<-out)
+fmt.Println(<-result)
 // => 6
 ```
 
@@ -1320,7 +1322,7 @@ ch <- 2
 
 Channels with a limit are called *buffered channels*.
 
-Channels can be closed:
+You can also close a channel with the `close` method:
 ```go
 close(channel)
 ```
@@ -1338,7 +1340,7 @@ for value := range channel {
 }
 ```
 
-#### **Handling Multiple Channels**
+### Handling Multiple Channels
 
 To handle communicating with multiple channels, you can use `select`:
 ```go
@@ -1358,7 +1360,7 @@ func doubler(c, quit chan int) {
 }
 ```
 
-Let's test the doubler function out:
+Let's test our program out by creating channels, passing them to `doubler`, and recieving the results: 
 ```go
 func main() {
   // make the neccessary channels
@@ -1379,7 +1381,7 @@ func main() {
 }
 ```
 
-Here is the output:
+It works 🎉🎉🎉
 ```go
 1
 2
@@ -1389,9 +1391,6 @@ Here is the output:
 quit
 ```
 
-It works 🎉🎉🎉
-
-
-And with that, we have hit 20 minutes estimated reading time. Go is a simple yet powerful language. After reading this, you should be able to read most of the Go code you find online.
+And with that, we have hit 20 minutes estimated reading time. After reading this, you should be able to read most of the Go code you find online.
 
 Thanks for reading!
