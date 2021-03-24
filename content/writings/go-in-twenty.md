@@ -1360,7 +1360,7 @@ func doubler(c, quit chan int) {
 }
 ```
 
-Let's test our program out by creating channels, passing them to `doubler`, and recieving the results: 
+Let's test our program out by creating a channel, passing it to `doubler`, and recieving the results: 
 ```go
 func main() {
   // make the neccessary channels
