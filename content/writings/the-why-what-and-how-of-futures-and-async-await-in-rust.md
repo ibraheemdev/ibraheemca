@@ -13,7 +13,7 @@ taxonomies:
         - Crust of Rust
 
 extra:
-    socialImage: /media/rust-logo.png
+    socialImage: /rust-logo.png
 ---
 
 ### Introduction

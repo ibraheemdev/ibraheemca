@@ -14,7 +14,7 @@ taxonomies:
         - Puzzle
 
 extra:
-    socialImage: /media/ruby-logo.jpeg
+    socialImage: /ruby-logo.jpeg
 ---
 I recently came across the following interview question:
 

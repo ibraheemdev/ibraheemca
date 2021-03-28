@@ -2,7 +2,7 @@
 template: writing.html
 title: The Why, What, and How of Pinning in Rust
 slug: the-what-why-and-how-of-pinning-in-rust
-socialImage: /media/rust-logo.png
+socialImage: /rust-logo.png
 draft: true
 date: 2020-12-24T03:19:12.408Z
 description: TODO

@@ -12,7 +12,7 @@ taxonomies:
         - Actix-Web
 
 extra:
-    socialImage: /media/actix-web.png
+    socialImage: /actix-web-logo.png
 ---
 ### Introduction
 

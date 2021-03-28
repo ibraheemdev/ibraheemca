@@ -14,7 +14,7 @@ taxonomies:
         - YAML
 
 extra:
-    socialImage: /media/rust-logo.png
+    socialImage: /rust-logo.png
 ---
 *I recently posted [Golang Global Configuration Files](https://ibraheem.ca/posts/go-global-config-files), and thought I would try to replicate that article in Rust.*
 

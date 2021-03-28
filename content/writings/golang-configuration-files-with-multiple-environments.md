@@ -14,7 +14,7 @@ taxonomies:
         - YAML
 
 extra:
-    socialImage: /media/gopher.jpg
+    socialImage: /gopher.jpg
 ---
 When developing an application, it is common to have configuration data that is used throughout the app. This data can include an http port or a database connection url. These configuration variables can change between environments. For example, you might be using a PostgresQL database in production and development, and SQlite in testing. It is considered best practice to put these config variables in a single source of truth, often in environment variables or config files. Doing this makes your app easier to manage and update than hardcoding strings. 
 

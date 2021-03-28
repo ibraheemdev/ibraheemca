@@ -16,7 +16,7 @@ taxonomies:
         - Rust
 
 extra:
-    socialImage: /media/rust-logo.png
+    socialImage: /rust-logo.png
 ---
 *This post was partly derived from Jon Gjenset's stream [Crust of Rust: Smart Pointers and Interior Mutability](https://www.youtube.com/watch?v=8O0Nt9qY_vo&ab_channel=JonGjengset).*
 

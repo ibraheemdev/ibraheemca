@@ -14,7 +14,7 @@ taxonomies:
         - Webpack
 
 extra:
-    socialImage: /media/react-logo-825x510.jpg
+    socialImage: /react-logo.jpg
 ---
 I was recently working on a create-react-app project that was being served by an external golang static file server. To see local changes in the browser, I had to rebuild the entire react project, and serve the files from the `/build` directory. This became cumbersome as running `yarn build` took up to 20 seconds every time.
 

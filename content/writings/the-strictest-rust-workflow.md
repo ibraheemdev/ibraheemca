@@ -12,7 +12,7 @@ taxonomies:
         - Rust
 
 extra:
-    socialImage: /media/rust-logo.png
+    socialImage: /rust-logo.png
 ---
 The Rust compiler is known to be annoying. Sometimes, even trying to do the simplest thing will result in a compile time error. However, this is for good reason. Rust's borrow checker guarantees memory and thread-safety — enabling you to eliminate many classes of bugs at compile-time. In this article, I am going to try to create the strictest (most annoying) Rust workflow, making your code more idiomatic with [clippy](#clippy), safer with [miri](#miri), and more consistent with [rustfmt](#formatting).
 

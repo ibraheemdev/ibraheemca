@@ -14,7 +14,7 @@ taxonomies:
         - Iterators
 
 extra:
-    socialImage: /media/rust-logo.png
+    socialImage: /rust-logo.png
 ---
 Today we will be taking an in-depth look at iterators. Iterators are something that you will run into a lot in Rust, and you may have used them without even knowing. So what is an iterator?
 

@@ -14,7 +14,7 @@ taxonomies:
         - Ruby
 
 extra:
-    socialImage: /media/rails-logo.png
+    socialImage: /rails-logo.png
 ---
 
 Recently, while working on [agilely](https://github.com/ibraheemdev/agilely), I realized that MongoDB was a better fit for my database design. I am currently converting the entire application from PostgresQL to MongoDB, and thought I'd share what I learned along the way.

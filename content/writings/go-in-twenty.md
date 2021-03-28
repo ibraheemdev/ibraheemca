@@ -11,7 +11,7 @@ taxonomies:
         - Golang
 
 extra:
-    socialImage: /media/gopher.jpg
+    socialImage: /gopher.jpg
 ---
 A lot of thanks goes to [Amos](https://fasterthanli.me/about) for inspiring this article with [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust). I thought I'd try it out, but instead of Rust, this article will try to explain Go in twenty minutes.
 

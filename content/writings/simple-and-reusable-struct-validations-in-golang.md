@@ -14,7 +14,7 @@ taxonomies:
         - Validations
 
 extra:
-    socialImage: /media/gopher.jpg
+    socialImage: /gopher.jpg
 ---
 **Introduction**
 
