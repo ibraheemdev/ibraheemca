@@ -206,7 +206,9 @@ const stateMachine = Object.freeze({
 
 As you can see, the `stateMachine` is just an object representation of our flow chart. Now, we can create a transition function. The transition function will implement the fourth constraint of deterministic FSM's:
 
-> Transitions between states in response to an action: <br/>(loading + ADD_TODO_SUCCESS = successful). <br/>Given the current state, and an action, a deterministic FSM will always return the same next state. The transition function is very simple:
+> Given the current state, and an action, a deterministic FSM will always return the same next state. 
+
+The transition function is very simple:
 
 ```javascript
 const transition = (currentState, action) => {
