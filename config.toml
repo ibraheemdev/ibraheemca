@@ -8,3 +8,6 @@ feed_filename = "rss.xml"
 highlight_code = true
 highlight_theme = "dracula"
 render_emoji = true
+
+[extra]
+author = "Ibraheem Ahmed"

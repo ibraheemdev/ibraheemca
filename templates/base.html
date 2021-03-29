@@ -1,19 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% if page %}
+{% set title = "Ibraheem Ahmed | " ~ page.title %}
+{% set description = page.description %}
+    {% if page.extra.socialImage %}
+    {% set image = get_url(path=page.extra.socialImage) %}
+    {% endif %}
+{% elif section %}
+{% set title = "Ibraheem Ahmed | " ~ section.title %}
+{% set description = section.description %}
+{% endif %}
+
+{% if not image %}
+{% set image = get_url(path="logo.png") %}
+{% endif %}
+
+{% set site = "Ibraheem Ahmed" %}
+
 <head>
+    <title>{{ title }}</title>
+
     <meta charset="utf-8">
+    <meta name="title" content="{{ title }}" />
+    <meta name="author" content="{{ config.extra.author }}" />
+    <meta name="description" content="{{ description }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:site" content="{{ site }}" />
+    <meta property="og:site_name" content="{{ site }}" />
+    <meta property="og:image" content="{{ image }}" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="{{ title }}" />
+    <meta name="twitter:site" content="{{ site }}" />
+    <meta name="twitter:image" content="{{ image }}" />
+    <meta name="twitter:creator" content="{{ config.extra.author }}" />
+    <meta name="twitter:description" content="{{ description }}" />
+
+    <link rel="stylesheet" href="{{ get_url(path="main.css") }}">
+    <link rel="shortcut icon" type="image/png" href="{{ get_url(path="logo.png") }}">
+
     <script>
         window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
         ga('create', 'UA-170786189-1', 'auto');
         ga('send', 'pageview');
     </script>
     <script async src='https://www.google-analytics.com/analytics.js'></script>
-
-    <title>Ibraheem Ahmed | Software Developer</title>
-    <link rel="stylesheet" href={{ get_url(path="main.css") }}>
-</script>
 </head>
 
 <body>

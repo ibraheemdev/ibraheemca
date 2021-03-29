@@ -1,4 +1,6 @@
 ---
+title: Software Developer
+description: I'm Ibraheem Ahmed. I'm a software developer, freelancer, and open source enthusiast.
 template: index.html
 ---
 
