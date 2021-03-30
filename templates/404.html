@@ -1,0 +1,23 @@
+{% extends "base.html" %} 
+{% import "footer.html" as footer %}
+
+{% block content %}
+<main class="writing-list">
+    <article class="page">
+        <div class="frontmatter">
+            <h1 class="title"> That page doesn't exist </h1>
+        </div>
+        <section>
+            {% set section = get_section(path="writings/_index.md") %}
+            {% set page = section.pages[0] %}
+            <p>
+                Why don't you checkout this article instead? 
+            </p>
+            <a href="{{ page.permalink | safe }}">
+                {{ page.title }}
+            </a> 
+        </section>
+    </article>
+    {{ footer::footer() }}
+</main>
+{% endblock %}
