@@ -2,7 +2,7 @@
 <html lang="en">
 
 {% if page %}
-{% set title = "Ibraheem Ahmed | " ~ page.title %}
+{% set title = page.title %}
 {% set description = page.description %}
     {% if page.extra.socialImage %}
     {% set image = get_url(path=page.extra.socialImage) %}
