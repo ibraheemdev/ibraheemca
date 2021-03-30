@@ -25,13 +25,16 @@ curl --data { "email": "jJohn@example.org", "password" : "asdf1234" }
 
 Imagine if they got this response:
 
-```rust
-{ "error": "passwords do not match for User {
-  email: jJohn@example.org,
-  phone: 404 873 9099,
-  address: 1234 baker street,
-  password: sS#*)!MSJ(09adAHD's}io#
-} "}
+```json
+{ 
+  "error": "passwords do not match, expected sS#*)!MS1$, found asdf1234",
+  "details": {
+      "email": "jJohn@example.org",
+      "phone": "404 873 9099",
+      "address": "1234 baker street",
+      "password": "sS#*)!MS1$"
+  }
+}
 ```
 
 Although you might not think about it often, it is very possible for your application to leak sensitive data through error messages, In this post, I will walk you through how I handle error messages in my Rust (actix-web) web applications.
@@ -78,7 +81,7 @@ impl From<db::error::Error> for MyError {
   }
 }
 
-impl From<std::io::Error> for Error {
+impl From<std::io::Error> for MyError {
   fn from(err: std::io::Error) -> MyError {
     MyError::Io(err)
   }
@@ -99,12 +102,13 @@ pub struct ResponseError {
 }
 ```
 
-`ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, which is also an enum. In this simple example, it contains one variant, which is a optional string message:
+`ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, which is also an enum. In this simple example, it contains an optional string message:
 
 ```rust
 #[derive(Debug, Clone)]
 pub enum ResponseErrorKind {
-  Message(Option<&'static str>),
+  Message(&'static str),
+  None
 }
 ```
 
@@ -114,10 +118,8 @@ The `std::fmt::Display` implementation returns a json error response:
 impl fmt::Display for ResponseError {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match &self.error {
-      ResponseErrorKind::Message(m) => match m {
-        Some(m) => format!("{{ \"error\": {} }}", m).fmt(f),
-        None => Ok(()),
-      }
+      ResponseErrorKind::Message(m) => write!(f, "\"error\": {} }}", m),
+      ResponseErrorKind::None => Ok(()),
     }
   }
 }
@@ -174,16 +176,17 @@ impl ResponseError {
   pub fn message(code: u16, msg: &'static str) -> Self {
     ResponseError {
       code,
-      error: ResponseErrorKind::Message(Some(msg)),
+      error: ResponseErrorKind::Message(msg),
     }
   }
 
   pub fn code(code: u16) -> Self {
     ResponseError {
       code,
-      error: ResponseErrorKind::Message(None),
+      error: ResponseErrorKind::None,
     }
   }
+}
 ```
 
 ### Usage
