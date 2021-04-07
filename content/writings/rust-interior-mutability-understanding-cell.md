@@ -18,13 +18,12 @@ taxonomies:
 extra:
     socialImage: /rust-logo.png
 ---
-*This post was partly derived from Jon Gjenset's stream [Crust of Rust: Smart Pointers and Interior Mutability](https://www.youtube.com/watch?v=8O0Nt9qY_vo&ab_channel=JonGjengset).*
 
-### Introduction
+## Introduction
 
 Today we are going to be talking about smart pointers and interior mutability, specifically, the `Cell` type. `Cell` is a type that you come across frequently in Rust programs and it can help to have a deeper understanding of what it is and how it works. One of the best ways to understand `Cell` and the fundamental concepts behind its implementation is to actually write it yourself. So that is what we are going to do!
 
-### Cell
+## Cell
 
 The Rust standard library has a module called [`cell`](https://doc.rust-lang.org/std/cell/index.html) which contains "shareable mutable containers". You probably already know that the Rust ownership model has the concept of shared references (`&T`) and exclusive (mutable) references (`&mut T`). Having an exclusive reference means that the borrow checker *guarantees* that you are the exclusive owner of the pointer, which allows you to mutate the value behind it. A *shareable mutable container* sounds pretty weird at first, because you should not be allowed to mutate a value if someone else has mutable access to it, right? However, the `cell` module provides primitives that allow shared mutability in a controlled manner under specific circumstances. This is often referred to as "interior mutability", because it allows mutation from an immutable reference. The `cell` module contains a couple of different interior mutability primitives. In this post, we will look at `Cell`.
 
@@ -74,9 +73,9 @@ This means that references to a `Cell` cannot be shared between threads. If two 
 * No one has a shared reference to `Cell`'s inner value
 * `Cell` cannot be shared between threads
 
-### Why is Cell useful?
+## Why is Cell useful?
 
-So why is `Cell` useful? Let's start with an example. We might have a graph holding a vector of nodes which each contain an individual count. The graph also holds an aggregation of all it's nodes counts:
+So why is `Cell` useful? Let's start with an example. We might have a graph holding a vector of nodes which each contain an individual count. The graph also stores an aggregate sum of the counts:
 
 ```rust
 struct Graph {
@@ -162,7 +161,7 @@ impl Graph {
 
 Because `Cell` guarantees that no one else has a pointer to the value, we can mutate the values through shared references and our code now compiles. 
 
-### Implementing `Cell`
+## Implementing `Cell`
 
 Now that we understand what `Cell` is, let's try implementing it ourselves. We can start with a basic API for the `Cell` struct:
 
@@ -381,3 +380,8 @@ impl<T> Cell<T> {
 Hopefully by now you have an understanding of what `Cell` is, how it works internally, and how the interior mutability it provides can be useful in Rust programs. In [the next post](/pages/todo), we will discuss another type in the `cell` module: `RefCell`.
 
 [The final code for our implementation of `Cell` is available on github](https://gist.github.com/ibraheemdev/8dc7c18063516bde6f478a925cc451b8)
+
+## References
+
+* [Crust of Rust: Smart Pointers and Interior Mutability](https://www.youtube.com/watch?v=8O0Nt9qY_vo&ab_channel=JonGjengset).
+
