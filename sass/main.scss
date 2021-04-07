@@ -4,10 +4,10 @@
 // VARIABLES
 // ===========================================
 
-$unit: 1rem;
+$unit: 10px;
 $mobile: 900px;
 
-$font-size: $unit * 2;
+$font-size: 2rem;
 $font-size-small: $font-size * 0.8;
 
 $line-height: $font-size * 1.7;
@@ -20,7 +20,7 @@ $color-border-light: rgba(200, 185, 237, 0.5);
 
 $button-height: $unit * 3.488;
 $button-border-radius: $unit * 2;
-$button-font-size: $unit * 1.4;
+$button-font-size: 1.4rem;
 
 $color-bg: #fbf9ff;
 $color-bg-transparent: rgba(200, 185, 237, 0.1);
@@ -63,11 +63,11 @@ body {
 }
 
 main {
-  margin: 10vw auto 10vw 10vw;
-  max-width: $unit*70;
+  margin: 7vw auto 7vw 10vw;
+  max-width: $unit * 70;
 
   @media (max-width: $mobile) {
-    margin: $unit*3;
+    margin: $unit * 3;
   }
 }
 
@@ -107,9 +107,10 @@ img {
 }
 
 // ===========================================
-// FONT STYLES
+// FONTS
 // ===========================================
 
+// https://stackoverflow.com/questions/9174669/best-practice-font-size-for-mobile
 @media (min-width: 858px) {
     html {
         font-size: 12px;
@@ -128,13 +129,13 @@ img {
     }
 }
 
-@media (min-width: 724px) {
+@media (min-width: 624px) {
     html {
         font-size: 9px;
     }
 }
 
-@media (max-width: 623px) {
+@media (max-width: 624px) {
     html {
         font-size: 8px;
     }
@@ -153,22 +154,22 @@ h6 {
 }
 
 h1 {
-  font-size: $unit * 2.5;
+  font-size: 2.5rem;
   line-height: $line-height;
   padding-bottom: $line-height * 0.5;
 }
 
 h2 {
-  font-size: $unit * 2.1;
+  font-size: 2.1rem;
   line-height: $line-height;
 }
 
 h3 {
-  font-size: $unit * 1.8;
+  font-size: 1.8rem;
 }
 
 h4 {
-  font-size: $unit * 1.5;
+  font-size: 1.5rem;
 }
 
 h5 {
@@ -176,7 +177,7 @@ h5 {
 }
 
 h6 {
-  font-size: $unit * 1.25;
+  font-size: 1.25rem;
 }
 
 strong {
@@ -266,7 +267,7 @@ button {
   cursor: pointer;
   display: block;
 
-  font-size: $unit * 1.75;
+  font-size: 1.75rem;
   font-weight: normal;
   text-align: center;
   text-decoration: none;
@@ -360,7 +361,7 @@ ul.links {
 
     &:after {
       content: "/";
-      font-size: $unit * 1.25;
+      font-size: 1.25rem;
       padding-right: $unit * 0.25;
     }
 
