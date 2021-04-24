@@ -20,4 +20,11 @@
     </article>
     {{ footer::footer() }}
 </main>
+
+<script>
+    if (window.location.pathname.startsWith("/posts")) {
+        let to = window.location.pathname.replace("/posts", "/writings");
+        window.location.replace(to);
+    }
+</script>
 {% endblock %}
