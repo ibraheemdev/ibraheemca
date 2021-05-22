@@ -1,12 +1,10 @@
 ---
 template: writing.html
-title: Rust Global Configuration Files with Multiple Environments
-slug: rust-global-config-files
+title: Clean App Config for Rust
+slug: clean-rust-app-config
 draft: false
 date: 2020-09-22T16:01:02.408Z
-description: A simple way to decode configuration files based on the current
-  application environment into globally accessible variables
-
+description: Clean configuration management for your Rust apps.
 taxonomies:
     tags:
         - Rust
@@ -16,7 +14,7 @@ taxonomies:
 extra:
     socialImage: /rust-logo.png
 ---
-*I recently posted [Golang Global Configuration Files](https://ibraheem.ca/posts/go-global-config-files), and thought I would try to replicate that article in Rust.*
+*I recently posted [Clean App Config for Go](https://ibraheem.ca/posts/go-global-config-files), and thought I would try to replicate that article in Rust.*
 
 When developing an application, it is common to have configuration data that is used throughout the app. This data can include an http host and port or a database connection url. These configuration variables can change between environments. For example, you might be using a PostgresQL database in production and development, and SQlite in testing. It is considered best practice to put these config variables in a single source of truth, often in environment variables or config files. Doing this makes your app easier to manage and update than hardcoding strings. 
 
@@ -259,7 +257,7 @@ constant functions, tuple structs and tuple variants
    |   
 ```
 
-One solution here would be to use a constant function: 
+So... let's just make `init` a constant function. Problem solved, right?
 ```rust
 const fn init() -> Self {
   ...
@@ -270,7 +268,7 @@ pub const fn get_environment() -> Result<String, env::VarError> {
 }
 ```
 
-However, a constant function can only call other constant functions. Because that is not the case with `init()`, this code will not compile:
+Nope. A constant function can only call other constant functions. Because that is not the case with `init()`, this code will not compile:
 ```rust
 error[E0723]: can only call other `const fn` 
 within a `const fn`, but `const std::env::var::<&str>` 
@@ -282,7 +280,7 @@ is not stable as `const fn`
    |
 ```
 
-Thankfully, there is an easy way to deal with static variable initialization that depends on other function calls through the `lazy_static!` macro. We can use this macro through the `lazy_static` crate:
+Thankfully, there is an easy way to deal with runtime (lazy) global variable initialization, provided by the `lazy_static` crate:
 ```rust
 // src/main.rs
 
@@ -337,3 +335,7 @@ $ cargo run
 ```
 
 All of the code from this post is available on [github](https://gist.github.com/ibraheemdev/be443a33e305946abe4866846fb3d086).
+
+# But Aren't Global Variables Bad?
+
+It's true that global variables should generally be avoided. The rust compiler makes it especially hard due to memory safety concerns with globals. However, for specific things, they are the cleanest solution. Without a global variable, configuration just ends up cluttering your app, when the configuration itself is inherently global. If you are using a framework and it provides an app state solution (such as actix-web), then by all means, use that instead. But in other cases, globals work just fine.

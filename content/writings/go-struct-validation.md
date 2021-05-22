@@ -1,6 +1,6 @@
 ---
 template: writing.html
-title: Simple Yet Powerful Struct Validations In Go Without Reflection!
+title: Dead Simple Struct Validation in Go
 slug: golang-struct-validations
 draft: false
 date: 2020-07-23T15:41:14.076Z
@@ -16,18 +16,16 @@ taxonomies:
 extra:
     socialImage: /gopher.jpg
 ---
-**Introduction**
-
 Validations are needed to ensure that data structures are in the format your application requires. They can be used to check that a user's email is actually an email, or that a writer does not create a blog post without a title. There are many methods of implementing validations in Go. The most common method is to use simple `if` statements:
 
 ```ruby
 func (u *User) IsValid() error {
-  if u.Email == "" {
-    return errors.New("Email cannot be blank")
-  }
-  if len(u.Name) < 4 {
-    return errors.New("Name cannot be less than 4 characters")
-  }
+    if u.Email == "" {
+        return errors.New("Email cannot be blank")
+    }
+    if len(u.Name) < 4 {
+        return errors.New("Name cannot be less than 4 characters")
+    }
 }
 ```
 
@@ -40,8 +38,8 @@ type User struct {
 }
 
 func main() {
-  user := &User{}
-  err := validate.Struct(user)
+    user := &User{}
+    err := validate.Struct(user)
 }
 ```
 
@@ -58,7 +56,7 @@ end
 
 Let's see how we can implement something similar in Go.
 
-**The Validator Package**
+# The Validator Package
 
 We can start by creating a simple struct called `Validator`. This struct will have one field: a slice of errors. That way we can return all the errors to the user at once:
 
@@ -67,7 +65,7 @@ package validator
 
 // Validator : struct field validations
 type Validator struct {
-	Errors []error
+    Errors []error
 }
 ```
 
@@ -77,9 +75,9 @@ Now, we can define `Validator.Validate()`:
 package validator
 
 func (v *Validator) Validate(cond bool, msg string, args ...interface{}) {
-	if !cond {
-		v.Errors = append(v.Errors, fmt.Errorf(msg, args...))
-	}
+    if !cond {
+        v.Errors = append(v.Errors, fmt.Errorf(msg, args...))
+    }
 }
 ```
 
@@ -90,8 +88,8 @@ Because the Validate method is so generic, we can use it as a building block for
 ```go
 // ValidatePresenceOf : validates presence of struct string field
 func (v *Validator) ValidatePresenceOf(fieldName string, fieldValue string) {
-	cond := len(strings.TrimSpace(fieldValue)) > 0
-	v.Validate(cond, "%s cannot be blank", fieldName)
+    cond := len(strings.TrimSpace(fieldValue)) > 0
+    v.Validate(cond, "%s cannot be blank", fieldName)
 }
 
 // ValidateMaxLengthOf : validates maximum character length of struct string field
@@ -107,7 +105,7 @@ func (v *Validator) ValidateMinLengthOf(fieldName string, fieldValue string, min
 }
 ```
 
-**Validating User Input**
+# Validating User Input
 
 Now that we finished the validator package, we can use it in http handlers to validate user input. We can create a validate method on a User model:
 
@@ -122,12 +120,12 @@ type User struct {
 }
 
 func validate(u *User) []error {
-	v := &validator.Validator{}
-	v.ValidatePresenceOf("Email", u.Email)
+    v := &validator.Validator{}
+    v.ValidatePresenceOf("Email", u.Email)
     v.ValidatePresenceOf("Name", u.Name)
     v.ValidateMaxLengthOf("Email", u.Email, 32)
     v.ValidateMinLengthOf("Email", u.Email, 4)
-	return v.Errors
+    return v.Errors
 }
 ```
 
@@ -135,9 +133,9 @@ We can also add a simple email regex validator:
 
 ```go
 func validate(u *User) []error {
-  ...
-  match, _ := regexp.MatchString("/^\S+@\S+\.\S+$/", u.Email)
-  v.Validate(match, "Email is not in valid format")
+    ...
+    match, _ := regexp.MatchString("/^\S+@\S+\.\S+$/", u.Email)
+    v.Validate(match, "Email is not in valid format")
 }
 ```
 
@@ -150,7 +148,7 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     json.NewDecoder(r.Body).Decode(&user)
     errs := validate(user)
     if errs != nil {
-      // the user is invalid
+        // the user is invalid
     }
 }
 ```
@@ -161,11 +159,11 @@ If the slice of errors returned by the call to validate is not `nil`, then we kn
 package validator
 
 func Stringify(errs []error) []string {
-  strErrors := make([]string, len(errs))
-  for i, err := range errs {
-    strErrors[i] = err.Error()
-  }
-  return strErrors
+    strErrors := make([]string, len(errs))
+    for i, err := range errs {
+        strErrors[i] = err.Error()
+    }
+    return strErrors
 }
 ```
 
@@ -177,9 +175,9 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     json.NewDecoder(r.Body).Decode(&user)
     errs := validate(user)
     if errs != nil {
-      w.WriteHeader(http.StatusUnprocessableEntity)
-      json.NewEncoder(w).Encode(Stringify(errs))
-      return
+        w.WriteHeader(http.StatusUnprocessableEntity)
+        json.NewEncoder(w).Encode(Stringify(errs))
+        return
     }
 }
 ```

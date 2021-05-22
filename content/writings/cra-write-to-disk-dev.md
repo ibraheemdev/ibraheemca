@@ -1,6 +1,6 @@
 ---
 template: writing.html
-title: "Create React App: How to Write to Disk in Development"
+title: Writing to Disk in Development with Create React App
 slug: cra-write-to-disk-in-dev
 draft: false
 date: 2020-08-28T15:58:13.616Z
