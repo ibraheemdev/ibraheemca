@@ -1,12 +1,10 @@
 ---
 template: writing.html
-title: Golang Global Configuration Files with Multiple Environments
-slug: go-global-config-files
+title: Clean App Config for Go
+slug: clean-go-app-config
 draft: false
 date: 2020-08-03T16:57:44.304Z
-description: A simple way to decode configuration files based on the current
-  application environment into globally accessible variables
-
+description: Clean configuration management for your go apps.
 taxonomies:
     tags:
         - Golang

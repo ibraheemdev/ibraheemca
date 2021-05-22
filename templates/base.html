@@ -1,6 +1,8 @@
+{% import "footer.html" as footer %}
+{% import "header.html" as header %}
+
 <!DOCTYPE html>
 <html lang="en">
-
 
 {% if page %}
 {% set title = page.title %}
@@ -54,9 +56,12 @@
 </head>
 
 <body>
-    <section>
-        {% block content %} {% endblock %}
-    </section>
+    {{ header::header() }}
+    <main>
+        <div id="body">
+            {% block content %} {% endblock %}
+        </div>
+        {{ footer::footer() }}
+    </main>
 </body>
-
 </html>

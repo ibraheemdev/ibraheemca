@@ -1,7 +1,7 @@
 ---
 template: writing.html
-title: The Why, What, and How of Pinning in Rust
-slug: the-what-why-and-how-of-pinning-in-rust
+title: Pinning in Rust
+slug: pinning-in-rust
 socialImage: /rust-logo.png
 draft: true
 date: 2020-12-24T03:19:12.408Z

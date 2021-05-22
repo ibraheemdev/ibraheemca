@@ -1,6 +1,6 @@
 ---
 template: writing.html
-title: "Interview Question: Most Common N Page Path"
+title: Most Common N Page Path
 slug: most-common-n-page-path
 draft: false
 date: 2020-08-14T20:57:17.926Z

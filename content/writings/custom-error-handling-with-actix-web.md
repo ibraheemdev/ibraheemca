@@ -41,112 +41,102 @@ Although you might not think about it often, it is very possible for your applic
 
 ### Custom Error Type
 
-In my Rust applications, I generally like to have a single error type for each domain that encompasses all the possible errors that can occur:
+In my web apps, I create a simple trait that defines the status code and body of the response:
 
 ```rust
-#[derive(Debug)]
-pub enum MyError {
-  Response(ResponseError),
-  Io(std::io::Error),
-  Db(db::error::Error),
+trait ResponseError {
+    const STATUS: StatusCode;
+    
+    fn body<'a>(&self) -> Option<Cow<'a, str>> {
+        None
+    }
 }
 ```
 
-I implement for the standard `Error` trait for my error type:
-
+I then create error types for every possible error that can occur:
 ```rust
-impl std::error::Error for Error {}
+#[derive(Debug)]
+struct UserNotFound;
+
+impl ResponseError for UserNotFound {
+    const STATUS: StatusCode = StatusCode::NOT_FOUND;
+
+    fn body<'a>(&self) -> Option<Cow<'a, str>> {
+        Some("User not found".into())
+    }
+}
+
+#[derive(Debug)]
+struct InvalidLogin;
+
+impl ResponseError for InvalidLogin {
+    const STATUS: StatusCode = StatusCode::UNAUTHORIZED;
+
+    fn body<'a>(&self) -> Option<Cow<'a, str>> {
+        Some("Invalid login attempt".into())
+    }
+}
 ```
 
-I also `fmt::Display` by simple calling `fmt()` on the respective enum variant:
+I then create a single enum that encompasses all of these errors, as well as a generic `Other` variant for convenience;
+```rust
+#[derive(Debug)]
+enum Error {
+    UserNotFound(UserNotFound),
+    InvalidLogin(InvalidLogin),
+    Other(Box<dyn std::error::Error>)
+}
+```
+
+I implement for the standard `Error` trait for my error type. If there is an underlying error, that is returned as the `source`:
+
+```rust
+impl std::error::Error for Error {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            Other(source) => Some(source),
+            _ => None
+        }
+    }
+}
+```
+
+I also implement `fmt::Display`:
 
 ```rust
 impl fmt::Display for MyError {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    match *self {
-      MyError::Response(ref e) => e.fmt(f),
-      MyError::Io(ref e) => e.fmt(f),
-      MyError::Db(ref e) => e.fmt(f),
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            UserNotFound => write!(f, "user not found"),
+            InvalidLoginAttempt => write!(f, "invalid login attempt"),
+        }
     }
-  }
 }
-```
-
-I then implement the `Into` conversion for each variant. This will allow the use of the `?` operator in functions that return `Result`:
-
-```rust
-impl From<db::error::Error> for MyError {
-  fn from(err: db::error::Error) -> MyError {
-    MyError::Db(err)
-  }
-}
-
-impl From<std::io::Error> for MyError {
-  fn from(err: std::io::Error) -> MyError {
-    MyError::Io(err)
-  }
-}
-```
-
-While there is a decent amount of boilerplate involved in this, I don't see the need to introduce a third-party crate for simple error conversions.
-
-### Response Error
-
-All of `MyError`'s variants are only used for internal logging. For actual error responses, only the `Response` variant is used. `Response` holds a custom `ResponseError` type:
-
-```rust
-#[derive(Debug)]
-pub struct ResponseError {
-  pub code: u16,
-  pub error: ResponseErrorKind,
-}
-```
-
-`ResponseError` is a struct which contains a status code and a `ResponseErrorKind`, which is also an enum. In this simple example, it contains an optional string message:
-
-```rust
-#[derive(Debug, Clone)]
-pub enum ResponseErrorKind {
-  Message(&'static str),
-  None
-}
-```
-
-The `std::fmt::Display` implementation returns a json error response:
-
-```rust
-impl fmt::Display for ResponseError {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    match &self.error {
-      ResponseErrorKind::Message(m) => write!(f, "\"error\": {} }}", m),
-      ResponseErrorKind::None => Ok(()),
-    }
-  }
-}
-```
-
-If the response error contains a message, it will display a json response that looks like this:
-
-```rust
-{ "error": "The Error Message" }
 ```
 
 ### Actix-Web Response Error
 
-For `actix_web` to be able to display the error response properly, the error type must implement the `actix_web::ResponseError` trait. `ResponseError` has two required methods, `status_code`, and `error_response`. 
-
-The `status_code` method for the custom error type will either return the `Response` variant's status code, or 500 (internal server error):
+For `actix_web` to be able to display the error response properly, the error type must implement the `ResponseError` trait. This is where we can customize how the error is displayed to the user:
 
 ```rust
-use actix_web::http::StatusCode;
+use actix_web::http::StatusCode::*;
+use actix_web::web::HttpResponse;
 
 impl actix_web::ResponseError for MyError {
-  fn status_code(&self) -> StatusCode {
-    match *self {
-      Error::Response(err) => StatusCode::from_u16(err.code).unwrap(),
-      _ => StatusCode::INTERNAL_SERVER_ERROR,
+    fn status_code(&self) -> StatusCode {
+        match *self {
+            InvalidLoginAttempt => UNAUTHORIZED,
+            _ => INTERNAL_SERVER_ERROR,
+        }
     }
-  }
+
+    fn error_response(&self) -> HttpResponse {
+        match *self {
+            Other(inner) => {
+                
+            }
+        }
+    }
 }
 ```
 

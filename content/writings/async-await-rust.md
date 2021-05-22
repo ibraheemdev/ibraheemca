@@ -1,6 +1,6 @@
 ---
 template: writing.html
-title: The Why, What and How of Futures and async/await in Rust
+title: Understanding Rust's async/await model
 slug: futures-and-async-await-in-rust
 draft: true
 date: 2020-11-28T17:47:12.906Z
