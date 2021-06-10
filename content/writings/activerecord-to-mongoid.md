@@ -1,6 +1,6 @@
 ---
 template: writing.html
-title: Converting an existing Ruby on Rails application to MongoDB
+title: From ActiveRecord to Mongoid
 slug: convert-rails-to-mongodb
 draft: false
 date: 2020-07-06T17:18:23.372Z
@@ -17,11 +17,11 @@ extra:
     socialImage: /rails-logo.png
 ---
 
-Recently, while working on [agilely](https://github.com/ibraheemdev/agilely), I realized that MongoDB was a better fit for my database design. I am currently converting the entire application from PostgresQL to MongoDB, and thought I'd share what I learned along the way.
+Recently, while working on a rails project, I realized that MongoDB was a better fit for my database design. I am currently converting the entire application from PostgresQL to MongoDB, and thought I'd share what I learned along the way.
 
 _Note that this post does not cover migrating your data from a RDBMS. If you have a production app with data that needs to migrated, you might want to look at the [pg2mongo](https://github.com/datawrangl3r/pg2mongo) migration framework, or view the [official MongoDB migration guide](https://www.mongodb.com/collateral/rdbms-mongodb-migration-guide)_
 
-**MongoDB Installation**
+# MongoDB Installation
 
 First, we have to install MongoDB. If you're on a mac, you can do this with Homebrew:
 
@@ -32,7 +32,7 @@ $ brew install mongodb-community@4.2
 
 To view the installation process for all operating systems, refer to the [MongoDB docs](https://docs.mongodb.com/manual/installation/)
 
-**Rails Configuration**
+# Rails Configuration
 
 Now that you have MongoDB installed, you have to configure your rails application to use it as your default database.
 
@@ -94,7 +94,7 @@ You can also delete the /storage directory and your config/storage.yml file
 
 You might be wondering why we haven't deleted the `/db` directory and the config/database.yml file. Deleting these files now can cause errors because until we generate the mongoid.yml, rails will still be looking for a database configuration. Let's setup Mongoid now:
 
-**Mongoid Setup**
+# Mongoid Setup
 
 First, add the Mongoid gem to your application:
 
@@ -124,7 +124,7 @@ To view all the mongoid configuration options, you can view [the mongoid docs](h
 
 Now that mongoid is setup, you can delete the /db folder, the config/database.yml file, and remove the database gem from your Gemfile ( sqlite3, pg, etc. )
 
-**Updating Rails Models**
+# Updating Your Rails Models
 
 Now that you're on Mongoid, you have to update your rails models. A Mongoid User model could look something like this:
 
@@ -144,7 +144,7 @@ end
 
 Note that the User class is no longer inheriting from ApplicationRecord.
 
-**Testing MongoDB**
+# Testing
 
 That's it! Mongoid is all setup. To test your configuration, start the mongodb service:
 
@@ -152,7 +152,7 @@ That's it! Mongoid is all setup. To test your configuration, start the mongodb s
 brew services start mongodb-community@4.2
 ```
 
-And test Mongoid in the rails console:
+And start the rails console:
 
 ```ruby
 ~ rails console
@@ -165,7 +165,7 @@ To stop mongodb, you can run:
 brew services start mongodb-community@4.2
 ```
 
-**Debugging:**
+# Debugging
 
 Sometimes Spring tries to load ActiveRecord even when the application has no references to it. If running `spring stop && spring start` doesn't work, try adding an ActiveRecord adapter such as sqlite3 to your Gemfile so that ActiveRecord can be loaded. You could also try to remove Spring from your application:
 

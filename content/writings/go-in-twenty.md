@@ -19,13 +19,11 @@ Instead of focusing on one or two concepts, or spending half of this article try
 
 Ready? Go!
 
-### Packages
+---
 
-Every Go program is made up of packages,
+## Packages
 
-Programs start by running in package `main`.
-
-You can use external packages by importing them:
+Every Go program is made up of packages. Programs start by running in the `main` package. You can use external packages by importing them:
 
 ```go
 package main
@@ -76,7 +74,7 @@ func init() {
 }
 ```
 
-### Scope
+# Scope
 
 A pair of brackets declares a block, which has its own scope:
 
@@ -98,7 +96,7 @@ A variable defined outside of any function is considered "global". If capitalize
 var Global string = "I am a global variable!"
 ```
 
-### Variables
+## Variables
 
 `var` declares a variable of a given type:
 
@@ -146,7 +144,7 @@ println(y) // => ""
 println(z) // => nil
 ```
 
-### Type Conversions
+## Type Conversions
 
 You can convert values between different types:
 
@@ -158,7 +156,7 @@ z := uint(f)      // 1
 
 Note that unlike in other languages, conversions between types must be done explicitly.
 
-### Constants
+## Constants
 
 Unchanging values can be declared with the `const` keyword. Constants can be characters, strings, booleans, or numeric values:
 
@@ -181,7 +179,7 @@ const x = 1
 x = 2 // error: cannot assign to x
 ```
 
-### Iota
+## Iota
 
 The `iota` keyword represents successive integer constants:
 ```go
@@ -229,7 +227,7 @@ fmt.Println(zero, two, three) // "0 2 3"
 
 Iota's are most commonly used to represent enums, which Go does not support natively.
 
-### The Blank Identifier
+## The Blank Identifier
 
 The blank identifier `_` is an anonymous placeholder. It basically means to throw away something:
 
@@ -254,7 +252,7 @@ Or to avoid compiler errors during development:
 var _ = devFunction() // TODO: remove in production
 ```
 
-### Looping
+## Looping
 
 Go has only one loop, the `for` loop. It has three components:
 
@@ -312,7 +310,7 @@ for i := 0; i < 5; i++ {
 // => 0 1 3 4
 ```
 
-### Control Flow
+## Control Flow
 
 Go's `if` statements have a similar syntax to its loops:
 
@@ -412,7 +410,7 @@ print(3)
 Labels have a very specific use case. They can often make code less readable and are avoided by many Go programmers.
 
 
-### Arrays
+## Arrays
 
 Arrays have a fixed length:
 
@@ -440,7 +438,7 @@ helloWorld[10] = "Space"
 
 To get around this issue, Go provides slices.
 
-### Slices
+## Slices
 
 Slices are more commonly used than arrays. They are more flexible in that they do not have a fixed length:
 ```go
@@ -546,7 +544,7 @@ for index := range names {
 
 To understand the inner workings of slices and arrays in detail, check out: [Go Slices: Usage and Internals](https://blog.golang.org/slices-intro)
 
-### Maps
+## Maps
 
 Maps are like hashes in ruby or dictionaries in python. You create them with a *map literal*:
 
@@ -598,7 +596,7 @@ for key, value := range names {
 // 2 "two"
 ```
 
-### Functions
+## Functions
 
 `func` declares a function.
 
@@ -672,7 +670,7 @@ defer func() {
 }()
 ```
 
-### Anonymous Functions*
+## Anonymous Functions*
 
 Go supports anonymous functions. Anonymous functions are useful when you want to define a function inline without having to name it:
 
@@ -745,7 +743,7 @@ println(counter())
 
 Note how `counter` has access to `n`, even though it was never passed as a parameter.
 
-### Pointers
+## Pointers
 
 A pointer holds the memory address of a value.
 
@@ -781,7 +779,7 @@ p := &i  // point to i
 println(i) // 21 
 ```
 
-### Custom Types and Methods
+## Custom Types and Methods
 
 You can create a custom type with the `type` keyword:
 ```go
@@ -835,7 +833,7 @@ println(x)
 
 Pointer receivers are used when you want to modify the value the receiver points to. They can also be used to avoid copying the value for each method call, which can be more efficient when dealing with large amounts of data.
 
-### Structs
+## Structs
 
 Structs are a built-in Go type. You can declare one with the `struct` keyword. They can have any number of fields a specified type:
 
@@ -919,7 +917,7 @@ minusTwo.isStrictlyPositive()
 // => false
 ```
 
-### Interfaces
+## Interfaces
 
 Interfaces are something multiple types have in common. They can contain any number of methods in their method set:
 
@@ -979,7 +977,7 @@ This won't compile either:
 SignedIsNegative("a string")
 ```
 
-### `interface{}`
+## `interface{}`
 
 The interface type that specifies zero methods is known as the empty interface:
 
@@ -1050,7 +1048,7 @@ default:
 }
 ```
 
-### Type Aliases
+## Type Aliases
 
 You can create an alias to another type:
 ```go
@@ -1072,7 +1070,7 @@ type H = map[string]interface{}
 
 An alias declaration doesn't create a new type. It just introduces an alias name - an alternate spelling.
 
-### Struct Composition
+## Struct Composition
 
 Structs can be composed of one another through anonymous fields.
 
@@ -1156,7 +1154,7 @@ type MyStruct struct {
 }
 ```
 
-### Interface Composition
+## Interface Composition
 
 Interfaces can also be composed of each other:
 ```go
@@ -1180,7 +1178,7 @@ type Cat interface {
 }
 ```
 
-### Error Handling
+## Error Handling
 
 Functions that can fail typically return an `error`, along with their regular return value:
 
@@ -1240,7 +1238,7 @@ panic("AAAHHH!!!")
 // => Panicking
 // => Recovered from panic:  AAAHHH!!!
 ```
-### Goroutines
+## Goroutines
 
 Go is capable of concurrency through *goroutines*. A goroutine is a lightweight thread. To start a goroutine, you simple prefix a function call with the keyword `go`:
 ```go
@@ -1270,7 +1268,7 @@ go func() {
 }()
 ```
 
-### Channels
+## Channels
 
 Goroutines communicate through *channels*. You can send values to a channel:
 ```go
@@ -1340,7 +1338,7 @@ for value := range channel {
 }
 ```
 
-### Handling Multiple Channels
+## Handling Multiple Channels
 
 To handle communicating with multiple channels, you can use `select`:
 ```go
