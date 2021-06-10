@@ -14,9 +14,6 @@ taxonomies:
 extra:
     socialImage: /actix-web-logo.png
 ---
-### Introduction
-
-
 Imagine someone made an api call, logging into their account with a misspelled email address:
 
 ```rust
@@ -39,7 +36,7 @@ Imagine if they got this response:
 
 Although you might not think about it often, it is very possible for your application to leak sensitive data through error messages, In this post, I will walk you through how I handle error messages in my Rust (actix-web) web applications.
 
-### Custom Error Type
+## A Custom Error Type
 
 In my Rust applications, I generally like to have a single error type for each domain that encompasses all the possible errors that can occur:
 
@@ -90,7 +87,7 @@ impl From<std::io::Error> for MyError {
 
 While there is a decent amount of boilerplate involved in this, I don't see the need to introduce a third-party crate for simple error conversions.
 
-### Response Error
+## Response Error
 
 All of `MyError`'s variants are only used for internal logging. For actual error responses, only the `Response` variant is used. `Response` holds a custom `ResponseError` type:
 
@@ -131,7 +128,7 @@ If the response error contains a message, it will display a json response that l
 { "error": "The Error Message" }
 ```
 
-### Actix-Web Response Error
+## Actix-Web Response Error
 
 For `actix_web` to be able to display the error response properly, the error type must implement the `actix_web::ResponseError` trait. `ResponseError` has two required methods, `status_code`, and `error_response`. 
 
@@ -189,7 +186,7 @@ impl ResponseError {
 }
 ```
 
-### Usage
+## Usage
 
 That's it for my error type. Now I can use it in my handlers. For example:
 

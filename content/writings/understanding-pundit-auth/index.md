@@ -17,8 +17,6 @@ taxonomies:
 extra:
     socialImage: /ruby-logo.jpeg
 ---
-**Introduction**
-
 [Pundit](https://github.com/varvet/pundit) is a minimal authorization gem that implements object-oriented design and plain old ruby classes (PORO). Today, we will be recreating the gem to get a better understanding of Pundit and object-oriented design.
 
 Pundit's entire authorization system is built around a method called authorize. You create policy classes for every controller, and methods corresponding to every action. For example, if you have a post's controller, you might want to make a call to authorize and pass in the Post class.
@@ -66,7 +64,7 @@ def update
 end
 ```
 
-**The Authorizer Module**
+## The Authorizer Module
 
 We can start our recreation of Pundit my creating a module called Authorizer which will contain all of our authorization logic, and include it in our ApplicationController:
 

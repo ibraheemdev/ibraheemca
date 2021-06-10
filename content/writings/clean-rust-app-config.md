@@ -336,6 +336,6 @@ $ cargo run
 
 All of the code from this post is available on [github](https://gist.github.com/ibraheemdev/be443a33e305946abe4866846fb3d086).
 
-# But Aren't Global Variables Bad?
+## But Aren't Global Variables Bad?
 
-It's true that global variables should generally be avoided. The rust compiler makes it especially hard due to memory safety concerns with globals. However, for specific things, they are the cleanest solution. Without a global variable, configuration just ends up cluttering your app, when the configuration itself is inherently global. If you are using a framework and it provides an app state solution (such as actix-web), then by all means, use that instead. But in other cases, globals work just fine.
+It's true that global variables should generally be avoided. The rust compiler makes it especially hard due to memory safety concerns with globals. However, for specific things, they are the cleanest solution. Without a global variable, configuration just ends up cluttering your app, when the configuration itself is inherently global. If you are using a framework and it provides an app state solution (such as actix-web), then by all means, use that instead. In other cases, globals work just fine.

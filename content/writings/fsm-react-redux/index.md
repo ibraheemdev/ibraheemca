@@ -13,7 +13,7 @@ taxonomies:
 extra:
     socialImage: /redux-logo.png
 ---
-# The Problem
+## The Problem
 
 When developing a react + redux application, you often have to load data from a remote source such a REST API. Let's say you have a todo list application. When a user clicks 'add todo', you dispatch the corresponding `ADD_TODO` action. If the request is successful, you dispatch the success action. If the request fails, you dispatch the failure action:
 
@@ -144,7 +144,7 @@ else ifTimeout < 3000
 
 ![Person Shrugging](https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/person-shrugging_1f937.png)
 
-# What is a Finite State Machine?
+## What is a Finite State Machine?
 
 In computer science, there is a computational model known as a "finite state machine". It is an abstract machine, whether a software system or computer hardware. There are two types of state machines, deterministic: and non-deterministic. The former, the one we will be working with, has the following constraints:
 
@@ -156,7 +156,7 @@ In computer science, there is a computational model known as a "finite state mac
 
 The fifth point is crucial. Implementing a finite state machine means that your application can and will *only* be in one potential state at a time. This is quite different from what we had before, where any number of boolean flags could be true. With a finite state machine, you do not have to worry about edge cases, because it **makes impossible states impossible**.
 
-# Modelling the Finite State Machine
+## Modelling the Finite State Machine
 
 To model a finite state machine you can simple fill out the 5 constraints listed above.
 
@@ -176,7 +176,7 @@ To model a finite state machine you can simple fill out the 5 constraints listed
 
 As you can see, the todo-list app is quite simple. It starts at the `IDLE` state. When a user adds a todo, it transitions to `LOADING`. The request returns either as a `SUCCESS`, or a `FAILURE`. If the user adds another todo, the app goes back to the `LOADING` state, and so on.
 
-# Implementing the Finite State Machine
+## Implementing the Finite State Machine
 
 Now that our state machine is modelled, we can actually implement it in our application. The entire application state can be represented through one object:
 
@@ -259,11 +259,11 @@ return (
 )
 ```
 
-# Takeaways
+## Takeaways
 
 The biggest gain from this pattern is that no matter what the user does, our application will always be in one of 4 predetermined states. It also brings single purpose reducers; reducers that handle one process and one process only. Those two combined give simplicity to the entire application: reducers, views, and actions.
 
-# References:
+## References:
 
 - [Infinitely Better UIs with Finite Automata](https://www.youtube.com/watch?v=VU1NKX6Qkxc)
 - [Solving the Boolean Identity Crisis](https://www.youtube.com/watch?v=6TDKHGtAxeg).

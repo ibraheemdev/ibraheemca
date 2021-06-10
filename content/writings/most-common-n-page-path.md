@@ -141,10 +141,9 @@ counter.each do |k, v|
 end
 ```
 
-All code and files are available on [github](https://gist.github.com/ibraheemdev/60e8b7b00f0cfaab5b9efb0246736f7c)
+All code is available on [github](https://gist.github.com/ibraheemdev/60e8b7b00f0cfaab5b9efb0246736f7c)
 
-**Bonus Questions**
+## Bonus Questions
 
-What is the most common N page path? (ex: what is the most common 5 page path? The most common 2 page path?)
-
-What are the Y most common N page paths? (ex: what are the top 4 most common 7-page paths)
+- What is the most common N page path? (ex: what is the most common 5 page path? The most common 2 page path?)
+- What are the Y most common N page paths? (ex: what are the top 4 most common 7-page paths)

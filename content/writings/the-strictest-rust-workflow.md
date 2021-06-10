@@ -16,15 +16,15 @@ extra:
 ---
 The Rust compiler is known to be annoying. Sometimes, even trying to do the simplest thing will result in a compile time error. However, this is for good reason. Rust's borrow checker guarantees memory and thread-safety — enabling you to eliminate many classes of bugs at compile-time. In this article, I am going to try to create the strictest (most annoying) Rust workflow, making your code more idiomatic with [clippy](#clippy), safer with [miri](#miri), and more consistent with [rustfmt](#formatting).
 
-### Compilation
+## Building
 
-The first step in our workflow is a simple compile with all the compile targets, and features enabled:
+The first step in our workflow is a simple `cargo check` with all the targets and features enabled:
 ```rust
-$ cargo test --all-targets --all-features
+$ cargo check --all-targets --all-features
 ```
 
 
-### Clippy
+## Clippy
 
 Clippy is a community driven linter that helps catch common mistakes and improve your Rust code. For example, try linting this little program:
 ```rust
@@ -86,14 +86,14 @@ $ cargo clippy \
   --forbid clippy::nursery
 ```
 
-### Testing:
+## Testing:
 
 Testing in Rust is pretty straightforward. The most we can do here, is test all the compile targets, and enable all features:
 ```rust
 $ cargo test --all-targets --all-features
 ```
 
-### Formatting
+## Formatting
 
 Rustfmt is a tool for formatting Rust code according to style guidelines. It has hundreds of [configuration options](https://github.com/rust-lang/rustfmt/blob/master/Configurations.md) that can be set with a config file, or throught the command line. By default, it uses a style which conforms to the [Rust style guide](https://github.com/rust-dev-tools/fmt-rfcs/blob/master/guide/guide.md) that has been formalized through the [style RFC
 process](https://github.com/rust-dev-tools/fmt-rfcs). We'll stick to the default formatting options for this article, but there are some other options we can enable. 
@@ -108,7 +108,7 @@ In the context of a CI workflow, you probably don't want rustfmt writing to the 
 $ cargo fmt --all -- --check
 ```
 
-### Miri
+## Miri
 
 Miri is an experimental interpreter for [ust's
 [mid-level intermediate representation](https://github.com/rust-lang/rfcs/blob/master/text/1211-mir.md).  It can run binaries and
@@ -147,8 +147,8 @@ cargo miri test
 
 The `symbolic-alignment-check` flag makes the alignment check more strict, and `track-raw-pointers` makes Stacked Borrows track a pointer tag even for raw pointers.
 
-### Conclusion
+## Conclusion
 
 That's all for our workflow. As you can tell, Rust's tooling is amazing! There are many official cargo components that you can use to make development easier. 
 
-The final github workflow is available [here](/pages/todo). If I missed any configuration options or tooling, [let me know](javascript:document.body.scrollIntoView(false)).
+The final github workflow is available [here](/pages/todo).

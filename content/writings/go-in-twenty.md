@@ -74,7 +74,7 @@ func init() {
 }
 ```
 
-# Scope
+## Scope
 
 A pair of brackets declares a block, which has its own scope:
 

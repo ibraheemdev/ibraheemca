@@ -17,7 +17,7 @@ extra:
 
 *I recently published [mongo beautiful logger](https://github.com/ibraheemdev/mongo_beautiful_logger), a simple gem which defines a custom logger that you can use to beautify MongoDB logs. If you want to see a working custom logger, you can check out the source code.*
 
-**Understanding the Ruby Logger Class**
+## Understanding the Ruby Logger Class
 
 > The [Logger](https://ruby-doc.org/stdlib-2.4.0/libdoc/logger/rdoc/Logger.html) class provides a simple but sophisticated logging utility that you can use to output messages - [Ruby-Doc](https://ruby-doc.org/stdlib-2.4.0/libdoc/logger/rdoc/Logger.html)
 
@@ -37,7 +37,7 @@ logger.warn("A warning.")
 
 As you can see, any instance of the logger class can log messages to the console or a log file at different levels. These are: debug, error, fatal, info, warn, and unknown.
 
-**Creating our Custom Logger**, 
+## Creating our Custom Logger
 
 Now that we understand the Logger class, we can start writing our custom implementation:
 
@@ -53,7 +53,7 @@ end
 
 The above code block defined a class called `CustomLogger` that takes an optional parameter, logger. The logger parameter defines the logger instance to be used. If no logger is given, it defaults to outputting to the console.
 
-**Defining the Logger Methods**
+## Defining the Logger Methods
 
 If we want our logger to do anything, we have to define the debug, error, fatal, info, warn, and unknown methods. To define those methods dynamically, we can use `Module#class_eval,`a method which allows us to add methods to a class "on-the-fly".
 
@@ -104,7 +104,7 @@ class CustomLogger
 end
 ```
 
-**Having some fun**
+## Spicing it up 
 
 Now that we have our custom logger class all set up, we can start doing some cool things with it. To start, you probably don't want the long default format clogging up your terminal. We can change that by using the formatter method:
 

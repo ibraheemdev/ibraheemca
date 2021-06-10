@@ -56,7 +56,7 @@ end
 
 Let's see how we can implement something similar in Go.
 
-# The Validator Package
+## The Validator Package
 
 We can start by creating a simple struct called `Validator`. This struct will have one field: a slice of errors. That way we can return all the errors to the user at once:
 
@@ -105,7 +105,7 @@ func (v *Validator) ValidateMinLengthOf(fieldName string, fieldValue string, min
 }
 ```
 
-# Validating User Input
+## Validating User Input
 
 Now that we finished the validator package, we can use it in http handlers to validate user input. We can create a validate method on a User model:
 
