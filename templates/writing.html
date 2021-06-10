@@ -1,13 +1,19 @@
 {% extends "base.html" %} 
+{% import "footer.html" as footer %}
 
 {% block content %}
-<div id="content">
-    <div class="writing">
-        <div class="writing_date">{{ page.date | date(format = "%B %d, %Y") }}</div>
-        <h1 class="writing_title">
-            <a href="#">{{ page.title }}</a>
-        </h1>
-        {{ page.content | safe }}
-    </div>
-</div>
+<main>
+    <article>
+        <div class="frontmatter">
+            <h1 class="title">{{ page.title }}</h1>
+            <section class="meta">
+                <time datetime="{{ page.date }}"> {{ page.date | date(format = "%B %d, %Y") }} </time>
+            </section>
+        </div>
+        <section>
+            {{ page.content | safe }}
+        </section>
+    </article>
+    {{ footer::footer() }}
+</main>
 {% endblock %}

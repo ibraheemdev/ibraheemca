@@ -2,7 +2,7 @@
 template: writing.html
 title: "&mut Doesn't Mean Mutable"
 slug: and-mut-doesnt-mean-mutable
-draft: false
+draft: true
 date: 2021-05-21T19:08:00.906Z
 description: 
 taxonomies:

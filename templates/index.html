@@ -1,10 +1,15 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
+{% import "footer.html" as footer %}
 
 {% block content %}
-<div id="content">
-    <div class="writing">
-        <h1 class="writing_title" style="line-height: 1.6em">Ibraheem Ahmed</h1>
-        {{ section.content | safe }}
-    </div>
-</div>
+<main>
+    <section>
+        <h1 style="display: none;">Ibraheem Ahmed</h1>
+        <section class="content">
+            {{ section.content | safe }}
+        </section>
+        </ul>
+    </section>
+    {{ footer::footer() }}
+</main>
 {% endblock %}
