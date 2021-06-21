@@ -249,11 +249,11 @@ The blank identifier `_` is an anonymous placeholder. It basically means to thro
 
 ```go
 // this does nothing
-_ := 42
+_ = 42
 
 // this calls `getThing` but throws away the 
 // two return values
-_, _ := getThing();
+_, _ = getThing();
 ```
 
 You can use it to import a package solely for its `init` function:
@@ -684,7 +684,7 @@ defer func() {
 }()
 ```
 
-## Anonymous Functions*
+## Anonymous Functions
 
 Go supports anonymous functions. Anonymous functions are useful when you want to define a function inline without having to name it:
 
@@ -701,7 +701,7 @@ Functions can take functions as arguments
 ```go
 func printNumber(getNum func() int) {
   num := getNum()
-  println(num)
+  fmt.Println(num)
 }
 
 printNumber(func() int { 
@@ -720,7 +720,7 @@ func getOne() func() int {
 }
 
 one := getOne()
-println(one()) 
+fmt.Println(one()) 
 
 // => 1
 ```
@@ -748,11 +748,13 @@ counter := func() int {
   n += 1
   return n
 }
-println(counter())
-println(counter())
+fmt.Println(counter())
+fmt.Println(counter())
+fmt.Println(counter())
 
 // => 1
 // => 2
+// => 3
 ```
 
 Note how `counter` has access to `n`, even though it was never passed as a parameter.
@@ -779,8 +781,8 @@ The `*` operator lets you access the pointer's underlying value:
 i := 42
 p := &i     // point to i
 
-println(*p) // read i through the pointer 
-// => 42
+fmt.Println(p) // 0xc000018050
+fmt.Println(*p) // => 42
 ```
 
 You can use `*` to modify the original value:
@@ -790,7 +792,7 @@ i := 42
 p := &i  // point to i 
 *p = 21  // modify i through the pointer
 
-println(i) // 21 
+fmt.Println(i) // 21
 ```
 
 ## Custom Types and Methods
@@ -802,13 +804,13 @@ type UserName string
 
 This is called a *type definition*. It defines a new, distinct type that is based on the structure of an underlying type. 
 
-You can define *methods* on your custom types. Methods are different than functions in that they take a *reciever* and are called on an instance of a specific type. The reciever is specified *before* the method name, and the arguments are specified *after*:
+You can define *methods* on your custom types. Methods are different than functions in that they take a *reciever* and are called on an instance of a specific type. The reciever is specified before the method name, and the arguments are specified after:
 ```go
 type MyString string
 
 // A method called `Print` with a reciever of type `MyString`
 func (m MyString) Print() {
-  println(m)
+  fmt.Println(m)
 }
 
 var x MyString = "hello"
@@ -827,7 +829,7 @@ func (m MyString) BecomeHello() {
 var x MyString = "not hello"
 x.BecomeHello()
 
-println(x)
+fmt.Println(x)
 // => "not hello"
 ```
 
@@ -853,10 +855,8 @@ Structs are a built-in Go type. You can declare one with the `struct` keyword. T
 
 ```go
 type MyStruct struct {
-  a string
   x int
   y int
-  z MyOtherStruct
 }
 ```
 
@@ -878,14 +878,14 @@ s1 := MyStruct{ 1, 2 }
 Struct fields are accessed using a dot:
 
 ```go
-s := MyStruct{}
+s := MyStruct{ x: 1, y: 2 }
 s.x = 1 
 ```
 
-If a field is not initialized, it defaults to its type's zero value:
+If a field is not initialized, it defaults to the default value of its type:
 ```go
 s1 := MyStruct{}
-s1.x // => 0
+fmt.Println(s1.x) // => 0
 ```
 
 Struct fields can also be accessed and modified through a struct pointer just like a regular variable:
@@ -896,7 +896,7 @@ s := MyStruct{}
 p := &s
 (*p).x = 19 // modify `s` through `p`
 
-println(s.x) // => 19
+fmt.Println(s.x) // => 19
 ```
 
 Because this is so common, Go allows you to modify the underlying struct of a pointer without a `*`:
@@ -916,7 +916,7 @@ type Number struct {
 }
 
 func (n Number) isStrictlyPositive() bool {
-  n.value > 0
+  return n.value >= 0
 }
 ```
 
@@ -961,8 +961,12 @@ func SignedIsStrictlyNegative(s Signed) bool {
 A struct *implements* an interface if it has all of its methods:
 
 ```go
+type Number struct {
+  value int
+}
+
 func (n *Number) isStrictlyNegative() bool {
-  n.value < 0
+  return n.value < 0
 }
 ```
 
@@ -973,22 +977,22 @@ So this works:
 ```go
 SignedIsStrictlyNegative(&Number{})
 ```
-However, `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`.
-This is because `Number` and `*Number` are *different* types:
+
+However, `Number` doesn't implement `Signed` because `isStrictlyNegative` is defined only on `*Number`. This is because `Number` and `*Number` are *different* types:
 
 ```go
 // this will not compile
-SignedIsNegative(Number{})
+SignedIsStrictlyNegative(Number{})
 
 // but this will
-SignedIsNegative(&Number{})
+SignedIsStrictlyNegative(&Number{})
 ```
 
-This won't compile either:
+Of course, this won't compile either:
 
 ```go
 // strings do not implement the Signed interface
-SignedIsNegative("a string")
+SignedIsStrictlyNegative("a string")
 ```
 
 ## `interface{}`
@@ -999,7 +1003,7 @@ The interface type that specifies zero methods is known as the empty interface:
 interface{} // literally anything
 ```
 
-An empty interface may hold values of any type. (Every type implements at least zero methods):
+An empty interface may hold values of any type:
 
 ```go
 var x interface{} = Number{}
@@ -1007,12 +1011,12 @@ var y interface{} = "hello"
 var z interface{} = 1
 ```
 
-But since the empty interface does not have any methods, we cannot call the Number methods on Number.
+Values stored as an interface are type *erased*.
 
 ```go
 var x interface{} = Number{}
 
-x.isStrictlyNegative()
+x.isStrictlyNegative() // error: x.isStrictlyNegative undefined (type interface {} is interface with no methods)
 ```
 
 Because we know what `x` really is, we can use a type assertion:
@@ -1032,12 +1036,11 @@ If a type assertion fails (`x` doesn't really implement `Number`), it will trigg
 ```go
 var x interface{} = "not a number"
 
-n = x.(Number)
-// panic: interface conversion: 
-// interface {} is string, not Number
+n := x.(Number)
+// panic: interface conversion: interface {} is string, not Number
 ```
 
-To prevent a `panic`, we can use the second return value of a type assertion:
+We can use the second return value of a type assertion to check if it was successful:
 
 ```go
 var x interface{} = "not a number"
@@ -1068,7 +1071,7 @@ You can create an alias to another type:
 ```go
 type H = map[string]interface{}
 
-// `map[string]interface{}` is very common in Go
+// `map[string]interface{}` is a common pattern
 // now we can use `H` as a short form
 h := H{"one": 1, "two": 1}
 ```
@@ -1091,12 +1094,11 @@ Structs can be composed of one another through anonymous fields.
 For example, here we have a struct called `Animal` that has a `Talk` method:
 ```go
 type Animal struct {
-  sound string 
   feet int
 }
 
 func (a Animal) Talk() {
-  println(a.sound)
+  fmt.Println("generic animal sound")
 }
 ```
 
@@ -1109,30 +1111,28 @@ type Cat struct {
 
 You can instantiate a new `Cat`, setting the embedded `Animal's` fields:
 ```go
-cat := &Cat{ Animal{ sound: "meow", feet: 4 } }
+cat := &Cat{ Animal{ feet: 4 } }
 ```
 
 And use any `Animal` methods or fields:
 ```go
-cat.Talk() // => "meow" 
+cat.Talk() // => "generic animal sound" 
 cat.feet   // => 4
 ```
 
 You can also override an embedded struct's methods:
 ```go
 func (c Cat) Talk() {
-  println("meow meow meow")
+  println("meow")
 }
 
-cat.Talk()
-// => "meow meow meow"
+cat.Talk() // => "meow"
 ```
 
 To imitate a call to `super` as found in other languages, you can call the method through the embedded type directly:
 ```go
-cat.Animal.Talk() // prints only one "meow"
+cat.Animal.Talk() // "generic animal sound"
 ```
-
 
 This behavior is not limited to struct fields. A struct can embed a primitive:
 ```go
@@ -1143,7 +1143,7 @@ type MyStruct struct {
 }
 ```
 
-Or any other named type, such as a pointer:
+Or any other type, such as a pointer:
 ```go
 type Cat struct {
   *Animal
@@ -1152,7 +1152,8 @@ type Cat struct {
 
 A collection (array, map, or slice):
 ```go
-type Assignments []string
+// remember, this is a type *alias*
+type Assignments = []string
 
 type Homework struct {
   Assignments
@@ -1172,7 +1173,7 @@ type MyStruct struct {
 
 Interfaces can also be composed of each other:
 ```go
-type Animal interface{
+type Animal interface {
   Talk()
   Eat()
 }
@@ -1200,7 +1201,7 @@ Functions that can fail typically return an `error`, along with their regular re
 file, err := os.Open("foo.txt")
 ```
 
-In Go, errors are values, so you can perform `nil` checks on them. You are going to be seeing **a lot** of this:
+Errors are values, so you can perform `nil` checks on them. You are going to be seeing *a lot* of this:
 
 ```go
 file, err := os.Open("foo.txt")
@@ -1221,6 +1222,8 @@ println(err.Error()) // => "I am an error"
 
 Packages often export common error values. You can perform equality checks between errors:
 ```go
+import "errors"
+
 err := makeDatabaseCall()
 if errors.Is(err, database.ErrNotFound) {
   return 404
@@ -1278,20 +1281,25 @@ time.Sleep(time.Second * 1)
 Goroutines are often used with anonymous functions:
 ```go
 go func() {
-  println("hello")
+  fmt.Println("hello")
 }()
 ```
 
 ## Channels
 
-Goroutines communicate through *channels*. You can send values to a channel:
+Goroutines communicate through *channels*:
 ```go
-channel <- value
+ch := make(chan int)
+```
+
+You can send values to a channel:
+```go
+go func() { ch <- 1 }()
 ```
 
 And receive values from a channel:
 ```go
-x := <-channel
+x := <-ch
 ```
 
 Note that data flows in the direction of the arrow.
@@ -1306,10 +1314,10 @@ func multiplyByTwo(num int, result chan <- int) {
 }
 ```
 
-We can create a channel and send it to our function:
+We can create a channel and pass it to the function:
 ```go
 result := make(chan int)
-go multiplyByTwo(n, result)
+go multiplyByTwo(3, result)
 ```
 
 The result channel now contains the number calculated by `multiplyByTwo`:
@@ -1318,7 +1326,7 @@ fmt.Println(<-result)
 // => 6
 ```
 
-Channels can be created with a limit, once too many values are sent to the channel, the channel will block:
+Channels can be created with a limit. If too many values are sent to the channel, the channel will block:
 ```go
 limit := 1
 ch := make(chan int, limit)
@@ -1342,7 +1350,7 @@ close(channel)
 You can test whether a channel has been closed:
 ```go
 v, ok := <-ch
-// if `ok` is false, then the channel is closed
+// if `ok` is true, the channel is still open
 ```
 
 To receive all the values from a channel until it is closed, you can use `range`:
@@ -1365,7 +1373,7 @@ func doubler(c, quit chan int) {
         x += x
       // ... until a value is sent to "quit"
       case <- quit:
-        println("quit")
+        fmt.Println("quit")
         return
     }
   }
@@ -1375,7 +1383,7 @@ func doubler(c, quit chan int) {
 Let's test our program out by creating a channel, passing it to `doubler`, and recieving the results: 
 ```go
 func main() {
-  // make the neccessary channels
+  // create the neccessary channels
   c := make(chan int)
   quit := make(chan int)
 
@@ -1384,7 +1392,7 @@ func main() {
     for i := 0; i < 5; i++ {
       println(<-c)
     }
-    // ... and then quit
+    // and then quit
     quit <- 0
   }()
 
@@ -1400,7 +1408,7 @@ It works 🎉🎉🎉
 4
 8
 16
-quit
+quitting
 ```
 
 And with that, we have hit 20 minutes estimated reading time. After reading this, you should be able to read most of the Go code you find online.
