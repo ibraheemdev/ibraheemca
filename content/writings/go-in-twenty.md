@@ -23,7 +23,19 @@ Ready? Go!
 
 ## Packages
 
-Every Go program is made up of packages. Programs start by running in the `main` package. You can use external packages by importing them:
+Every Go program is made up of packages. Programs start by running the `main` function in the `main` package. 
+
+```go
+package main
+
+func main() {
+    // ...
+}
+```
+
+From now on, the `main` function and package declaration will be omitted from examples for brevity.
+
+You can use external packages by importing them:
 
 ```go
 package main
@@ -39,6 +51,7 @@ import (
   "math/rand"
 )
 
+
 fmt.Println("My favorite number is", rand.Intn(10))
 ```
 
@@ -46,18 +59,21 @@ You can create a local alias for any import:
 ```go
 import (
   formatter "fmt"
+  random "math/rand"
 )
 
-formatter.Println("") // instead of fmt.Intn(10)
+
+formatter.Println("My favorite number is", random.Intn(10))
 ```
 
 Or use a dot to access it without any qualifier:
 ```go
 import (
+  . "fmt"
   . "math/rand"
 )
 
-Intn(10) // instead of rand.Intn(10)
+Println("My favorite number is", Intn(10))
 ```
 
 A name is exported if it begins with a capital letter. This is similar to `public` and `private` in other languages:
@@ -111,7 +127,7 @@ This can also be written as a single line:
 var x int = 42
 ```
 
-You can specify a variable's type implicitly:
+The type of a variable can also be inferred:
 
 ```go
 var x = 42
@@ -138,10 +154,10 @@ var x int
 var y string
 var z []int
 
-println(b) // => false
-println(x) // => 0
-println(y) // => ""
-println(z) // => nil
+fmt.Println(b) // => false
+fmt.Println(x) // => 0
+fmt.Println(y) // => ""
+fmt.Println(z) // => []
 ```
 
 ## Type Conversions
@@ -225,14 +241,14 @@ const (
 fmt.Println(zero, two, three) // "0 2 3"
 ```
 
-Iota's are most commonly used to represent enums, which Go does not support natively.
+Iota's are commonly used to represent enums, which Go does not support natively.
 
 ## The Blank Identifier
 
 The blank identifier `_` is an anonymous placeholder. It basically means to throw away something:
 
 ```go
-// this does *nothing*
+// this does nothing
 _ := 42
 
 // this calls `getThing` but throws away the 
@@ -267,7 +283,7 @@ sum := 0
 for i := 0; i < 10; i++ {
   sum ++
 }
-println(sum) // 10
+fmt.Println(sum) // 10
 ```
 
 The init and post statements are optional:
@@ -276,7 +292,7 @@ The init and post statements are optional:
 // this loop will run forever
 yup := true
 for yup {
-  println("yup!")
+  fmt.Println("yup!")
 }
 ```
 
@@ -285,7 +301,7 @@ An infinite for loop can also be written like this:
 ```go
 // this loop will also run forever
 for {
-  println("yup!")
+    fmt.Println("yup!")
 }
 ```
 
@@ -304,7 +320,7 @@ for i := 0; i < 5; i++ {
   if i == 2 {
     continue
   }
-  print(i)
+  fmt.Print(i)
 }
 
 // => 0 1 3 4
@@ -316,16 +332,16 @@ Go's `if` statements have a similar syntax to its loops:
 
 ```go
 if 1 == 1 {
-  println("true")
+  fmt.Println("true")
 }
 ```
 
 `if` conditions can also have an init statement:
 
 ```go
-// this prints "hello"
-if x := "hello"; x != nil {
-  println(x)
+// this prints "foo"
+if x := "foo"; x != "bar" {
+  fmt.Println(x)
 }
 // "x" is now out of scope
 ```
@@ -377,10 +393,10 @@ x := 1
 
 switch x {
 case 1:
-    print("1")
+    fmt.Print("1")
     fallthrough
 case 2:
-    print("2")
+    fmt.Print("2")
 }
 
 // => 1 2
@@ -399,16 +415,15 @@ print(1)
 
 // jump to the "Three" label
 goto Three
-print(2)
+fmt.Print(2)
 
 Three:
-print(3)
+fmt.Print(3)
 
-// => 1 3
+// => 13
 ```
 
 Labels have a very specific use case. They can often make code less readable and are avoided by many Go programmers.
-
 
 ## Arrays
 
@@ -418,7 +433,7 @@ Arrays have a fixed length:
 var a [2]string // an array of 2 strings
 a[0] = "Hello"
 a[1] = "World"
-println(a) // => ["Hello", "World"]
+fmt.Println(a) // => [Hello World]
 ```
 
 You create arrays using *array literals*:
@@ -427,20 +442,19 @@ You create arrays using *array literals*:
 helloWorld := [2]string{"Hello", "World"}
 ```
 
-You cannot increase an array beyond its capacity. Doing so will cause a panic:
+You cannot increase an array beyond its capacity. Doing so will cause an error:
 ```go
 helloWorld := [2]string{"Hello", "World"}
 helloWorld[10] = "Space"
 
-// panic: runtime error: index out of range [10] 
-// with length 2
+// panic: invalid array index 10 (out of bounds for 2-element array)
 ```
 
 To get around this issue, Go provides slices.
 
 ## Slices
 
-Slices are more commonly used than arrays. They are more flexible in that they do not have a fixed length:
+Slices are more commonly used than arrays. They are flexible in that they do not have a fixed length:
 ```go
 nums := []int{1, 2, 3, 4, 5}
 ```
@@ -492,7 +506,7 @@ fmt.Println(nums)
 // => [999 2 3 4 5 6]
 ```
 
-Slices are just a fancy way to manage an underlying array. You cannot increase a slice beyond its capacity. Doing so will cause a panic, just like with an array:
+Slices are just a fancy way to manage an underlying array. You cannot increase a slice beyond its capacity. Doing so will cause a panic:
 ```go
 nums := []int{1, 2, 3, 4, 5, 6}
 nums[20] = 9
@@ -515,7 +529,7 @@ You can iterate over slices and arrays with `range`:
 ```go
 names := []string{"john", "joe", "jessica"}
 for index, name := range names {
-  println(index, name)
+  fmt.Println(index, name)
 }
 
 // 0 john
@@ -530,13 +544,13 @@ for _, name := range names { ... }
 for index, _ := range names { ... }
 ```
 
-If you only want the index, you can omit the value entirely:
+If you only want the index, you can omit the second variable entirely:
 
 ```go
 names := []string{"john", "joe", "jessica"}
 
 for index := range names {
-    println(index)
+    fmt.Println(index)
 }
 
 // => 0 1 2
@@ -549,13 +563,13 @@ To understand the inner workings of slices and arrays in detail, check out: [Go 
 Maps are like hashes in ruby or dictionaries in python. You create them with a *map literal*:
 
 ```go
-mymap := map[int]string{1: "one", 2: "two"}
+mymap := map[string]string{"name": "ibraheem", "city": "toronto"}
 ```
 
-Or the `make` function:
+Or the built-in `make` function:
 
 ```go
-mymap := make(map[int]string)
+mymap := make(map[string]string)
 ```
 
 You can set the value under a particular key:
@@ -568,28 +582,28 @@ And access it:
 
 ```go
 val := mymap["key"]
-println(val) // "value"
+fmt.Println(val) // "value"
 ```
 
 Or delete it:
 
 ```go
-delete(mymap, key)
+delete(mymap, "key")
 ```
 
 You can check whether a key is present:
 
 ```go
-x, ok = mymap["key"] // => "value", true
-x, ok = mymap["doesnt-exist"] // => nil, false
+x, ok := mymap["key"] // => "value", true
+x, ok := mymap["doesnt-exist"] // => "", false
 ```
 
 And iterate over a map's keys and values:
 
 ```go
-var m = map[int]string{1: "one", 2: "two"}
-for key, value := range names {
-  println(key, value)
+m := map[int]string{1: "one", 2: "two"}
+for key, value := range m {
+  fmt.Println(key, value)
 }
 
 // 1 "one"
@@ -604,7 +618,7 @@ Here's a void function:
 
 ```go
 func greet() {
-  println("Hi there!")
+  fmt.Println("Hi there!")
 }
 ```
 
@@ -636,14 +650,14 @@ Or an arbitrary number of arguments:
 
 ```go
 func variadic(nums ...int) {
-  println(nums)
+  fmt.Println(nums)
 }
 ```
 
 These are called *variadic functions*. They can be called just like regular functions, except you can pass in as many arguments as you want:
 
 ```go
-variadic(1, 2, 3) // => [1, 2, 3]
+variadic(1, 2, 3) // => [1 2 3]
 ```
 
 If a function takes two or more arguments of the same type, you can group them together:
@@ -679,7 +693,7 @@ one := func() int {
   return 1 
 }
 
-println(one()) // 1
+fmt.Println(one()) // 1
 ```
 
 Functions can take functions as arguments
