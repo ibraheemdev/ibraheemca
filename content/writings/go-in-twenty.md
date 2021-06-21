@@ -15,7 +15,7 @@ extra:
 ---
 A lot of thanks goes to [fasterthanlime](https://fasterthanli.me/about) for inspiring this article with [A half-hour to learn Rust](https://fasterthanli.me/articles/a-half-hour-to-learn-rust). I thought I'd try something similar, but instead of Rust, this article will try provide an overview of Go in twenty minutes.
 
-Instead of focusing on one or two concepts, or spending half of this article trying to convince you why Go is awesome, I'll try to go through as many Go snippets I can and explain what the keywords and symbols they contain mean. This article can be used as a cheat sheet for developers familiar with Go, or a tutorial for developers new to Go, but familiar with other languages.
+Instead of focusing on one or two concepts, or spending half of this article trying to convince you why Go is awesome, I'll try to go through as many Go snippets I can and explain what the keywords and symbols they contain mean. This article can be used as a cheat sheet for developers familiar with Go, or a tutorial for developers new to Go but familiar with other languages.
 
 Ready? Go!
 
@@ -149,11 +149,13 @@ x, y = 10, 20
 If you declare a variable without initializing it, it will implicitly be assigned to the zero value of its type:
 
 ```go
+var a SomeStruct
 var b bool
 var x int
 var y string
 var z []int
 
+fmt.Println(a) // => nil
 fmt.Println(b) // => false
 fmt.Println(x) // => 0
 fmt.Println(y) // => ""
