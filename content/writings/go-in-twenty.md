@@ -63,8 +63,8 @@ Intn(10) // instead of rand.Intn(10)
 A name is exported if it begins with a capital letter. This is similar to `public` and `private` in other languages:
 
 ```go
-x := "hello" // x is unexported, or private
-A := "hello" // A will be exported, or public
+var x string = "hello" // x is unexported, or private
+var A string = "hello" // A will be exported, or public
 ```
 
 Packages can have an `init` function. This will be executed as soon as the package is imported:
@@ -85,13 +85,13 @@ func main() {
   {
     // this is a different `x`
     x := "in"
-    println(x)
+    println(x) // => in
   }
-  println(x)
+  println(x) // => out
 }
 ```
 
-A variable defined outside of any function is considered "global". If capitalized, it can be accessed by other packages:
+A variable defined outside of any function is in the "global" scope.
 ```go
 var Global string = "I am a global variable!"
 ```
