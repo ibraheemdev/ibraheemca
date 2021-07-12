@@ -97,9 +97,7 @@ If you don't want to use a helper method, then implementing it yourself is reall
 
 ```ruby
 def each_cons(cons, arr)
-  temp = []
-  0.upto(arr.size - cons) {|i| temp.push(arr[i, cons]) }
-  temp
+  0.upto(arr.size - cons).map { |i| arr[i, cons] }
 end
 
 $ each_cons(2, [1, 2, 3, 4])
@@ -128,7 +126,7 @@ IO.foreach("paths.txt") do |line|
   pages = line.chomp.split(",")
   next if pages.length < 4
   seqs = pages.each_cons(4)
-  # or seqs = []; 0.upto(pages.size - 4) {|i| seqs.push(pages[i, 4]) }
+  # or seqs = 0.upto(pages.size - cons).map { |i| pages[i, cons] }
   seqs.each do |s| 
     counter[s.join(",")] += 1
   end
